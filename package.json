@@ -1,0 +1,43 @@
+{
+  "name": "outstanding-barnacle",
+  "version": "1.0.0",
+  "description": "Task model, which is modified through events only",
+  "keywords": [],
+  "author": "Axel",
+  "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/axelkr/outstanding-barnacle.git"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist/*.js",
+    "/dist/*.d.ts"
+  ],
+  "scripts": {
+    "build": "rollup -c rollup.config.js",
+    "test": "ts-node  --skip-project -s ./node_modules/jasmine-xml-reporter/bin/jasmine --config=jasmine.json",
+    "testCLI": "ts-node  --skip-project -s ./node_modules/jasmine-xml-reporter/bin/jasmine --config=jasmine.json --junitreport",
+    "lint": "eslint src/ --ext .ts"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.14",
+    "@types/mocha": "^8.2.0",
+    "@typescript-eslint/eslint-plugin": "^4.14.0",
+    "@typescript-eslint/parser": "^4.14.0",
+    "chai": "^4.2.0",
+    "eslint": "^7.18.0",
+    "jasmine": "^3.6.4",
+    "jasmine-spec-reporter": "^6.0.0",
+    "jasmine-xml-reporter": "^1.2.1",
+    "rollup": "^2.37.1",
+    "rollup-plugin-typescript2": "^0.29.0",
+    "source-map-support": "^0.5.19",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3"
+  },
+  "dependencies": {
+    "sitka": "^1.0.5"
+  }
+}
