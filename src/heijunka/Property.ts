@@ -1,6 +1,6 @@
 export class Property<A> {
-    private value: A;
-    private setAt: Date;
+    readonly value: A;
+    private readonly setAt: Date;
 
     constructor(initialValue: A, setAt: Date) {
         if (typeof initialValue === "undefined") {
@@ -13,11 +13,7 @@ export class Property<A> {
         this.setAt = setAt;
     }
 
-    public get(): A {
-        return this.value;
-    }
-
-    public update(newValue: A, setAt: Date): void {
+    public update(newValue: A, setAt: Date): Property<A> {
         if (typeof newValue === "undefined") {
             throw new Error('new value cannot be undefined');
         }
@@ -26,9 +22,8 @@ export class Property<A> {
         }
 
         if (this.setAt > setAt) {
-            return;
+            return this;
         }
-        this.setAt = setAt;
-        this.value = newValue;
+        return new Property<A>(newValue,setAt);
     }
 }
