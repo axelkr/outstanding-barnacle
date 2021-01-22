@@ -1,7 +1,7 @@
 {
   "name": "outstanding-barnacle",
   "version": "1.0.0",
-  "description": "Task model, which is modified through events only",
+  "description": "Task model, which is modified through events only.",
   "keywords": [],
   "author": "Axel",
   "license": "GPL-3.0",
@@ -12,8 +12,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "/dist/*.js",
-    "/dist/*.d.ts"
+    "/dist/**/*.js",
+    "/dist/**/*.d.ts"
   ],
   "scripts": {
     "build": "rollup -c rollup.config.js",
