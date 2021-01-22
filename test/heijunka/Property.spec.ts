@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { Property } from '../src/Property';
+import { Property } from '../../src/heijunka/Property';
 
 describe('Property', () => {
   it('constructor expects that value is defined', () => {
