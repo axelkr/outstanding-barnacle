@@ -5,8 +5,6 @@ import { Task } from '../model/task';
 export class CreateTaskCommand implements ProcessObjectEventCommand {
   readonly objectEventTypeProcessing: string = 'CreateTask';
 
-  constructor() { }
-
   process(objectEvent: ObjectEvent, tasks: Task[]): Task[] {
     const result = [...tasks];
     let name = objectEvent.payload.get('name');

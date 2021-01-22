@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 
-import { CreateTaskCommand } from '../src/objectEvents/createTaskCommand';
-import { Task } from '../src/model/task';
-import { ObjectEvent } from '../src/objectEvents/objectEvent';
+import { CreateTaskCommand } from '../../src/objectEvents/createTaskCommand';
+import { Task } from '../../src/model/task';
+import { ObjectEvent } from '../../src/objectEvents/objectEvent';
 
 describe('CreateTaskCommand', () => {
   let service: CreateTaskCommand;

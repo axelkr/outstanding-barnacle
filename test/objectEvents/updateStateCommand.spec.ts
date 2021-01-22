@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { UpdateStateCommand } from '../src/objectEvents/updateStateCommand';
+import { UpdateStateCommand } from '../../src/objectEvents/updateStateCommand';
 
 describe('UpdateStateCommand', () => {
   let service: UpdateStateCommand;

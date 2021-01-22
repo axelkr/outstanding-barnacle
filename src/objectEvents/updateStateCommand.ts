@@ -5,8 +5,6 @@ import { Task } from '../model/task';
 export class UpdateStateCommand implements ProcessObjectEventCommand {
   readonly objectEventTypeProcessing: string = 'UpdateTaskState';
 
-  constructor() { }
-
   process(objectEvent: ObjectEvent, tasks: Task[]): Task[] {
     const result: Task[] = [];
     let state = objectEvent.payload.get('state');

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { ObjectEventFactory } from '../src/objectEvents/objectEventFactory';
+import { ObjectEventFactory } from '../../src/objectEvents/objectEventFactory';
 
 describe('ObjectEventFactory', () => {
   let service: ObjectEventFactory;

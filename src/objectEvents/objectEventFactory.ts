@@ -4,8 +4,6 @@ import { Task } from '../model/task';
 
 export class ObjectEventFactory {
 
-  constructor() { }
-
   public constructCreateTaskEvent(topic: string, name: string, state: string): ObjectEvent {
     const eventIdDiscardedByBackend = 0;
     const createObjectEvent: ObjectEvent = {
