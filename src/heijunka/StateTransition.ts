@@ -1,16 +1,14 @@
-import { State } from './State';
-
 export enum TransitionType {
     inProgress = 'In Progress',
     completed = 'Completed',
 }
  
 export class StateTransition {
-    readonly state : State;
+    readonly state : string;
     readonly type : TransitionType;
     readonly occurredAt : Date;
 
-    private constructor(state:State,type:TransitionType,occurredAt:Date) {
+    private constructor(state:string,type:TransitionType,occurredAt:Date) {
         if (typeof state === "undefined") {
             throw new Error('parameter state cannot be undefined.');
         }
@@ -25,11 +23,11 @@ export class StateTransition {
         this.occurredAt = occurredAt;
     }
 
-    public static completedState(state:State,occurredAt:Date) : StateTransition {
+    public static completedState(state:string,occurredAt:Date) : StateTransition {
         return new StateTransition(state,TransitionType.completed,occurredAt);
     }
 
-    public static inProgressInState(state:State,occurredAt:Date) : StateTransition {
+    public static inProgressInState(state:string,occurredAt:Date) : StateTransition {
         return new StateTransition(state,TransitionType.inProgress,occurredAt);
     }
 }

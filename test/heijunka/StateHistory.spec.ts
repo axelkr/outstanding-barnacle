@@ -2,12 +2,11 @@ import { expect } from 'chai';
 
 import { StateHistory } from '../../src/heijunka/StateHistory';
 import { StateTransition } from '../../src/heijunka/StateTransition';
-import { State } from '../../src/heijunka/State';
 
 describe('StateHistory', () => {
   it('add adds new transition', () => {
     const emptyStateHistory = StateHistory.emptyHistory();
-    const aState = new State('aState', 'aName');
+    const aState = 'aState';
     const stateTransition = StateTransition.inProgressInState(aState, new Date());
     const stateHistory = emptyStateHistory.add(stateTransition);
 
@@ -16,7 +15,7 @@ describe('StateHistory', () => {
 
   it('add doesn\'t add same transition', () => {
     const emptyStateHistory = StateHistory.emptyHistory();
-    const aState = new State('aState', 'aName');
+    const aState = 'aState';
     const stateTransition = StateTransition.inProgressInState(aState, new Date());
     const aStateHistory = emptyStateHistory.add(stateTransition)
       .add(stateTransition);
@@ -26,7 +25,7 @@ describe('StateHistory', () => {
 
   it('add sorts history transitions in descending order', () => {
     const emptyStateHistory = StateHistory.emptyHistory();
-    const aState = new State('aState', 'aName');
+    const aState = 'aState';
     const atTheStart = StateTransition.inProgressInState(aState, new Date(2020, 1, 1));
     const inTheMiddle = StateTransition.inProgressInState(aState, new Date(2020, 1, 2));
     const atTheEnd = StateTransition.inProgressInState(aState, new Date(2020, 1, 3));
