@@ -1,5 +1,8 @@
 import { State } from './State';
 
+// API of a non-linear model, i.e. a state can have multiple predecessors / successors
+// Implementation of a linear model, i.e. successor of states[n] is states[n+1].
+// Should allow for easy extension to a non-linear model
 export class StateModel {
     readonly states: State[];
     readonly name: string;
@@ -15,11 +18,48 @@ export class StateModel {
         this.states = states;
     }
 
-    public static Kanban() : StateModel {
-        const states : State[] = [];
-        states.push(new State('Backlog','Backlog'));
-        states.push(new State('Doing','Doing'));
-        states.push(new State('Done','Done'));
-        return new StateModel('Kanban',states);
+    public successors(state: State): State[] {
+        if (typeof state === "undefined") {
+            throw new Error('state cannot be undefined');
+        }
+        if (!this.hasState(state)) {
+            throw new Error('unknown state ' + state.name);
+        }
+        const result: State[] = [];
+        const index = this.states.indexOf(state);
+        if (index + 1 < this.states.length) {
+            result.push(this.states[index + 1]);
+        }
+        return result;
+    }
+
+    public predecessors(state: State): State[] {
+        if (typeof state === "undefined") {
+            throw new Error('state cannot be undefined');
+        }
+        if (!this.hasState(state)) {
+            throw new Error('unknown state ' + state.name);
+        }
+        const result: State[] = [];
+        const index = this.states.indexOf(state);
+        if (index - 1 >= 0) {
+            result.push(this.states[index - 1]);
+        }
+        return result;
+    }
+
+    public static Kanban(): StateModel {
+        const states: State[] = [];
+        states.push(new State('Backlog', 'Backlog'));
+        states.push(new State('Doing', 'Doing'));
+        states.push(new State('Done', 'Done'));
+        return new StateModel('Kanban', states);
+    }
+
+    private hasState(state: State): boolean {
+        if (typeof state === "undefined") {
+            throw new Error('state cannot be undefined');
+        }
+        return this.states.some(aState => aState.id == state.id);
     }
 }
