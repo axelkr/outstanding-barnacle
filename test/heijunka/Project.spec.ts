@@ -24,15 +24,15 @@ describe('Project', () => {
     expect(project.id).to.equal(aId);
   });
 
-  it('update keeps current value if updated happened before', () => {
+  it('rename keeps current value if updated happened before', () => {
     const id = 'aId';
     const initialValue = 'aString';
     const anotherValue = 'anotherString';
     const initialDate = new Date(2020,12,24);
     const beforeInitialDate = new Date(2019,11,23);
     const aProject = new Project(id,initialValue,initialDate);
-    const updatedProject = aProject.updateName(anotherValue,beforeInitialDate);
-    expect(updatedProject.name.value).to.equal(initialValue);
+    const renamedProject = aProject.rename(anotherValue,beforeInitialDate);
+    expect(renamedProject.name.value).to.equal(initialValue);
   });
 
   it('update keeps new value if updated happened afterwards', () => {
@@ -42,7 +42,7 @@ describe('Project', () => {
     const initialDate = new Date(2020,12,24);
     const afterInitialDate = new Date(2021,12,25);
     const aProject = new Project(id,initialValue,initialDate);
-    const updatedProject = aProject.updateName(anotherValue,afterInitialDate);
-    expect(updatedProject.name.value).to.equal(anotherValue);
+    const renamedProject = aProject.rename(anotherValue,afterInitialDate);
+    expect(renamedProject.name.value).to.equal(anotherValue);
   });
 });

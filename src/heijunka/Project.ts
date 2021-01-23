@@ -12,7 +12,7 @@ export class Project {
         this.id = id;
     }
 
-    updateName(newName: string, updatedAt: Date) : Project {
+    rename(newName: string, updatedAt: Date) : Project {
         const updatedNameProperty = this.name.update(newName,updatedAt);
         if (updatedNameProperty.value === this.name.value) {
             return this;

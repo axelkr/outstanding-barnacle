@@ -41,7 +41,7 @@ export class HeijunkaBoard {
         const newProjects : Project[] = [];
         this.projects.forEach(aProject => {
             if (aProject.id === id) {
-                const renamedProject = aProject.updateName(renameTo,renameAt);
+                const renamedProject = aProject.rename(renameTo,renameAt);
                 didRename = renamedProject.name.value !== aProject.name.value;
                 newProjects.push(renamedProject);
             } else {
