@@ -20,6 +20,7 @@ export class StateHistory {
         }
         const newTransitions = [...this.transitions];
         newTransitions.push(aNewTransition);
+        newTransitions.sort((a,b)=> a.occurredAt.valueOf() - b.occurredAt.valueOf() );
         return new StateHistory(newTransitions);
     }
 }
