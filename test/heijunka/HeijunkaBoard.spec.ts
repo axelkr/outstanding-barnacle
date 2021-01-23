@@ -121,4 +121,38 @@ describe('HeijunkaBoard', () => {
     board = board.addKanbanCard(aKanbanCard);
     expect(board.hasKanbanCard(anotherId)).to.be.false;
   });
+
+  it('renameKanbanCard: throws exception if called with undefined as id', () => {
+    expect(function () { board.renameKanbanCard(undefined, new Date(), "renameTo") }).throws();
+  });
+
+  it('renameKanbanCard: throws exception if called with undefined as date', () => {
+    expect(function () { board.renameKanbanCard('aId', undefined, 'renameTo') }).throws();
+  });
+
+  it('renameKanbanCard: throws exception if called with undefined as new name', () => {
+    expect(function () { board.renameKanbanCard('aId', new Date(), undefined) }).throws();
+  });
+
+  it('renameKanbanCard: throws exception if called with unknown id', () => {
+    const aId = 'aRandomId';
+    const anotherId = 'anotherRandomId';
+    const aKanbanCard = new KanbanCard(aId, 'aName', new Date(), 'aProjectId');
+    board = board.addKanbanCard(aKanbanCard);
+
+    expect(function () { board.renameKanbanCard(anotherId, new Date(), undefined) }).throws();
+  });
+
+  it('renameKanbanBoard: a more recent name leads to a change', () => {
+    const aId = 'aRandomId';
+    const initialName = 'initialName';
+    const newName = 'newName';
+    const initialDate = new Date(2000, 1, 1);
+    const newDate = new Date(2001, 2, 2);
+    const aKanbanCard = new KanbanCard(aId, initialName, initialDate, 'aProjectId');
+    board = board.addKanbanCard(aKanbanCard);
+    board = board.renameKanbanCard(aId, newDate, newName);
+    expect(board.kanbanCards[0].name.value).to.equal(newName);
+  });
+
 });

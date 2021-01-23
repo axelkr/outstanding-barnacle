@@ -87,4 +87,37 @@ export class HeijunkaBoard {
         }
         return this.kanbanCards.some(aKanbanCard => aKanbanCard.id === id);
     }
+
+    public renameKanbanCard(id: string, renameAt: Date, renameTo: string): HeijunkaBoard {
+        if (typeof id === "undefined") {
+            throw new Error('parameter id cannot be undefined.');
+        }
+        if (typeof renameAt === "undefined") {
+            throw new Error('parameter renameAt cannot be undefined.');
+        }
+        if (typeof renameTo === "undefined") {
+            throw new Error('parameter renameTo cannot be undefined.');
+        }
+        if (!this.hasKanbanCard(id)) {
+            throw new Error('unknown kanban card with id ' + id);
+        }
+
+        let didRename = true;
+        const newKanbanCards: KanbanCard[] = [];
+        this.kanbanCards.forEach(aKanbanCard => {
+            if (aKanbanCard.id === id) {
+                const renamedKanbanCard = aKanbanCard.rename(renameTo, renameAt);
+                didRename = renamedKanbanCard.name.value !== aKanbanCard.name.value;
+                newKanbanCards.push(renamedKanbanCard);
+            } else {
+                newKanbanCards.push(aKanbanCard);
+            }
+        })
+        if (didRename) {
+            return new HeijunkaBoard(this.projects, this.stateModel, newKanbanCards);
+        } else {
+            return this;
+        }
+    }
+
 }
