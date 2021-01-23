@@ -1,6 +1,7 @@
 import { Project } from './Project';
 import { KanbanCard } from './KanbanCard';
 import { StateModel } from './StateModel';
+import { StateTransition } from './StateTransition';
 
 export class HeijunkaBoard {
     readonly projects: Array<Project>;
@@ -121,31 +122,18 @@ export class HeijunkaBoard {
     }
 
     public completedState(aKanbanCard: string, aState: string, completedAt: Date): HeijunkaBoard {
-        if (typeof aKanbanCard === "undefined") {
-            throw new Error('parameter aKanbanCard cannot be undefined.');
-        }
-        if (typeof aState === "undefined") {
-            throw new Error('parameter aState cannot be undefined.');
-        }
-        if (typeof completedAt === "undefined") {
-            throw new Error('parameter completedAt cannot be undefined.');
-        }
-        if (!this.hasKanbanCard(aKanbanCard)) {
-            throw new Error('unknown kanban card with id ' + aKanbanCard);
-        }
-        return this;
-
+        const transition = StateTransition.completedState(aState,completedAt);
+        return this.addStateTransition(transition,aKanbanCard);
     }
 
     public inProgressInState(aKanbanCard: string, aState: string, inProgressAt: Date): HeijunkaBoard {
+        const transition = StateTransition.inProgressInState(aState,inProgressAt);
+        return this.addStateTransition(transition,aKanbanCard);
+    }
+
+    private addStateTransition(aTransition:StateTransition,aKanbanCard: string) : HeijunkaBoard {
         if (typeof aKanbanCard === "undefined") {
             throw new Error('parameter aKanbanCard cannot be undefined.');
-        }
-        if (typeof aState === "undefined") {
-            throw new Error('parameter aState cannot be undefined.');
-        }
-        if (typeof inProgressAt === "undefined") {
-            throw new Error('parameter inProgressAt cannot be undefined.');
         }
         if (!this.hasKanbanCard(aKanbanCard)) {
             throw new Error('unknown kanban card with id ' + aKanbanCard);

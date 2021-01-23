@@ -88,17 +88,17 @@ describe('HeijunkaBoard', () => {
     expect(function () { board.addKanbanCard(undefined) }).throws();
   });
 
-  it('addKanbanCard: adds new KanbanCard', () => {
+  it('addKanbanCard: adds KanbanCard.create', () => {
     const aId = 'aRandomId';
-    const aKanbanCard = new KanbanCard(aId, 'aName', new Date(), 'aProject');
+    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(), 'aProject');
     board = board.addKanbanCard(aKanbanCard);
     expect(board.kanbanCards.length).to.equal(1);
   });
 
   it('addKanbanCard: doesn\'t add KanbanCard with same id twice', () => {
     const aId = 'aRandomId';
-    const aKanbanCard = new KanbanCard(aId, 'aName', new Date(), 'aProject');
-    const sameKanbanCardId = new KanbanCard(aId, 'anotherName', new Date(), 'aProject');
+    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(), 'aProject');
+    const sameKanbanCardId = KanbanCard.create(aId, 'anotherName', new Date(), 'aProject');
     board = board.addKanbanCard(aKanbanCard);
     board = board.addKanbanCard(sameKanbanCardId);
     expect(board.kanbanCards.length).to.equal(1);
@@ -110,7 +110,7 @@ describe('HeijunkaBoard', () => {
 
   it('hasKanbanCard: true if KanbanCard with id available', () => {
     const aId = 'aRandomId';
-    const aKanbanCard = new KanbanCard(aId, 'aName', new Date(), 'aProject');
+    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(), 'aProject');
     board = board.addKanbanCard(aKanbanCard);
     expect(board.hasKanbanCard(aId)).to.be.true;
   });
@@ -118,7 +118,7 @@ describe('HeijunkaBoard', () => {
   it('hasKanbanCard: false if KanbanCard with id is not available', () => {
     const aId = 'aRandomId';
     const anotherId = 'anotherRandomId';
-    const aKanbanCard = new KanbanCard(aId, 'aName', new Date(), 'aProject');
+    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(), 'aProject');
     board = board.addKanbanCard(aKanbanCard);
     expect(board.hasKanbanCard(anotherId)).to.be.false;
   });
@@ -138,7 +138,7 @@ describe('HeijunkaBoard', () => {
   it('renameKanbanCard: throws exception if called with unknown id', () => {
     const aId = 'aRandomId';
     const anotherId = 'anotherRandomId';
-    const aKanbanCard = new KanbanCard(aId, 'aName', new Date(), 'aProjectId');
+    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(), 'aProjectId');
     board = board.addKanbanCard(aKanbanCard);
 
     expect(function () { board.renameKanbanCard(anotherId, new Date(), undefined) }).throws();
@@ -150,7 +150,7 @@ describe('HeijunkaBoard', () => {
     const newName = 'newName';
     const initialDate = new Date(2000, 1, 1);
     const newDate = new Date(2001, 2, 2);
-    const aKanbanCard = new KanbanCard(aId, initialName, initialDate, 'aProjectId');
+    const aKanbanCard = KanbanCard.create(aId, initialName, initialDate, 'aProjectId');
     board = board.addKanbanCard(aKanbanCard);
     board = board.renameKanbanCard(aId, newDate, newName);
     expect(board.kanbanCards[0].name.value).to.equal(newName);
@@ -183,7 +183,7 @@ describe('HeijunkaBoard', () => {
   it('completedState: throws exception if called with unknown kanban card id', () => {
     const aId = 'aRandomId';
     const anotherId = 'anotherRandomId';
-    const aKanbanCard = new KanbanCard(aId, 'aName', new Date(),'aProjectId');
+    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(),'aProjectId');
     board = board.addKanbanCard(aKanbanCard);
 
     expect(function () { board.completedState(anotherId, validStateId, new Date()) }).throws();
@@ -192,7 +192,7 @@ describe('HeijunkaBoard', () => {
   it('inProgressInState: throws exception if called with unknown kanban card id', () => {
     const aId = 'aRandomId';
     const anotherId = 'anotherRandomId';
-    const aKanbanCard = new KanbanCard(aId, 'aName', new Date(),'aProjectId');
+    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(),'aProjectId');
     board = board.addKanbanCard(aKanbanCard);
 
     expect(function () { board.inProgressInState(anotherId, validStateId, new Date()) }).throws();
