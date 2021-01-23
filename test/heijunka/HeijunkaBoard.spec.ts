@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 
 import { Project } from '../../src/heijunka/Project';
+import { KanbanCard } from '../../src/heijunka/KanbanCard';
 import { HeijunkaBoard } from '../../src/heijunka/HeijunkaBoard';
 
 describe('HeijunkaBoard', () => {
@@ -80,5 +81,44 @@ describe('HeijunkaBoard', () => {
     board = board.addProject(aProject);
     board = board.renameProject(aId, newDate, newName);
     expect(board.projects[0].name.value).to.equal(newName);
+  });
+
+  it('addKanbanCard: throws exception if called with undefined as KanbanCard', () => {
+    expect(function () { board.addKanbanCard(undefined) }).throws();
+  });
+
+  it('addKanbanCard: adds new KanbanCard', () => {
+    const aId = 'aRandomId';
+    const aKanbanCard = new KanbanCard(aId, 'aName', new Date(), 'aProject');
+    board = board.addKanbanCard(aKanbanCard);
+    expect(board.kanbanCards.length).to.equal(1);
+  });
+
+  it('addKanbanCard: doesn\'t add KanbanCard with same id twice', () => {
+    const aId = 'aRandomId';
+    const aKanbanCard = new KanbanCard(aId, 'aName', new Date(), 'aProject');
+    const sameKanbanCardId = new KanbanCard(aId, 'anotherName', new Date(), 'aProject');
+    board = board.addKanbanCard(aKanbanCard);
+    board = board.addKanbanCard(sameKanbanCardId);
+    expect(board.kanbanCards.length).to.equal(1);
+  });
+
+  it('hasKanbanCard: throws exception if called with undefined as id', () => {
+    expect(function () { board.hasKanbanCard(undefined) }).throws();
+  });
+
+  it('hasKanbanCard: true if KanbanCard with id available', () => {
+    const aId = 'aRandomId';
+    const aKanbanCard = new KanbanCard(aId, 'aName', new Date(), 'aProject');
+    board = board.addKanbanCard(aKanbanCard);
+    expect(board.hasKanbanCard(aId)).to.be.true;
+  });
+
+  it('hasKanbanCard: false if KanbanCard with id is not available', () => {
+    const aId = 'aRandomId';
+    const anotherId = 'anotherRandomId';
+    const aKanbanCard = new KanbanCard(aId, 'aName', new Date(), 'aProject');
+    board = board.addKanbanCard(aKanbanCard);
+    expect(board.hasKanbanCard(anotherId)).to.be.false;
   });
 });
