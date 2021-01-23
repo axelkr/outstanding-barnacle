@@ -16,7 +16,7 @@
     "/dist/**/*.d.ts"
   ],
   "scripts": {
-    "build": "rollup -c rollup.config.js",
+    "build": "tsc && rollup -c rollup.config.js",
     "test": "ts-node -O '{\"lib\":[\"ESNext\"]}' --skip-project -s ./node_modules/jasmine-xml-reporter/bin/jasmine --config=jasmine.json",
     "testCLI": "ts-node -O '{\"lib\":[\"ESNext\"]}' --skip-project -s ./node_modules/jasmine-xml-reporter/bin/jasmine --config=jasmine.json --junitreport",
     "lint": "eslint src/ --ext .ts"
