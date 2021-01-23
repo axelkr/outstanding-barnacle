@@ -6,6 +6,7 @@ import { HeijunkaBoard } from '../../src/heijunka/HeijunkaBoard';
 
 describe('HeijunkaBoard', () => {
   let board: HeijunkaBoard;
+  const validStateId = 'Backlog'; // hardcoded at the moment
 
   beforeEach(() => {
     board = HeijunkaBoard.createEmptyHeijunkaBoard();
@@ -156,7 +157,7 @@ describe('HeijunkaBoard', () => {
   });
 
   it('completedState: throws exception if called with undefined as kanban card id', () => {
-    expect(function () { board.completedState(undefined, 'aStateId', new Date()) }).throws();
+    expect(function () { board.completedState(undefined, validStateId, new Date()) }).throws();
   });
 
   it('completedState: throws exception if called with undefined as state id', () => {
@@ -164,11 +165,11 @@ describe('HeijunkaBoard', () => {
   });
 
   it('completedState: throws exception if called with undefined as date', () => {
-    expect(function () { board.completedState('aId', 'aStateId', undefined) }).throws();
+    expect(function () { board.completedState('aId', validStateId, undefined) }).throws();
   });
 
   it('inProgressInState: throws exception if called with undefined as kanban card id', () => {
-    expect(function () { board.inProgressInState(undefined, 'aStateId', new Date()) }).throws();
+    expect(function () { board.inProgressInState(undefined, validStateId, new Date()) }).throws();
   });
 
   it('inProgressInState: throws exception if called with undefined as state id', () => {
@@ -176,6 +177,24 @@ describe('HeijunkaBoard', () => {
   });
 
   it('inProgressInState: throws exception if called with undefined as date', () => {
-    expect(function () { board.inProgressInState('aId', 'aStateId', undefined) }).throws();
+    expect(function () { board.inProgressInState('aId', validStateId, undefined) }).throws();
+  });
+
+  it('completedState: throws exception if called with unknown kanban card id', () => {
+    const aId = 'aRandomId';
+    const anotherId = 'anotherRandomId';
+    const aKanbanCard = new KanbanCard(aId, 'aName', new Date(),'aProjectId');
+    board = board.addKanbanCard(aKanbanCard);
+
+    expect(function () { board.completedState(anotherId, validStateId, new Date()) }).throws();
+  });
+
+  it('inProgressInState: throws exception if called with unknown kanban card id', () => {
+    const aId = 'aRandomId';
+    const anotherId = 'anotherRandomId';
+    const aKanbanCard = new KanbanCard(aId, 'aName', new Date(),'aProjectId');
+    board = board.addKanbanCard(aKanbanCard);
+
+    expect(function () { board.inProgressInState(anotherId, validStateId, new Date()) }).throws();
   });
 });

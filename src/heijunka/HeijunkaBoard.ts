@@ -130,6 +130,9 @@ export class HeijunkaBoard {
         if (typeof completedAt === "undefined") {
             throw new Error('parameter completedAt cannot be undefined.');
         }
+        if (!this.hasKanbanCard(aKanbanCard)) {
+            throw new Error('unknown kanban card with id ' + aKanbanCard);
+        }
         return this;
 
     }
@@ -143,6 +146,9 @@ export class HeijunkaBoard {
         }
         if (typeof inProgressAt === "undefined") {
             throw new Error('parameter inProgressAt cannot be undefined.');
+        }
+        if (!this.hasKanbanCard(aKanbanCard)) {
+            throw new Error('unknown kanban card with id ' + aKanbanCard);
         }
         return this;
     }
