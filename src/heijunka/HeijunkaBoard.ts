@@ -120,4 +120,30 @@ export class HeijunkaBoard {
         }
     }
 
+    public completedState(aKanbanCard: string, aState: string, completedAt: Date): HeijunkaBoard {
+        if (typeof aKanbanCard === "undefined") {
+            throw new Error('parameter aKanbanCard cannot be undefined.');
+        }
+        if (typeof aState === "undefined") {
+            throw new Error('parameter aState cannot be undefined.');
+        }
+        if (typeof completedAt === "undefined") {
+            throw new Error('parameter completedAt cannot be undefined.');
+        }
+        return this;
+
+    }
+
+    public inProgressInState(aKanbanCard: string, aState: string, inProgressAt: Date): HeijunkaBoard {
+        if (typeof aKanbanCard === "undefined") {
+            throw new Error('parameter aKanbanCard cannot be undefined.');
+        }
+        if (typeof aState === "undefined") {
+            throw new Error('parameter aState cannot be undefined.');
+        }
+        if (typeof inProgressAt === "undefined") {
+            throw new Error('parameter inProgressAt cannot be undefined.');
+        }
+        return this;
+    }
 }

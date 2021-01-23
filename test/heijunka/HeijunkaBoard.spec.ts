@@ -155,4 +155,27 @@ describe('HeijunkaBoard', () => {
     expect(board.kanbanCards[0].name.value).to.equal(newName);
   });
 
+  it('completedState: throws exception if called with undefined as kanban card id', () => {
+    expect(function () { board.completedState(undefined, 'aStateId', new Date()) }).throws();
+  });
+
+  it('completedState: throws exception if called with undefined as state id', () => {
+    expect(function () { board.completedState('aId', undefined, new Date()) }).throws();
+  });
+
+  it('completedState: throws exception if called with undefined as date', () => {
+    expect(function () { board.completedState('aId', 'aStateId', undefined) }).throws();
+  });
+
+  it('inProgressInState: throws exception if called with undefined as kanban card id', () => {
+    expect(function () { board.inProgressInState(undefined, 'aStateId', new Date()) }).throws();
+  });
+
+  it('inProgressInState: throws exception if called with undefined as state id', () => {
+    expect(function () { board.inProgressInState('aId', undefined, new Date()) }).throws();
+  });
+
+  it('inProgressInState: throws exception if called with undefined as date', () => {
+    expect(function () { board.inProgressInState('aId', 'aStateId', undefined) }).throws();
+  });
 });
