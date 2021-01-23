@@ -1,2 +1,3 @@
 # v1.0.0 
-- Base setup
+- Define domain model for a heijunka board
+- base setup
