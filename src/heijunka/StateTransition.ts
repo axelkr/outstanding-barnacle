@@ -20,6 +20,9 @@ export class StateTransition {
         if (typeof occurredAt === "undefined") {
             throw new Error('parameter occurredAt cannot be undefined.');
         }
+        this.state = state;
+        this.type = type;
+        this.occurredAt = occurredAt;
     }
 
     public static completedState(state:State,occurredAt:Date) : StateTransition {
