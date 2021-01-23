@@ -6,8 +6,12 @@ import { ProcessObjectEventCommand } from './processObjectEventCommand';
 export class CreateProjectCommand implements ProcessObjectEventCommand {
   readonly objectEventTypeProcessing: string = 'CreateProject';
 
+  canProcess(): boolean {
+    return true;
+  }
+
   process(objectEvent: ObjectEvent, board: HeijunkaBoard): HeijunkaBoard {
-    return board.addProject(new Project(objectEvent.object,objectEvent.payload.get('name'),objectEvent.time));
+    return board.addProject(new Project(objectEvent.object, objectEvent.payload.get('name'), objectEvent.time));
   }
 
   createEvent(topic: string, projectName: string, newUUID: string): ObjectEvent {

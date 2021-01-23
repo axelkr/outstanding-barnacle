@@ -7,8 +7,12 @@ import { ProcessObjectEventCommand } from './processObjectEventCommand';
 export class RenameProjectCommand implements ProcessObjectEventCommand {
   readonly objectEventTypeProcessing: string = 'RenameProject';
 
+  canProcess(objectEvent: ObjectEvent, board: HeijunkaBoard): boolean {
+    return board.hasProject(objectEvent.object);
+  }
+
   process(objectEvent: ObjectEvent, board: HeijunkaBoard): HeijunkaBoard {
-    return board.renameProject(objectEvent.object,objectEvent.time,objectEvent.payload.get('name'));
+    return board.renameProject(objectEvent.object, objectEvent.time, objectEvent.payload.get('name'));
   }
 
   createEvent(topic: string, project: Project, newName: string): ObjectEvent {
