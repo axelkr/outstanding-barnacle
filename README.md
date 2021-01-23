@@ -1,5 +1,7 @@
 # outstanding-barnacle aka domain model for a Heijunka board
 
+You can either use the model as it is, or use the objectEvent parts to generate and process events for modifying the model. The latter also serve as message to be sent to other apps, which can then keep their model in sync with yours. 
+
 ## Model
 Consists of state model, projects and kanban cards. Together, they form a Heijunka board. The model is immutable. Hence, any modification leaves the original board untouched and returns a modified model.
 
@@ -21,3 +23,5 @@ Right now, the kanban card only consists of a name. Each kanban card is always a
 The model is constructed and updated by events. As events may arrive out-of-order, each modification of the model requires the date when it happened. This enables the model to process events in the correct order.
 
 As a consequence, any linked objects may not be present. For example, the project referenced by a kanban card is not yet available. Hence, the model does not validate whether referenced objects exist. However, the model rejects any modification, if the object is not yet present. This way, no events are lost.
+
+Type objectEventFactory lets you generate events for the various model modifications. Type objectEventCommandProcessor can process those events and takes care of sending events to the model when it no longer rejects them. Moreover, it stores the model for later usage.

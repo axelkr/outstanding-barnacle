@@ -8,7 +8,7 @@ export class ObjectEventFactory {
       topic,
       time: new Date(),
       id: eventIdDiscardedByBackend,
-      eventType: 'CreateTask',
+      eventType: 'CreateKanbanCardEvent',
       object: this.createUUID(),
       objectType: 'Task',
       payload: new Map([['name', name], ['state', state]])
