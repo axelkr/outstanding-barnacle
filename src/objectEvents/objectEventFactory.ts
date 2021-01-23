@@ -1,19 +1,18 @@
+import { Project } from '../heijunka/Project';
+import { CreateProjectCommand } from './CreateProjectCommand';
+import { RenameProjectCommand } from './RenameProjectCommand';
 import { ObjectEvent } from './objectEvent';
 
 export class ObjectEventFactory {
 
-  public constructCreateKanbanEvent(topic: string, name: string, state: string): ObjectEvent {
-    const eventIdDiscardedByBackend = 0;
-    const createObjectEvent: ObjectEvent = {
-      topic,
-      time: new Date(),
-      id: eventIdDiscardedByBackend,
-      eventType: 'CreateKanbanCardEvent',
-      object: this.createUUID(),
-      objectType: 'Task',
-      payload: new Map([['name', name], ['state', state]])
-    };
-    return createObjectEvent;
+  public createProject(topic: string, projectName: string): ObjectEvent {
+    const createProjectCommand = new CreateProjectCommand();
+    return createProjectCommand.createEvent(topic,projectName,this.createUUID());
+  }
+
+  public renameProject(topic: string, project: Project, newName: string): ObjectEvent {
+    const renameProjectCommand = new RenameProjectCommand();
+    return renameProjectCommand.createEvent(topic,project,newName);
   }
 
   private createUUID(): string {
