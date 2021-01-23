@@ -90,54 +90,49 @@ export class HeijunkaBoard {
     }
 
     public renameKanbanCard(id: string, renameAt: Date, renameTo: string): HeijunkaBoard {
+        const renameCard = (aCard: KanbanCard) => aCard.rename(renameTo, renameAt);
+        const differentName = (aCard: KanbanCard, anotherCard: KanbanCard) => aCard.name.value !== anotherCard.name.value;
+        return this.replaceKanbanCard(id, renameCard, differentName);
+    }
+
+    public completedState(aKanbanCard: string, aState: string, completedAt: Date): HeijunkaBoard {
+        const transition = StateTransition.completedState(aState, completedAt);
+        return this.addStateTransition(transition, aKanbanCard);
+    }
+
+    public inProgressInState(aKanbanCard: string, aState: string, inProgressAt: Date): HeijunkaBoard {
+        const transition = StateTransition.inProgressInState(aState, inProgressAt);
+        return this.addStateTransition(transition, aKanbanCard);
+    }
+
+    private addStateTransition(aTransition: StateTransition, aKanbanCard: string): HeijunkaBoard {
+        const addTransition = (aCard: KanbanCard) => aCard.transitToNewState(aTransition);
+        const differentEntriesInHistory = (aCard: KanbanCard, anotherCard: KanbanCard) => aCard.history.transitions.length !== anotherCard.history.transitions.length;
+        return this.replaceKanbanCard(aKanbanCard, addTransition, differentEntriesInHistory);
+    }
+
+    private replaceKanbanCard(id: string, replaceKanbanCard: { (aCard: KanbanCard): KanbanCard }, hasModified: { (before: KanbanCard, after: KanbanCard): boolean }): HeijunkaBoard {
         if (typeof id === "undefined") {
             throw new Error('parameter id cannot be undefined.');
-        }
-        if (typeof renameAt === "undefined") {
-            throw new Error('parameter renameAt cannot be undefined.');
-        }
-        if (typeof renameTo === "undefined") {
-            throw new Error('parameter renameTo cannot be undefined.');
         }
         if (!this.hasKanbanCard(id)) {
             throw new Error('unknown kanban card with id ' + id);
         }
-
-        let didRename = true;
+        let didModify = true;
         const newKanbanCards: KanbanCard[] = [];
         this.kanbanCards.forEach(aKanbanCard => {
             if (aKanbanCard.id === id) {
-                const renamedKanbanCard = aKanbanCard.rename(renameTo, renameAt);
-                didRename = renamedKanbanCard.name.value !== aKanbanCard.name.value;
-                newKanbanCards.push(renamedKanbanCard);
+                const replacedKanbanCard = replaceKanbanCard(aKanbanCard);
+                didModify = hasModified(aKanbanCard, replacedKanbanCard);
+                newKanbanCards.push(replacedKanbanCard);
             } else {
                 newKanbanCards.push(aKanbanCard);
             }
         })
-        if (didRename) {
+        if (didModify) {
             return new HeijunkaBoard(this.projects, this.stateModel, newKanbanCards);
         } else {
             return this;
         }
-    }
-
-    public completedState(aKanbanCard: string, aState: string, completedAt: Date): HeijunkaBoard {
-        const transition = StateTransition.completedState(aState,completedAt);
-        return this.addStateTransition(transition,aKanbanCard);
-    }
-
-    public inProgressInState(aKanbanCard: string, aState: string, inProgressAt: Date): HeijunkaBoard {
-        const transition = StateTransition.inProgressInState(aState,inProgressAt);
-        return this.addStateTransition(transition,aKanbanCard);
-    }
-
-    private addStateTransition(aTransition:StateTransition,aKanbanCard: string) : HeijunkaBoard {
-        if (typeof aKanbanCard === "undefined") {
-            throw new Error('parameter aKanbanCard cannot be undefined.');
-        }
-        if (!this.hasKanbanCard(aKanbanCard)) {
-            throw new Error('unknown kanban card with id ' + aKanbanCard);
-        }
-        return this;
     }
 }
