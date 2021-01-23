@@ -1,14 +1,17 @@
 import { Project } from './Project';
+import { StateModel } from './StateModel';
 
 export class HeijunkaBoard {
     readonly projects: Array<Project>;
+    readonly stateModel: StateModel;
 
     static createEmptyHeijunkaBoard(): HeijunkaBoard {
-        return new HeijunkaBoard([]);
+        return new HeijunkaBoard([],StateModel.Kanban());
     }
 
-    private constructor(projects: Array<Project>) {
+    private constructor(projects: Array<Project>, stateModel: StateModel) {
         this.projects = projects;
+        this.stateModel = stateModel;
     }
 
     public addProject(aProject: Project): HeijunkaBoard {
@@ -20,7 +23,7 @@ export class HeijunkaBoard {
         }
         const newProjects = [...this.projects];
         newProjects.push(aProject);
-        return new HeijunkaBoard(newProjects);
+        return new HeijunkaBoard(newProjects, this.stateModel);
     }
 
     public renameProject(id: string, renameAt: Date, renameTo: string): HeijunkaBoard {
@@ -49,7 +52,7 @@ export class HeijunkaBoard {
             }
         })
         if (didRename) {
-            return new HeijunkaBoard(newProjects);
+            return new HeijunkaBoard(newProjects, this.stateModel);
         } else {
             return this;
         }
