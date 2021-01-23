@@ -1,10 +1,8 @@
 import { ObjectEvent } from './objectEvent';
 
-import { Task } from '../model/task';
-
 export class ObjectEventFactory {
 
-  public constructCreateTaskEvent(topic: string, name: string, state: string): ObjectEvent {
+  public constructCreateKanbanEvent(topic: string, name: string, state: string): ObjectEvent {
     const eventIdDiscardedByBackend = 0;
     const createObjectEvent: ObjectEvent = {
       topic,
@@ -16,20 +14,6 @@ export class ObjectEventFactory {
       payload: new Map([['name', name], ['state', state]])
     };
     return createObjectEvent;
-  }
-
-  public constructUpdateStateEvent(topic: string,task: Task, newState: string): ObjectEvent {
-    const eventIdDiscardedByBackend = 0;
-    const updateStateEvent: ObjectEvent = {
-      topic,
-      time: new Date(),
-      id: eventIdDiscardedByBackend,
-      eventType: 'UpdateTaskState',
-      object: task.id,
-      objectType: 'Task',
-      payload: new Map([['state', newState]])
-    };
-    return updateStateEvent;
   }
 
   private createUUID(): string {
