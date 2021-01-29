@@ -3,6 +3,9 @@ import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
 import { CreateProjectCommand } from './CreateProjectCommand';
 import { RenameProjectCommand } from './RenameProjectCommand';
+import { CreateKanbanCardCommand } from './CreateKanbanCardCommand';
+import { MoveKanbanCardInProgressCommand } from './MoveKanbanCardInProgressCommand';
+import { KanbanCardCompletedStateCommand } from './KanbanCardCompletedStateCommand';
 
 export class ObjectEventCommandProcessor {
   private currentBoard: HeijunkaBoard;
@@ -15,6 +18,9 @@ export class ObjectEventCommandProcessor {
     const availableCommands: ProcessObjectEventCommand[] = [];
     availableCommands.push(new CreateProjectCommand());
     availableCommands.push(new RenameProjectCommand());
+    availableCommands.push(new CreateKanbanCardCommand());  
+    availableCommands.push(new MoveKanbanCardInProgressCommand());
+    availableCommands.push(new KanbanCardCompletedStateCommand());  
 
     availableCommands.forEach(aCommand => this.commands.set(aCommand.objectEventTypeProcessing, aCommand));
   }
