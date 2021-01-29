@@ -48,6 +48,14 @@ export class StateModel {
         return result;
     }
 
+    public getState(id: string): State {
+        const aState = this.states.find(aState => aState.id == id);
+        if (typeof aState === "undefined") {
+            throw new Error('unknown state with id ' + id);
+        }
+        return aState;
+    }
+
     public initialState(): State {
         return this.states[0];
     }
