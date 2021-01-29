@@ -2,7 +2,7 @@ import { Project } from './Project';
 import { KanbanCard } from './KanbanCard';
 import { StateModel } from './StateModel';
 import { State } from './State';
-import { StateTransition } from './StateTransition';
+import { StateTransition, TransitionType } from './StateTransition';
 
 export class HeijunkaBoard {
     readonly projects: Array<Project>;
@@ -137,15 +137,18 @@ export class HeijunkaBoard {
         }
     }
 
-    public findKanbanCards(options?: { project?: Project, state?: State }): KanbanCard[] {
+    public findKanbanCards(options?: { project?: Project, states?: State[], transitionType?: TransitionType }): KanbanCard[] {
         let kanbanCards: KanbanCard[] = [...this.kanbanCards];
 
         if (typeof options !== 'undefined') {
             if (typeof options.project !== 'undefined') {
                 kanbanCards = kanbanCards.filter(aCard => aCard.project === options.project.id)
             }
-            if (typeof options.state !== 'undefined') {
-                kanbanCards = kanbanCards.filter(aCard => aCard.history.currentState() === options.state.id);
+            if (typeof options.states !== 'undefined') {
+                kanbanCards = kanbanCards.filter(aCard => { const aCardState = aCard.history.currentStateTransition().state; return options.states.some(anOption => aCardState === anOption.id) });
+            }
+            if (typeof options.transitionType !== 'undefined') {
+                kanbanCards = kanbanCards.filter(aCard => options.transitionType == aCard.history.currentStateTransition().type);
             }
         }
 
