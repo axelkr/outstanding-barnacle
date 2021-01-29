@@ -48,6 +48,10 @@ export class StateModel {
         return result;
     }
 
+    public initialState(): State {
+        return this.states[0];
+    }
+
     public static Kanban(): StateModel {
         const states: State[] = [];
         states.push(new State('Backlog', 'Backlog'));

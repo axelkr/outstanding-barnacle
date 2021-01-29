@@ -1,6 +1,7 @@
 import { Project } from './Project';
 import { KanbanCard } from './KanbanCard';
 import { StateModel } from './StateModel';
+import { State } from './State';
 import { StateTransition } from './StateTransition';
 
 export class HeijunkaBoard {
@@ -133,6 +134,41 @@ export class HeijunkaBoard {
             return new HeijunkaBoard(this.projects, this.stateModel, newKanbanCards);
         } else {
             return this;
+        }
+    }
+
+    public findKanbanCards(options?: { project?: Project, state?: State }): KanbanCard[] {
+        let kanbanCards: KanbanCard[] = [...this.kanbanCards];
+
+        if (typeof options !== 'undefined') {
+            if (typeof options.project !== 'undefined') {
+                kanbanCards = kanbanCards.filter(aCard => aCard.project === options.project.id)
+            }
+            if (typeof options.state !== 'undefined') {
+                kanbanCards = kanbanCards.filter(aCard => aCard.history.currentState() === options.state.id);
+            }
+        }
+
+        return kanbanCards;
+    }
+
+    public getKanbanCard(id: string): KanbanCard {
+        const aCard = this.kanbanCards.find(aKanbanCard => aKanbanCard.id === id);
+
+        if (aCard === undefined) {
+            throw new Error('no kanban card available with id ' + id);
+        } else {
+            return aCard;
+        }
+    }
+
+    public getProject(id: string): Project {
+        const aProject = this.projects.find(project => project.id === id);
+
+        if (aProject === undefined) {
+            throw new Error('no project available with id ' + id);
+        } else {
+            return aProject;
         }
     }
 }
