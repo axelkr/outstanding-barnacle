@@ -26,7 +26,11 @@ export class ObjectEventCommandProcessor {
   }
 
   process(objectEvent: ObjectEvent): HeijunkaBoard {
+    if (! this.commands.has(objectEvent.eventType)) {
+      return;
+    }
     const aCommand = this.commands.get(objectEvent.eventType);
+
     if (aCommand.canProcess(objectEvent, this.currentBoard)) {
       this.currentBoard = aCommand.process(objectEvent, this.currentBoard);
       this.processFurtherEvents();
