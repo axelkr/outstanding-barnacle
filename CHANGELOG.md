@@ -1,3 +1,7 @@
+# v2.0.0
+- breaking change: filter by states instead of single status only. 
+- filter based on transition type (in progress vs. completed) available as well
+
 # v1.3.0
 - find state based on id as well
 
