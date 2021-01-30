@@ -1,3 +1,6 @@
+# v2.0.3
+- fix: transfer object type as well
+
 # v2.0.2
 - simplify command implementation
 

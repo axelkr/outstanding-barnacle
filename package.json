@@ -1,6 +1,6 @@
 {
   "name": "outstanding-barnacle",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Task model, which is modified through events only.",
   "keywords": [],
   "author": "Axel",

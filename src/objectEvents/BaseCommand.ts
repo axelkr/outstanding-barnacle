@@ -11,6 +11,7 @@ export class BaseCommand {
 
   constructor(objectType: ObjectType, commandName:string) {
     this.objectEventTypeProcessing = objectType + commandName;
+    this.objectType = objectType;
   }
   
   protected createObjectEvent(topic:string,object:string,payload:Map<string,string>): ObjectEvent {
