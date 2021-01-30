@@ -1,3 +1,6 @@
+# v2.0.2
+- simplify command implementation
+
 # v2.0.1
 - fix: currentTransition returns latest (as expected) and no longer the earliest transition
 

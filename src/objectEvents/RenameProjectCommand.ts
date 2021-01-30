@@ -3,9 +3,12 @@ import { Project } from '../heijunka/Project';
 
 import { ObjectEvent } from './objectEvent';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
+import { BaseCommand, ObjectType } from './BaseCommand';
 
-export class RenameProjectCommand implements ProcessObjectEventCommand {
-  readonly objectEventTypeProcessing: string = 'RenameProject';
+export class RenameProjectCommand extends BaseCommand implements ProcessObjectEventCommand {
+  constructor() {
+    super(ObjectType.project, 'Rename');
+  }
 
   canProcess(objectEvent: ObjectEvent, board: HeijunkaBoard): boolean {
     return board.hasProject(objectEvent.object);
@@ -16,16 +19,7 @@ export class RenameProjectCommand implements ProcessObjectEventCommand {
   }
 
   createEvent(topic: string, project: Project, newName: string): ObjectEvent {
-    const eventIdDiscardedByBackend = 0;
-    const createProjectEvent: ObjectEvent = {
-      topic,
-      time: new Date(),
-      id: eventIdDiscardedByBackend,
-      eventType: this.objectEventTypeProcessing,
-      object: project.id,
-      objectType: 'Project',
-      payload: new Map([['name', newName]])
-    };
-    return createProjectEvent;
+    const payload = new Map([['name', newName]]);
+    return this.createObjectEvent(topic, project.id, payload);
   }
 }

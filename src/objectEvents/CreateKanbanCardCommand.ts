@@ -2,9 +2,12 @@ import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { ObjectEvent } from './objectEvent';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
 import { KanbanCard } from '../heijunka/KanbanCard';
+import { BaseCommand, ObjectType } from './BaseCommand';
 
-export class CreateKanbanCardCommand implements ProcessObjectEventCommand {
-  readonly objectEventTypeProcessing: string = 'CreateKanbanCard';
+export class CreateKanbanCardCommand extends BaseCommand implements ProcessObjectEventCommand {
+  constructor() {
+    super(ObjectType.kanbanCard, 'Create');
+  }
 
   canProcess(): boolean {
     return true;
@@ -16,16 +19,7 @@ export class CreateKanbanCardCommand implements ProcessObjectEventCommand {
   }
 
   createEvent(topic: string, project: string, name: string, newUUID: string): ObjectEvent {
-    const eventIdDiscardedByBackend = 0;
-    const createKanbanCardEvent: ObjectEvent = {
-      topic,
-      time: new Date(),
-      id: eventIdDiscardedByBackend,
-      eventType: this.objectEventTypeProcessing,
-      object: newUUID,
-      objectType: 'KanbanCard',
-      payload: new Map([['name', name], ['project', project]])
-    };
-    return createKanbanCardEvent;
+    const payload = new Map([['name', name], ['project', project]]);
+    return this.createObjectEvent(topic, newUUID, payload);
   }
 }
