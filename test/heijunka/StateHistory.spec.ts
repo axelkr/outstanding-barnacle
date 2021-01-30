@@ -23,7 +23,7 @@ describe('StateHistory', () => {
     expect(aStateHistory.transitions.length).to.equal(1);
   });
 
-  it('add sorts history transitions in descending order', () => {
+  it('add sorts history transitions in ascending order', () => {
     const emptyStateHistory = StateHistory.emptyHistory();
     const aState = 'aState';
     const atTheStart = StateTransition.inProgressInState(aState, new Date(2020, 1, 1));
@@ -37,5 +37,16 @@ describe('StateHistory', () => {
     expect(aStateHistory.transitions[0].occurredAt).to.equal(atTheStart.occurredAt);
     expect(aStateHistory.transitions[1].occurredAt).to.equal(inTheMiddle.occurredAt);
     expect(aStateHistory.transitions[2].occurredAt).to.equal(atTheEnd.occurredAt);
+  });
+
+  it('currentTransition returns latest', () => {
+    const emptyStateHistory = StateHistory.emptyHistory();
+    const aState = 'aState';
+    const atTheStart = StateTransition.inProgressInState(aState, new Date(2020, 1, 1));
+    const atTheEnd = StateTransition.inProgressInState(aState, new Date(2020, 1, 3));
+    const aStateHistory = emptyStateHistory
+      .add(atTheStart)
+      .add(atTheEnd);
+    expect(aStateHistory.currentStateTransition().occurredAt).to.equal(atTheEnd.occurredAt);
   });
 });

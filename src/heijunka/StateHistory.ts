@@ -28,7 +28,7 @@ export class StateHistory {
         if (this.transitions.length === 0) {
             throw new Error('not attached to a state at the moment.');
         } else {
-            return this.transitions[0];
+            return this.transitions[this.transitions.length-1];
         }
     }
 }
