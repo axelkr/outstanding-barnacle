@@ -10,7 +10,7 @@ export class HeijunkaBoard {
     readonly stateModel: StateModel;
 
     static createEmptyHeijunkaBoard(): HeijunkaBoard {
-        return new HeijunkaBoard([], StateModel.PersonalKanban(), []);
+        return new HeijunkaBoard([], undefined, []);
     }
 
     private constructor(projects: Array<Project>, stateModel: StateModel, kanbanCards: Array<KanbanCard>) {
@@ -173,5 +173,9 @@ export class HeijunkaBoard {
         } else {
             return aProject;
         }
+    }
+
+    public setStateModel(aStateModel:StateModel): HeijunkaBoard {
+        return new HeijunkaBoard(this.projects,aStateModel,this.kanbanCards);
     }
 }
