@@ -60,12 +60,12 @@ export class StateModel {
         return this.states[0];
     }
 
-    public static Kanban(): StateModel {
+    public static PersonalKanban(): StateModel {
         const states: State[] = [];
         states.push(new State('Backlog', 'Backlog'));
         states.push(new State('Doing', 'Doing'));
         states.push(new State('Done', 'Done'));
-        return new StateModel('Kanban', states);
+        return new StateModel('PersonalKanban', states);
     }
 
     private hasState(state: State): boolean {
