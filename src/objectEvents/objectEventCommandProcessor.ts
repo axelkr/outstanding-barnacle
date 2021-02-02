@@ -7,6 +7,7 @@ import { CreateKanbanCardCommand } from './CreateKanbanCardCommand';
 import { MoveKanbanCardInProgressCommand } from './MoveKanbanCardInProgressCommand';
 import { KanbanCardCompletedStateCommand } from './KanbanCardCompletedStateCommand';
 import { StateModel } from '../heijunka/StateModel';
+import { State } from '../heijunka/State';
 
 export class ObjectEventCommandProcessor {
   private currentBoard: HeijunkaBoard;
@@ -14,7 +15,7 @@ export class ObjectEventCommandProcessor {
   private stillToProcess: ObjectEvent[] = [];
 
   constructor() {
-    this.currentBoard = HeijunkaBoard.createEmptyHeijunkaBoard().setStateModel(StateModel.PersonalKanban());
+    this.currentBoard = HeijunkaBoard.createEmptyHeijunkaBoard().setStateModel(this.PersonalKanban());
 
     const availableCommands: ProcessObjectEventCommand[] = [];
     availableCommands.push(new CreateProjectCommand());
@@ -57,4 +58,12 @@ export class ObjectEventCommandProcessor {
       }
     }
   }
+
+  private PersonalKanban(): StateModel {
+    const states: State[] = [];
+    states.push(new State('Backlog', 'Backlog'));
+    states.push(new State('Doing', 'Doing'));
+    states.push(new State('Done', 'Done'));
+    return new StateModel('PersonalKanban', states);
+}
 }

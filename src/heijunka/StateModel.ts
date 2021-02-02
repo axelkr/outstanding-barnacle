@@ -60,14 +60,6 @@ export class StateModel {
         return this.states[0];
     }
 
-    public static PersonalKanban(): StateModel {
-        const states: State[] = [];
-        states.push(new State('Backlog', 'Backlog'));
-        states.push(new State('Doing', 'Doing'));
-        states.push(new State('Done', 'Done'));
-        return new StateModel('PersonalKanban', states);
-    }
-
     private hasState(state: State): boolean {
         if (typeof state === "undefined") {
             throw new Error('state cannot be undefined');
