@@ -3,6 +3,7 @@ import { ObjectEvent } from './objectEvent';
 export enum ObjectType {
   project = 'Project',
   kanbanCard = 'KanbanCard',
+  stateModel = 'StateModel'
 }
 
 export class BaseCommand {
