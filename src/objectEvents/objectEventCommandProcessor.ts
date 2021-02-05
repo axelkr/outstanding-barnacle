@@ -6,6 +6,8 @@ import { RenameProjectCommand } from './RenameProjectCommand';
 import { CreateKanbanCardCommand } from './CreateKanbanCardCommand';
 import { MoveKanbanCardInProgressCommand } from './MoveKanbanCardInProgressCommand';
 import { KanbanCardCompletedStateCommand } from './KanbanCardCompletedStateCommand';
+import { RenameKanbanCardCommand } from './RenameKanbanCardCommand';
+
 import { StateModel } from '../heijunka/StateModel';
 import { State } from '../heijunka/State';
 
@@ -20,15 +22,16 @@ export class ObjectEventCommandProcessor {
     const availableCommands: ProcessObjectEventCommand[] = [];
     availableCommands.push(new CreateProjectCommand());
     availableCommands.push(new RenameProjectCommand());
-    availableCommands.push(new CreateKanbanCardCommand());  
+    availableCommands.push(new CreateKanbanCardCommand());
     availableCommands.push(new MoveKanbanCardInProgressCommand());
-    availableCommands.push(new KanbanCardCompletedStateCommand());  
+    availableCommands.push(new KanbanCardCompletedStateCommand());
+    availableCommands.push(new RenameKanbanCardCommand());
 
     availableCommands.forEach(aCommand => this.commands.set(aCommand.objectEventTypeProcessing, aCommand));
   }
 
   process(objectEvent: ObjectEvent): HeijunkaBoard {
-    if (! this.commands.has(objectEvent.eventType)) {
+    if (!this.commands.has(objectEvent.eventType)) {
       return;
     }
     const aCommand = this.commands.get(objectEvent.eventType);
@@ -65,5 +68,5 @@ export class ObjectEventCommandProcessor {
     states.push(new State('Doing', 'Doing'));
     states.push(new State('Done', 'Done'));
     return new StateModel('PersonalKanban', states);
-}
+  }
 }

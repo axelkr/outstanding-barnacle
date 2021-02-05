@@ -6,6 +6,7 @@ import { RenameProjectCommand } from './RenameProjectCommand';
 import { CreateKanbanCardCommand } from './CreateKanbanCardCommand';
 import { MoveKanbanCardInProgressCommand } from './MoveKanbanCardInProgressCommand';
 import { KanbanCardCompletedStateCommand } from './KanbanCardCompletedStateCommand';
+import { RenameKanbanCardCommand } from './RenameKanbanCardCommand';
 
 import { ObjectEvent } from './objectEvent';
 
@@ -24,6 +25,11 @@ export class ObjectEventFactory {
   public createKanbanCard(topic: string, project: Project, name: string): ObjectEvent {
     const createKanbanCardCommand = new CreateKanbanCardCommand();
     return createKanbanCardCommand.createEvent(topic, project.id, name, this.createUUID());
+  }
+
+  public renameKanbanCard(topic: string, kanbanCard: KanbanCard, newName: string): ObjectEvent {
+    const renameKanbanCardCommand = new RenameKanbanCardCommand();
+    return renameKanbanCardCommand.createEvent(topic, kanbanCard, newName);
   }
 
   public moveKanbanCardInProgress(topic: string, kanbanCard: KanbanCard, state: State): ObjectEvent {
