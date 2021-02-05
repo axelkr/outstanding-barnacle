@@ -1,3 +1,6 @@
+# v2.1.0
+- enable rename of Kanban card as well
+
 # v2.0.3
 - fix: transfer object type as well
 
