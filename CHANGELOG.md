@@ -1,3 +1,6 @@
+# v2.1.1
+- reuse refactored type definition
+
 # v2.1.0
 - enable rename of Kanban card as well
 
