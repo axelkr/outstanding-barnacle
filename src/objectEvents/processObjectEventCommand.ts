@@ -1,5 +1,5 @@
 import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
-import { ObjectEvent } from './objectEvent';
+import { ObjectEvent } from 'choicest-barnacle';
 
 export interface ProcessObjectEventCommand {
   readonly objectEventTypeProcessing: string;

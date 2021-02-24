@@ -8,7 +8,7 @@ import { MoveKanbanCardInProgressCommand } from './MoveKanbanCardInProgressComma
 import { KanbanCardCompletedStateCommand } from './KanbanCardCompletedStateCommand';
 import { RenameKanbanCardCommand } from './RenameKanbanCardCommand';
 
-import { ObjectEvent } from './objectEvent';
+import { ObjectEvent } from 'choicest-barnacle';
 
 export class ObjectEventFactory {
 

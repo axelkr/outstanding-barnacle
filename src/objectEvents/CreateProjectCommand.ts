@@ -1,6 +1,6 @@
 import { Project } from '../heijunka/Project';
 import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
-import { ObjectEvent } from './objectEvent';
+import { ObjectEvent } from 'choicest-barnacle';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
 import { BaseCommand, ObjectType } from './BaseCommand';
 

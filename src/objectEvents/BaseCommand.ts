@@ -1,4 +1,4 @@
-import { ObjectEvent } from './objectEvent';
+import { ObjectEvent } from 'choicest-barnacle';
 
 export enum ObjectType {
   project = 'Project',

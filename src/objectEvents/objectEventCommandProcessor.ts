@@ -1,4 +1,4 @@
-import { ObjectEvent } from './objectEvent';
+import { ObjectEvent } from 'choicest-barnacle';
 import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
 import { CreateProjectCommand } from './CreateProjectCommand';

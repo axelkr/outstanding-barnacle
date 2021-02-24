@@ -1,7 +1,7 @@
 import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { KanbanCard } from '../heijunka/KanbanCard';
 
-import { ObjectEvent } from './objectEvent';
+import { ObjectEvent } from 'choicest-barnacle';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
 import { BaseCommand, ObjectType } from './BaseCommand';
 
