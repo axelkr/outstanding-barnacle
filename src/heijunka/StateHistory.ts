@@ -24,7 +24,7 @@ export class StateHistory {
         return new StateHistory(newTransitions);
     }
 
-    currentStateTransition(): StateTransition {
+    currentStateTransition(): StateTransition | undefined {
         if (this.transitions.length === 0) {
             return undefined;
         } else {

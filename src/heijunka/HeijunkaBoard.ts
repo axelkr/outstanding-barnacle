@@ -139,16 +139,20 @@ export class HeijunkaBoard {
 
     public findKanbanCards(options?: { project?: Project, states?: State[], transitionType?: TransitionType }): KanbanCard[] {
         let kanbanCards: KanbanCard[] = [...this.kanbanCards];
-
+        const hasStateTransition = function (kanbanCard: KanbanCard): boolean {
+            return kanbanCard.history.currentStateTransition() !== undefined;
+        };
         if (typeof options !== 'undefined') {
             if (typeof options.project !== 'undefined') {
                 kanbanCards = kanbanCards.filter(aCard => aCard.project === options.project.id)
             }
             if (typeof options.states !== 'undefined') {
-                kanbanCards = kanbanCards.filter(aCard => { const aCardState = aCard.history.currentStateTransition().state; return options.states.some(anOption => aCardState === anOption.id) });
+                kanbanCards = kanbanCards.filter(hasStateTransition)
+                    .filter(aCard => { const aCardState = aCard.history.currentStateTransition().state; return options.states.some(anOption => aCardState === anOption.id) });
             }
             if (typeof options.transitionType !== 'undefined') {
-                kanbanCards = kanbanCards.filter(aCard => options.transitionType == aCard.history.currentStateTransition().type);
+                kanbanCards = kanbanCards.filter(hasStateTransition)
+                    .filter(aCard => options.transitionType == aCard.history.currentStateTransition().type);
             }
         }
 
@@ -175,7 +179,7 @@ export class HeijunkaBoard {
         }
     }
 
-    public setStateModel(aStateModel:StateModel): HeijunkaBoard {
-        return new HeijunkaBoard(this.projects,aStateModel,this.kanbanCards);
+    public setStateModel(aStateModel: StateModel): HeijunkaBoard {
+        return new HeijunkaBoard(this.projects, aStateModel, this.kanbanCards);
     }
 }

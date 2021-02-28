@@ -3,10 +3,14 @@ import { expect } from 'chai';
 import { Project } from '../../src/heijunka/Project';
 import { KanbanCard } from '../../src/heijunka/KanbanCard';
 import { HeijunkaBoard } from '../../src/heijunka/HeijunkaBoard';
+import { TransitionType } from '../../src/heijunka/StateTransition';
+import { State } from '../../src/heijunka/State';
+
 
 describe('HeijunkaBoard', () => {
   let board: HeijunkaBoard;
-  const validStateId = 'Backlog'; // hardcoded at the moment
+  const testStates: State[] = [new State('Backlog', 'Backlog'), new State('Done', 'Done')];
+  const validStateId = testStates[0].id;
 
   beforeEach(() => {
     board = HeijunkaBoard.createEmptyHeijunkaBoard();
@@ -183,7 +187,7 @@ describe('HeijunkaBoard', () => {
   it('completedState: throws exception if called with unknown kanban card id', () => {
     const aId = 'aRandomId';
     const anotherId = 'anotherRandomId';
-    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(),'aProjectId');
+    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(), 'aProjectId');
     board = board.addKanbanCard(aKanbanCard);
 
     expect(function () { board.completedState(anotherId, validStateId, new Date()) }).throws();
@@ -192,9 +196,32 @@ describe('HeijunkaBoard', () => {
   it('inProgressInState: throws exception if called with unknown kanban card id', () => {
     const aId = 'aRandomId';
     const anotherId = 'anotherRandomId';
-    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(),'aProjectId');
+    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(), 'aProjectId');
     board = board.addKanbanCard(aKanbanCard);
 
     expect(function () { board.inProgressInState(anotherId, validStateId, new Date()) }).throws();
+  });
+
+  it('findKanbanCards: Kanban cards with undefined state are reported.', () => {
+    const aId = 'aRandomId';
+    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(), 'aProjectId');
+    board = board.addKanbanCard(aKanbanCard);
+    expect(board.findKanbanCards().length).to.equal(1);
+  });
+
+  it('findKanbanCards: filtering explicitly for states ignores cards with undefined states.', () => {
+    const aId = 'aRandomId';
+    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(), 'aProjectId');
+    board = board.addKanbanCard(aKanbanCard);
+    const withStateOptions = { states: testStates };
+    expect(board.findKanbanCards(withStateOptions).length).to.equal(0);
+  });
+
+  it('findKanbanCards: filtering explicitly for transition types ignores cards with undefined states.', () => {
+    const aId = 'aRandomId';
+    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(), 'aProjectId');
+    board = board.addKanbanCard(aKanbanCard);
+    const withTransitionOption = { transitionType: TransitionType.inProgress };
+    expect(board.findKanbanCards(withTransitionOption).length).to.equal(0);
   });
 });
