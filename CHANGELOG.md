@@ -1,3 +1,6 @@
+# v2.1.3
+- fix: library handles cards without state as well
+
 # v2.1.2
 - no longer expects that an new card automatically gets transitioned to an inital state
 
