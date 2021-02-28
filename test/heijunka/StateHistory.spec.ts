@@ -49,4 +49,9 @@ describe('StateHistory', () => {
       .add(atTheEnd);
     expect(aStateHistory.currentStateTransition().occurredAt).to.equal(atTheEnd.occurredAt);
   });
+
+  it('currentTransition returns undefined if no state has been added so far', () => {
+    const emptyStateHistory = StateHistory.emptyHistory();
+    expect(emptyStateHistory.currentStateTransition()).to.be.undefined;
+  });
 });

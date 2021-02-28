@@ -1,3 +1,6 @@
+# v2.1.2
+- no longer expects that an new card automatically gets transitioned to an inital state
+
 # v2.1.1
 - reuse refactored type definition
 
