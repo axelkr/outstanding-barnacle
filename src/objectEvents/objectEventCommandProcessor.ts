@@ -84,7 +84,7 @@ export class ObjectEventCommandProcessor {
     states.push(new State('Backlog', 'Backlog'));
     states.push(new State('Doing', 'Doing'));
     states.push(new State('Done', 'Done'));
-    const result = new StateModel('PersonalKanban', states, states[0], [states[2]]);
+    const result = new StateModel('id','PersonalKanban', states, states[0], [states[2]]);
     result.setSuccessorOf(states[0], states[1]);
     result.setSuccessorOf(states[1], states[2]);
     return result;

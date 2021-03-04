@@ -6,13 +6,17 @@ export class StateModel {
     private readonly _finalStates: State[];
     private readonly _successors: Map<State, State[]> = new Map<State, State[]>();
     readonly name: string;
+    readonly id: string
 
-    constructor(name: string, states: State[], initialState: State, finalStates: State[]) {
+    constructor(id: string, name: string, states: State[], initialState: State, finalStates: State[]) {
         if (typeof states === "undefined") {
             throw new Error('states cannot be undefined');
         }
         if (typeof name === "undefined") {
             throw new Error('name cannot be undefined');
+        }
+        if (typeof id === "undefined") {
+            throw new Error('id cannot be undefined');
         }
         if (typeof initialState === "undefined") {
             throw new Error('initialState cannot be undefined');
@@ -32,6 +36,7 @@ export class StateModel {
             }
         })
 
+        this.id = id;
         this.name = name;
         this.states = states;
         this._initialState = initialState;
@@ -90,16 +95,16 @@ export class StateModel {
         return this._finalStates;
     }
 
-    public static serialize(stateModel:StateModel): string {
+    public static serialize(stateModel: StateModel): string {
         throw new Error('implement me');
         return '';
     }
-    
-    public static deserialize(stateModelSerialized:string): StateModel {
+
+    public static deserialize(stateModelSerialized: string): StateModel {
         throw new Error('implement me');
         return undefined;
     }
-    
+
     private hasState(state: State): boolean {
         if (typeof state === "undefined") {
             throw new Error('state cannot be undefined');
