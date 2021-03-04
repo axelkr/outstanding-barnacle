@@ -1,14 +1,13 @@
 import { State } from './State';
 
-// API of a non-linear model, i.e. a state can have multiple predecessors / successors
-// Implementation of a linear model, i.e. successor of states[n] is states[n+1].
-// Should allow for easy extension to a non-linear model
 export class StateModel {
     private readonly states: State[];
     private readonly _initialState: State;
+    private readonly _finalStates: State[];
+    private readonly _successors: Map<State, State[]> = new Map<State, State[]>();
     readonly name: string;
 
-    constructor(name: string, states: State[], initialState: State) {
+    constructor(name: string, states: State[], initialState: State, finalStates: State[]) {
         if (typeof states === "undefined") {
             throw new Error('states cannot be undefined');
         }
@@ -18,13 +17,35 @@ export class StateModel {
         if (typeof initialState === "undefined") {
             throw new Error('initialState cannot be undefined');
         }
+        if (typeof finalStates === "undefined") {
+            throw new Error('initialState cannot be undefined');
+        }
+
         const initialStateNotPartOfStates = (states.indexOf(initialState) === -1);
         if (initialStateNotPartOfStates) {
-            throw new Error('initialState has to be part of the set of states');
+            throw new Error('initial state has to be part of the set of states');
         }
+        finalStates.forEach(aFinalState => {
+            const aFinalStateIsPartOfStates = (states.indexOf(aFinalState) > -1);
+            if (!aFinalStateIsPartOfStates) {
+                throw new Error('each final state has to be part of the set of states');
+            }
+        })
+
         this.name = name;
         this.states = states;
         this._initialState = initialState;
+        this._finalStates = finalStates;
+
+        this.states.forEach(aState => {
+            this._successors.set(aState, []);
+        })
+    }
+
+    public setSuccessorOf(fromState: State, toState: State): void {
+        const currentStates = this._successors.get(fromState);
+        currentStates.push(toState);
+        this._successors.set(fromState, currentStates);
     }
 
     public successors(state: State): State[] {
@@ -34,12 +55,7 @@ export class StateModel {
         if (!this.hasState(state)) {
             throw new Error('unknown state ' + state.name);
         }
-        const result: State[] = [];
-        const index = this.states.indexOf(state);
-        if (index + 1 < this.states.length) {
-            result.push(this.states[index + 1]);
-        }
-        return result;
+        return this._successors.get(state);
     }
 
     public predecessors(state: State): State[] {
@@ -50,10 +66,11 @@ export class StateModel {
             throw new Error('unknown state ' + state.name);
         }
         const result: State[] = [];
-        const index = this.states.indexOf(state);
-        if (index - 1 >= 0) {
-            result.push(this.states[index - 1]);
-        }
+        this._successors.forEach((successors, key) => {
+            if (successors.indexOf(state) >= 0) {
+                result.push(key);
+            }
+        });
         return result;
     }
 
@@ -70,8 +87,7 @@ export class StateModel {
     }
 
     public finalStates(): State[] {
-        const result: State[] = [this.states[this.states.length - 1]];
-        return result;
+        return this._finalStates;
     }
 
     private hasState(state: State): boolean {

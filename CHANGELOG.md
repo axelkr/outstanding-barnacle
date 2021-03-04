@@ -1,3 +1,6 @@
+# v2.2.0
+- StateModel is now non-linear, e.g. a state can have multiple successors and loops can be defined
+
 # v2.1.3
 - fix: library handles cards without state as well
 
