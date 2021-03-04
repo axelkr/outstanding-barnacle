@@ -67,6 +67,6 @@ export class ObjectEventCommandProcessor {
     states.push(new State('Backlog', 'Backlog'));
     states.push(new State('Doing', 'Doing'));
     states.push(new State('Done', 'Done'));
-    return new StateModel('PersonalKanban', states);
+    return new StateModel('PersonalKanban', states,states[0]);
   }
 }

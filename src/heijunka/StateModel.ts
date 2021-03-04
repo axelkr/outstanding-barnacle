@@ -5,17 +5,26 @@ import { State } from './State';
 // Should allow for easy extension to a non-linear model
 export class StateModel {
     readonly states: State[];
+    readonly initialState: State;
     readonly name: string;
 
-    constructor(name: string, states: State[]) {
+    constructor(name: string, states: State[], initialState: State) {
         if (typeof states === "undefined") {
             throw new Error('states cannot be undefined');
         }
         if (typeof name === "undefined") {
             throw new Error('name cannot be undefined');
         }
+        if (typeof initialState === "undefined") {
+            throw new Error('initialState cannot be undefined');
+        }
+        const initialStateNotPartOfStates = (states.indexOf(initialState) === -1);
+        if (initialStateNotPartOfStates) {
+            throw new Error('initialState has to be part of the set of states');
+        }
         this.name = name;
         this.states = states;
+        this.initialState = initialState;
     }
 
     public successors(state: State): State[] {
@@ -56,12 +65,8 @@ export class StateModel {
         return aState;
     }
 
-    public initialState(): State {
-        return this.states[0];
-    }
-
     public finalStates(): State[] {
-        const result: State[] = [this.states[this.states.length-1]];
+        const result: State[] = [this.states[this.states.length - 1]];
         return result;
     }
 
