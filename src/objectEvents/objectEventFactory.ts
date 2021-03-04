@@ -1,8 +1,11 @@
 import { Project } from '../heijunka/Project';
 import { KanbanCard } from '../heijunka/KanbanCard';
 import { State } from '../heijunka/State';
+import { StateModel } from '../heijunka/StateModel';
 import { CreateProjectCommand } from './CreateProjectCommand';
 import { RenameProjectCommand } from './RenameProjectCommand';
+import { CreateStateModelCommand } from './CreateStateModelCommand';
+import { SetStateModelCommand } from './SetStateModelCommand';
 import { CreateKanbanCardCommand } from './CreateKanbanCardCommand';
 import { MoveKanbanCardInProgressCommand } from './MoveKanbanCardInProgressCommand';
 import { KanbanCardCompletedStateCommand } from './KanbanCardCompletedStateCommand';
@@ -11,6 +14,16 @@ import { RenameKanbanCardCommand } from './RenameKanbanCardCommand';
 import { ObjectEvent } from 'choicest-barnacle';
 
 export class ObjectEventFactory {
+
+  public createStateModel(topic: string, stateModel: StateModel): ObjectEvent {
+    const createStateModelCommand = new CreateStateModelCommand();
+    return createStateModelCommand.createEvent(topic, stateModel, this.createUUID());
+  }
+
+  public setStateModel(topic: string, stateModel: StateModel, newName: string): ObjectEvent {
+    const setStateModelCommand = new SetStateModelCommand();
+    return setStateModelCommand.createEvent(topic, stateModel, newName);
+  }
 
   public createProject(topic: string, projectName: string): ObjectEvent {
     const createProjectCommand = new CreateProjectCommand();

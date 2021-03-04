@@ -90,6 +90,16 @@ export class StateModel {
         return this._finalStates;
     }
 
+    public static serialize(stateModel:StateModel): string {
+        throw new Error('implement me');
+        return '';
+    }
+    
+    public static deserialize(stateModelSerialized:string): StateModel {
+        throw new Error('implement me');
+        return undefined;
+    }
+    
     private hasState(state: State): boolean {
         if (typeof state === "undefined") {
             throw new Error('state cannot be undefined');

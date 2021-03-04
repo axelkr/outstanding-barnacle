@@ -3,6 +3,8 @@ import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
 import { CreateProjectCommand } from './CreateProjectCommand';
 import { RenameProjectCommand } from './RenameProjectCommand';
+import { CreateStateModelCommand } from './CreateStateModelCommand';
+import { SetStateModelCommand } from './SetStateModelCommand';
 import { CreateKanbanCardCommand } from './CreateKanbanCardCommand';
 import { MoveKanbanCardInProgressCommand } from './MoveKanbanCardInProgressCommand';
 import { KanbanCardCompletedStateCommand } from './KanbanCardCompletedStateCommand';
@@ -17,7 +19,7 @@ export class ObjectEventCommandProcessor {
   private stillToProcess: ObjectEvent[] = [];
 
   constructor() {
-    this.currentBoard = HeijunkaBoard.createEmptyHeijunkaBoard().setStateModel(this.PersonalKanban());
+    this.currentBoard = HeijunkaBoard.createEmptyHeijunkaBoard();
 
     const availableCommands: ProcessObjectEventCommand[] = [];
     availableCommands.push(new CreateProjectCommand());
@@ -26,8 +28,12 @@ export class ObjectEventCommandProcessor {
     availableCommands.push(new MoveKanbanCardInProgressCommand());
     availableCommands.push(new KanbanCardCompletedStateCommand());
     availableCommands.push(new RenameKanbanCardCommand());
+    availableCommands.push(new CreateStateModelCommand());
+    availableCommands.push(new SetStateModelCommand());
 
     availableCommands.forEach(aCommand => this.commands.set(aCommand.objectEventTypeProcessing, aCommand));
+
+    this.initializeWithPersonalKanban();
   }
 
   process(objectEvent: ObjectEvent): HeijunkaBoard {
@@ -62,14 +68,25 @@ export class ObjectEventCommandProcessor {
     }
   }
 
+  private initializeWithPersonalKanban() {
+    const personalKanban = this.PersonalKanban();
+    const aCreateStateModelCommand = new CreateStateModelCommand();
+    const createStateModelEvent = aCreateStateModelCommand.createEvent('topic',personalKanban,'initialModelUUID');
+    
+    const aSetStateModelCommand = new SetStateModelCommand();
+    const setStateModelEvent = aSetStateModelCommand.createEvent('topic',personalKanban,'setInitialModelUUID');
+    this.process(createStateModelEvent);
+    this.process(setStateModelEvent);
+  }
+
   private PersonalKanban(): StateModel {
     const states: State[] = [];
     states.push(new State('Backlog', 'Backlog'));
     states.push(new State('Doing', 'Doing'));
     states.push(new State('Done', 'Done'));
-    const result = new StateModel('PersonalKanban', states,states[0],[states[2]]);
-    result.setSuccessorOf(states[0],states[1]);
-    result.setSuccessorOf(states[1],states[2]);
+    const result = new StateModel('PersonalKanban', states, states[0], [states[2]]);
+    result.setSuccessorOf(states[0], states[1]);
+    result.setSuccessorOf(states[1], states[2]);
     return result;
   }
 }

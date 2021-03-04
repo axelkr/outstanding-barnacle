@@ -8,15 +8,17 @@ export class HeijunkaBoard {
     readonly projects: Array<Project>;
     readonly kanbanCards: Array<KanbanCard>;
     readonly stateModel: StateModel;
+    readonly availableStateModels: StateModel[];
 
     static createEmptyHeijunkaBoard(): HeijunkaBoard {
-        return new HeijunkaBoard([], undefined, []);
+        return new HeijunkaBoard([], undefined, [],[]);
     }
 
-    private constructor(projects: Array<Project>, stateModel: StateModel, kanbanCards: Array<KanbanCard>) {
+    private constructor(projects: Array<Project>, stateModel: StateModel, kanbanCards: Array<KanbanCard>, availableStateModels: Array<StateModel>) {
         this.projects = projects;
         this.stateModel = stateModel;
         this.kanbanCards = kanbanCards;
+        this.availableStateModels = availableStateModels;
     }
 
     public addProject(aProject: Project): HeijunkaBoard {
@@ -28,7 +30,7 @@ export class HeijunkaBoard {
         }
         const newProjects = [...this.projects];
         newProjects.push(aProject);
-        return new HeijunkaBoard(newProjects, this.stateModel, this.kanbanCards);
+        return new HeijunkaBoard(newProjects, this.stateModel, this.kanbanCards,this.availableStateModels);
     }
 
 
@@ -41,7 +43,7 @@ export class HeijunkaBoard {
         }
         const newKanbanCards = [...this.kanbanCards];
         newKanbanCards.push(aKanbanCard);
-        return new HeijunkaBoard(this.projects, this.stateModel, newKanbanCards);
+        return new HeijunkaBoard(this.projects, this.stateModel, newKanbanCards,this.availableStateModels);
     }
 
     public renameProject(id: string, renameAt: Date, renameTo: string): HeijunkaBoard {
@@ -70,7 +72,7 @@ export class HeijunkaBoard {
             }
         })
         if (didRename) {
-            return new HeijunkaBoard(newProjects, this.stateModel, this.kanbanCards);
+            return new HeijunkaBoard(newProjects, this.stateModel, this.kanbanCards,this.availableStateModels);
         } else {
             return this;
         }
@@ -131,7 +133,7 @@ export class HeijunkaBoard {
             }
         })
         if (didModify) {
-            return new HeijunkaBoard(this.projects, this.stateModel, newKanbanCards);
+            return new HeijunkaBoard(this.projects, this.stateModel, newKanbanCards,this.availableStateModels);
         } else {
             return this;
         }
@@ -180,6 +182,11 @@ export class HeijunkaBoard {
     }
 
     public setStateModel(aStateModel: StateModel): HeijunkaBoard {
-        return new HeijunkaBoard(this.projects, aStateModel, this.kanbanCards);
+        return new HeijunkaBoard(this.projects, aStateModel, this.kanbanCards,this.availableStateModels);
+    }
+
+    public addStateModel(aStateModel: StateModel): HeijunkaBoard {
+        throw new Error('test me: aStatemodel defined, no other statem model available with same name');
+        return new HeijunkaBoard(this.projects, this.stateModel, this.kanbanCards,[...this.availableStateModels,aStateModel]);
     }
 }
