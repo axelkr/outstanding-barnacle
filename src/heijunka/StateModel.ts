@@ -4,8 +4,8 @@ import { State } from './State';
 // Implementation of a linear model, i.e. successor of states[n] is states[n+1].
 // Should allow for easy extension to a non-linear model
 export class StateModel {
-    readonly states: State[];
-    readonly initialState: State;
+    private readonly states: State[];
+    private readonly _initialState: State;
     readonly name: string;
 
     constructor(name: string, states: State[], initialState: State) {
@@ -24,7 +24,7 @@ export class StateModel {
         }
         this.name = name;
         this.states = states;
-        this.initialState = initialState;
+        this._initialState = initialState;
     }
 
     public successors(state: State): State[] {
@@ -63,6 +63,10 @@ export class StateModel {
             throw new Error('unknown state with id ' + id);
         }
         return aState;
+    }
+
+    public initialState(): State {
+        return this._initialState;
     }
 
     public finalStates(): State[] {
