@@ -61,7 +61,7 @@ export class StateModel {
     }
 
     public finalStates(): State[] {
-        const result: State[] = [this.states[1]];
+        const result: State[] = [this.states[this.states.length-1]];
         return result;
     }
 
