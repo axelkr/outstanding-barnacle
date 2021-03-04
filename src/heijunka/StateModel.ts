@@ -60,6 +60,11 @@ export class StateModel {
         return this.states[0];
     }
 
+    public finalStates(): State[] {
+        const result: State[] = [this.states[1]];
+        return result;
+    }
+
     private hasState(state: State): boolean {
         if (typeof state === "undefined") {
             throw new Error('state cannot be undefined');
