@@ -255,4 +255,24 @@ describe('HeijunkaBoard', () => {
     board = board.addStateModel(aStateModel);
     expect(function () { board.addStateModel(anotherStateModel) }).throws();
   });
+
+  it('setStateModel: throws exception if called with undefined as date', () => {
+    expect(function () { board.setStateModel(undefined) }).throws();
+  });
+
+  it('setStateModel: throws exception if called with state model not added before', () => {
+    const oneState = new State('stateId', 'stateName');
+    const aStateModel = new StateModel('id', 'name', [oneState], oneState, []);
+    const anotherStateModel = new StateModel('anotherId', 'name', [oneState], oneState, []);
+    board = board.addStateModel(aStateModel);
+    expect(function () { board.addStateModel(anotherStateModel) }).throws();
+  });
+
+  it('setStateModel: throws exception if called with state model not added before', () => {
+    const oneState = new State('stateId', 'stateName');
+    const aStateModel = new StateModel('id', 'name', [oneState], oneState, []);
+    board = board.addStateModel(aStateModel);
+    board = board.setStateModel(aStateModel.id);
+    expect(board.stateModel).to.equal(aStateModel);
+  });
 });

@@ -181,9 +181,14 @@ export class HeijunkaBoard {
         }
     }
 
-    public setStateModel(aStateModelUUID: string): HeijunkaBoard {
-        throw new Error('test me');
-        return new HeijunkaBoard(this.projects, this.availableStateModels.find(stateModel => stateModel.id === aStateModelUUID), this.kanbanCards, this.availableStateModels);
+    public setStateModel(aStateModelId: string): HeijunkaBoard {
+        if (typeof aStateModelId === 'undefined') {
+            throw new Error('input aStateModelUUID has to be defined');
+        }
+        if (!this.hasStateModel(aStateModelId)) {
+            throw new Error('input aStateModelId has to reference a known state model');
+        }
+        return new HeijunkaBoard(this.projects, this.availableStateModels.find(stateModel => stateModel.id === aStateModelId), this.kanbanCards, this.availableStateModels);
     }
 
     public addStateModel(aStateModel: StateModel): HeijunkaBoard {
