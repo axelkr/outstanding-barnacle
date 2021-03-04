@@ -20,9 +20,9 @@ export class ObjectEventFactory {
     return createStateModelCommand.createEvent(topic, stateModel, this.createUUID());
   }
 
-  public setStateModel(topic: string, stateModel: StateModel, newName: string): ObjectEvent {
+  public setStateModel(topic: string, stateModel: StateModel): ObjectEvent {
     const setStateModelCommand = new SetStateModelCommand();
-    return setStateModelCommand.createEvent(topic, stateModel, newName);
+    return setStateModelCommand.createEvent(topic, stateModel, this.createUUID());
   }
 
   public createProject(topic: string, projectName: string): ObjectEvent {
