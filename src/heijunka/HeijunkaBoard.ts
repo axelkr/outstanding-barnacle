@@ -187,12 +187,19 @@ export class HeijunkaBoard {
     }
 
     public addStateModel(aStateModel: StateModel): HeijunkaBoard {
-        throw new Error('test me: aStatemodel defined, no other state model available with same name');
+        if (typeof aStateModel === 'undefined') {
+            throw new Error('input aStateModel has to be defined');
+        }
+        if (this.availableStateModels.some(stateModel => stateModel.name === aStateModel.name)) {
+            throw new Error('state model with same name already defined');
+        }
         return new HeijunkaBoard(this.projects, this.stateModel, this.kanbanCards, [...this.availableStateModels, aStateModel]);
     }
 
     public hasStateModel(aStateModelId: string): boolean {
-        throw new Error('test me');
+        if (typeof aStateModelId === 'undefined') {
+            throw new Error('input aStateModelId has to be defined');
+        }
         return this.availableStateModels.some(stateModel => stateModel.id === aStateModelId);
     }
 }

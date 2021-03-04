@@ -5,6 +5,7 @@ import { KanbanCard } from '../../src/heijunka/KanbanCard';
 import { HeijunkaBoard } from '../../src/heijunka/HeijunkaBoard';
 import { TransitionType } from '../../src/heijunka/StateTransition';
 import { State } from '../../src/heijunka/State';
+import { StateModel } from '../../src/heijunka/StateModel';
 
 
 describe('HeijunkaBoard', () => {
@@ -223,5 +224,35 @@ describe('HeijunkaBoard', () => {
     board = board.addKanbanCard(aKanbanCard);
     const withTransitionOption = { transitionType: TransitionType.inProgress };
     expect(board.findKanbanCards(withTransitionOption).length).to.equal(0);
+  });
+
+  it('hasStateModel: throws exception if called with undefined as date', () => {
+    expect(function () { board.hasStateModel(undefined) }).throws();
+  });
+
+  it('hasStateModel: returns true if called with id of a model previously added', () => {
+    const oneState = new State('stateId', 'stateName');
+    const aStateModel = new StateModel('id', 'name', [oneState], oneState, []);
+    board = board.addStateModel(aStateModel);
+    expect(board.hasStateModel(aStateModel.id)).to.be.true;
+  });
+
+  it('hasStateModel: returns false if called with id of no model previously added', () => {
+    const oneState = new State('stateId', 'stateName');
+    const aStateModel = new StateModel('id', 'name', [oneState], oneState, []);
+    board = board.addStateModel(aStateModel);
+    expect(board.hasStateModel('anotherStateId')).to.be.false;
+  });
+
+  it('addStateModel: throws exception if called with undefined as date', () => {
+    expect(function () { board.addStateModel(undefined) }).throws();
+  });
+
+  it('addStateModel: throws exception if called with state model with same name', () => {
+    const oneState = new State('stateId', 'stateName');
+    const aStateModel = new StateModel('id', 'name', [oneState], oneState, []);
+    const anotherStateModel = new StateModel('anotherId', 'name', [oneState], oneState, []);
+    board = board.addStateModel(aStateModel);
+    expect(function () { board.addStateModel(anotherStateModel) }).throws();
   });
 });
