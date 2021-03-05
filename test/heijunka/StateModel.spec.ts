@@ -6,7 +6,7 @@ import { State } from '../../src/heijunka/State';
 describe('StateModel', () => {
   const testStates: State[] = [new State('Backlog', 'Backlog'), new State('Done', 'Done')];
   const initialState = testStates[0];
-  const finalStates = [testStates[2]];
+  const finalStates = [testStates[1]];
   const uuid = 'uuid';
 
   it('constructor expects that id is defined', () => {
@@ -39,4 +39,23 @@ describe('StateModel', () => {
     expect(() => new StateModel(uuid, 'name', testStates, initialState, [finalStates[0], otherState])).throws();
   });
 
+  it('setSuccessorOf: returned as successor afterwards', () => {
+    const aStateModel = new StateModel(uuid, 'name', testStates, initialState, finalStates);
+    const successorState = testStates[1];
+    aStateModel.setSuccessorOf(initialState,successorState);
+    expect(aStateModel.successors(initialState).length).to.equal(1);
+    expect(aStateModel.successors(initialState)[0]).to.deep.equal(successorState);
+  });
+
+  it('serialize and deserialize are a round-trip: values stay the same', () => {
+    const inputStateModel = new StateModel(uuid, 'name', testStates, initialState, finalStates);
+    inputStateModel.setSuccessorOf(initialState,testStates[1]);
+    const afterRoundTrip = StateModel.deserialize(StateModel.serialize(inputStateModel));
+
+    expect(afterRoundTrip.id).to.equal(inputStateModel.id);
+    expect(afterRoundTrip.name).to.equal(inputStateModel.name);
+    expect(afterRoundTrip.initialState()).to.deep.equal(inputStateModel.initialState());
+    expect(afterRoundTrip.finalStates()[0]).to.deep.equal(inputStateModel.finalStates()[0]);
+    expect(afterRoundTrip.successors(afterRoundTrip.initialState())[0]).to.deep.equal(inputStateModel.successors(inputStateModel.initialState())[0]);
+  })
 });

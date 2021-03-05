@@ -96,13 +96,55 @@ export class StateModel {
     }
 
     public static serialize(stateModel: StateModel): string {
-        throw new Error('implement me');
-        return '';
+        let items = new Map<string, string>();
+        items = items.set('name', stateModel.name);
+        items = items.set('id', stateModel.id);
+        items = items.set('initialState', StateModel.serializeState(stateModel.initialState()));
+        items = items.set('finalStates', JSON.stringify(stateModel.finalStates().map(x => StateModel.serializeState(x))));
+        items = items.set('states', JSON.stringify(stateModel.states.map(x => StateModel.serializeState(x))));
+        const linearizedSuccessorIds: Array<string> = new Array<string>();
+        stateModel._successors.forEach((value, key) => {
+            value.forEach(aSuccessor => {
+                const container = { 'from': key.id, 'to': aSuccessor.id };
+                linearizedSuccessorIds.push(JSON.stringify(container));
+            })
+        })
+        items = items.set('successors', JSON.stringify(linearizedSuccessorIds));
+        const serialized: string = JSON.stringify(Array.from(items.entries()));
+        return serialized;
     }
 
     public static deserialize(stateModelSerialized: string): StateModel {
-        throw new Error('implement me');
-        return undefined;
+        const items: Map<string, string> = new Map<string, string>(JSON.parse(stateModelSerialized));
+        const name = items.get('name');
+        const id = items.get('id');
+        const states: State[] = JSON.parse(items.get('states')).map((x: string) => StateModel.deserializeState(x));
+        const initialState = states.find(x => x.id === StateModel.deserializeState(items.get('initialState')).id);
+        const linearizedSuccessorIds: Array<string> = new Array<string>(JSON.parse(items.get('successors')));
+
+        const finalStates = JSON.parse(items.get('finalStates')).map((x: string) => {
+            const idToLookFor = StateModel.deserializeState(x).id;
+            return states.find(x => x.id === idToLookFor);
+        });
+        const result = new StateModel(id, name, states, initialState, finalStates);
+
+        linearizedSuccessorIds.forEach((value) => {
+            const container = JSON.parse(value);
+            result.setSuccessorOf(result.getState(container.from), result.getState(container.to));
+        })
+        return result;
+    }
+
+    private static serializeState(state: State): string {
+        let items = new Map<string, string>();
+        items = items.set('name', state.name);
+        items = items.set('id', state.id);
+        return JSON.stringify(Array.from(items.entries()));
+    }
+
+    private static deserializeState(serizalizedState: string): State {
+        const items: Map<string, string> = new Map<string, string>(JSON.parse(serizalizedState));
+        return new State(items.get('id'), items.get('name'));
     }
 
     private hasState(state: State): boolean {
