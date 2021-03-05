@@ -1,3 +1,6 @@
+# v3.1.0
+- provide reproducible way to linearize states of a state model
+
 # v3.0.0
 - StateModel is now non-linear, e.g. a state can have multiple successors and loops can be defined
 - breaking change: calling library has to setup state model by itself. For the time being, ObjectEventCommandProcessor.initializeWithPersonalKanban reproduces the previously automatically created model.
