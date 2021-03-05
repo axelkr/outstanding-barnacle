@@ -22,7 +22,7 @@ export class ObjectEventFactory {
 
   public setStateModel(topic: string, stateModel: StateModel): ObjectEvent {
     const setStateModelCommand = new SetStateModelCommand();
-    return setStateModelCommand.createEvent(topic, stateModel, this.createUUID());
+    return setStateModelCommand.createEvent(topic, stateModel);
   }
 
   public createProject(topic: string, projectName: string): ObjectEvent {

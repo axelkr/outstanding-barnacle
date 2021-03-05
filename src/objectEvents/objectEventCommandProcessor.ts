@@ -32,8 +32,6 @@ export class ObjectEventCommandProcessor {
     availableCommands.push(new SetStateModelCommand());
 
     availableCommands.forEach(aCommand => this.commands.set(aCommand.objectEventTypeProcessing, aCommand));
-
-    this.initializeWithPersonalKanban();
   }
 
   process(objectEvent: ObjectEvent): HeijunkaBoard {
@@ -55,6 +53,18 @@ export class ObjectEventCommandProcessor {
     return this.currentBoard;
   }
 
+  public initializeWithPersonalKanban() {
+    const personalKanban = this.PersonalKanban();
+    const aCreateStateModelCommand = new CreateStateModelCommand();
+    const createStateModelEvent = aCreateStateModelCommand.createEvent('topic', personalKanban, 'initialModelUUID');
+
+    const aSetStateModelCommand = new SetStateModelCommand();
+    const setStateModelEvent = aSetStateModelCommand.createEvent('topic', personalKanban);
+    this.process(createStateModelEvent);
+    this.process(setStateModelEvent);
+  }
+
+
   private processFurtherEvents(): void {
     let index = 0;
     while (index < this.stillToProcess.length) {
@@ -68,23 +78,12 @@ export class ObjectEventCommandProcessor {
     }
   }
 
-  private initializeWithPersonalKanban() {
-    const personalKanban = this.PersonalKanban();
-    const aCreateStateModelCommand = new CreateStateModelCommand();
-    const createStateModelEvent = aCreateStateModelCommand.createEvent('topic',personalKanban,'initialModelUUID');
-    
-    const aSetStateModelCommand = new SetStateModelCommand();
-    const setStateModelEvent = aSetStateModelCommand.createEvent('topic',personalKanban,'setInitialModelUUID');
-    this.process(createStateModelEvent);
-    this.process(setStateModelEvent);
-  }
-
   private PersonalKanban(): StateModel {
     const states: State[] = [];
     states.push(new State('Backlog', 'Backlog'));
     states.push(new State('Doing', 'Doing'));
     states.push(new State('Done', 'Done'));
-    const result = new StateModel('id','PersonalKanban', states, states[0], [states[2]]);
+    const result = new StateModel('id', 'PersonalKanban', states, states[0], [states[2]]);
     result.setSuccessorOf(states[0], states[1]);
     result.setSuccessorOf(states[1], states[2]);
     return result;

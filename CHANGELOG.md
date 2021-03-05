@@ -1,5 +1,6 @@
-# v2.2.0
+# v3.0.0
 - StateModel is now non-linear, e.g. a state can have multiple successors and loops can be defined
+- breaking change: calling library has to setup state model by itself. For the time being, ObjectEventCommandProcessor.initializeWithPersonalKanban reproduces the previously automatically created model.
 
 # v2.1.3
 - fix: library handles cards without state as well

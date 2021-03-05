@@ -18,8 +18,8 @@ export class SetStateModelCommand extends BaseCommand implements ProcessObjectEv
     return board.setStateModel( objectEvent.payload.get('stateModelUUID'));
   }
 
-  createEvent(topic: string, stateModel: StateModel, newUUID: string): ObjectEvent {
+  createEvent(topic: string, stateModel: StateModel): ObjectEvent {
     const payload = new Map([['stateModelUUID', stateModel.id ]]);
-    return this.createObjectEvent(topic, newUUID, payload);
+    return this.createObjectEvent(topic, 'heijunkaBoard' , payload);
   }
 }
