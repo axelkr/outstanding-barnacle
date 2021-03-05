@@ -120,7 +120,7 @@ export class StateModel {
         const id = items.get('id');
         const states: State[] = JSON.parse(items.get('states')).map((x: string) => StateModel.deserializeState(x));
         const initialState = states.find(x => x.id === StateModel.deserializeState(items.get('initialState')).id);
-        const linearizedSuccessorIds: Array<string> = new Array<string>(JSON.parse(items.get('successors')));
+        const linearizedSuccessorIds: Array<string> = JSON.parse(items.get('successors'));
 
         const finalStates = JSON.parse(items.get('finalStates')).map((x: string) => {
             const idToLookFor = StateModel.deserializeState(x).id;
@@ -138,22 +138,22 @@ export class StateModel {
     public linearizedStates(): State[] {
         const stateStillToLinearize = [...this.states];
         const linearizedStates = [this.initialState()];
-        stateStillToLinearize.splice(stateStillToLinearize.indexOf(this._initialState),1);
-        while(stateStillToLinearize.length>0) {
-            const lastState:State = linearizedStates[linearizedStates.length-1];
+        stateStillToLinearize.splice(stateStillToLinearize.indexOf(this._initialState), 1);
+        while (stateStillToLinearize.length > 0) {
+            const lastState: State = linearizedStates[linearizedStates.length - 1];
             const successors = this.successors(lastState);
-            successors.forEach(aState=>{
-                const alreadyLinearized = linearizedStates.indexOf(aState)>-1;
-                if ( ! alreadyLinearized ) {
+            successors.forEach(aState => {
+                const alreadyLinearized = linearizedStates.indexOf(aState) > -1;
+                if (!alreadyLinearized) {
                     linearizedStates.push(aState);
-                    stateStillToLinearize.splice(stateStillToLinearize.indexOf(aState),1);
+                    stateStillToLinearize.splice(stateStillToLinearize.indexOf(aState), 1);
                 }
             })
-            const atLeastOneStateWasJustLinearized = lastState.id !== linearizedStates[linearizedStates.length-1].id;
+            const atLeastOneStateWasJustLinearized = lastState.id !== linearizedStates[linearizedStates.length - 1].id;
             if (!atLeastOneStateWasJustLinearized) {
                 const aState = stateStillToLinearize[0];
                 linearizedStates.push(aState);
-                stateStillToLinearize.splice(stateStillToLinearize.indexOf(aState),1);
+                stateStillToLinearize.splice(stateStillToLinearize.indexOf(aState), 1);
             }
         }
         return linearizedStates;

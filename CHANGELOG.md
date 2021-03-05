@@ -1,3 +1,6 @@
+# v3.1.1
+- fix: PersonalKanban can be serialized itself
+
 # v3.1.0
 - provide reproducible way to linearize states of a state model
 

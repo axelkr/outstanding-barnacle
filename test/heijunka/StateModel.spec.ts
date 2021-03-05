@@ -59,6 +59,17 @@ describe('StateModel', () => {
     expect(afterRoundTrip.successors(afterRoundTrip.initialState())[0]).to.deep.equal(inputStateModel.successors(inputStateModel.initialState())[0]);
   })
 
+  it('serialize and deserialize are a round-trip: values stay the same', () => {
+    const inputStateModel = PersonalKanban();
+    const afterRoundTrip = StateModel.deserialize(StateModel.serialize(inputStateModel));
+
+    expect(afterRoundTrip.id).to.equal(inputStateModel.id);
+    expect(afterRoundTrip.name).to.equal(inputStateModel.name);
+    expect(afterRoundTrip.initialState()).to.deep.equal(inputStateModel.initialState());
+    expect(afterRoundTrip.finalStates()[0]).to.deep.equal(inputStateModel.finalStates()[0]);
+    expect(afterRoundTrip.successors(afterRoundTrip.initialState())[0]).to.deep.equal(inputStateModel.successors(inputStateModel.initialState())[0]);
+  })
+
   it('linearizedStates: the initial state is returned as first state', () => {
     const someStates = generateSomeStates();
     const initialState = someStates[11];
@@ -101,6 +112,18 @@ describe('StateModel', () => {
       result.push(new State(idString[nextStateIndex],idString[nextStateIndex]));
       nextStateIndex = 1+ nextStateIndex;
     }
+    return result;
+  }
+
+
+  function PersonalKanban(): StateModel {
+    const states: State[] = [];
+    states.push(new State('Backlog', 'Backlog'));
+    states.push(new State('Doing', 'Doing'));
+    states.push(new State('Done', 'Done'));
+    const result = new StateModel('id', 'PersonalKanban', states, states[0], [states[2]]);
+    result.setSuccessorOf(states[0], states[1]);
+    result.setSuccessorOf(states[1], states[2]);
     return result;
   }
 });
