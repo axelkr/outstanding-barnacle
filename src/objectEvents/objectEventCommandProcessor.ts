@@ -53,7 +53,7 @@ export class ObjectEventCommandProcessor {
     return this.currentBoard;
   }
 
-  public initializeWithPersonalKanban() {
+  public initializeWithPersonalKanban(): void {
     const personalKanban = this.PersonalKanban();
     const aCreateStateModelCommand = new CreateStateModelCommand();
     const createStateModelEvent = aCreateStateModelCommand.createEvent('topic', personalKanban, 'initialModelUUID');
