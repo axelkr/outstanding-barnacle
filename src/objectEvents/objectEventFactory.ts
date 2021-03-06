@@ -5,7 +5,6 @@ import { StateModel } from '../heijunka/StateModel';
 import { CreateProjectCommand } from './CreateProjectCommand';
 import { RenameProjectCommand } from './RenameProjectCommand';
 import { CreateStateModelCommand } from './CreateStateModelCommand';
-import { SetStateModelCommand } from './SetStateModelCommand';
 import { CreateKanbanCardCommand } from './CreateKanbanCardCommand';
 import { MoveKanbanCardInProgressCommand } from './MoveKanbanCardInProgressCommand';
 import { KanbanCardCompletedStateCommand } from './KanbanCardCompletedStateCommand';
@@ -20,14 +19,9 @@ export class ObjectEventFactory {
     return createStateModelCommand.createEvent(topic, stateModel, this.createUUID());
   }
 
-  public setStateModel(topic: string, stateModel: StateModel): ObjectEvent {
-    const setStateModelCommand = new SetStateModelCommand();
-    return setStateModelCommand.createEvent(topic, stateModel);
-  }
-
-  public createProject(topic: string, projectName: string): ObjectEvent {
+  public createProject(topic: string, projectName: string, stateModel: StateModel): ObjectEvent {
     const createProjectCommand = new CreateProjectCommand();
-    return createProjectCommand.createEvent(topic, projectName, this.createUUID());
+    return createProjectCommand.createEvent(topic, projectName, stateModel, this.createUUID());
   }
 
   public renameProject(topic: string, project: Project, newName: string): ObjectEvent {

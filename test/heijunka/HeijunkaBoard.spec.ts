@@ -23,15 +23,17 @@ describe('HeijunkaBoard', () => {
 
   it('addProject: adds new project', () => {
     const aId = 'aRandomId';
-    const aProject = new Project(aId, 'aName', new Date());
+    const aStateModelId = 'aStateModelId';
+    const aProject = new Project(aId, aStateModelId,'aName', new Date());
     board = board.addProject(aProject);
     expect(board.projects.length).to.equal(1);
   });
 
   it('addProject: doesn\'t add project with same id twice', () => {
     const aId = 'aRandomId';
-    const aProject = new Project(aId, 'aName', new Date());
-    const sameProjectId = new Project(aId, 'anotherName', new Date());
+    const aStateModelId = 'aStateModelId';
+    const aProject = new Project(aId, aStateModelId, 'aName', new Date());
+    const sameProjectId = new Project(aId, aStateModelId, 'anotherName', new Date());
     board = board.addProject(aProject);
     board = board.addProject(sameProjectId);
     expect(board.projects.length).to.equal(1);
@@ -43,7 +45,8 @@ describe('HeijunkaBoard', () => {
 
   it('hasProject: true if project with id available', () => {
     const aId = 'aRandomId';
-    const aProject = new Project(aId, 'aName', new Date());
+    const aStateModelId = 'aStateModelId';
+    const aProject = new Project(aId, aStateModelId, 'aName', new Date());
     board = board.addProject(aProject);
     expect(board.hasProject(aId)).to.be.true;
   });
@@ -51,7 +54,8 @@ describe('HeijunkaBoard', () => {
   it('hasProject: false if project with id is not available', () => {
     const aId = 'aRandomId';
     const anotherId = 'anotherRandomId';
-    const aProject = new Project(aId, 'aName', new Date());
+    const aStateModelId = 'aStateModelId';
+    const aProject = new Project(aId, aStateModelId, 'aName', new Date());
     board = board.addProject(aProject);
     expect(board.hasProject(anotherId)).to.be.false;
   });
@@ -70,8 +74,9 @@ describe('HeijunkaBoard', () => {
 
   it('renameProject: throws exception if called with unknown id', () => {
     const aId = 'aRandomId';
+    const aStateModelId = 'aStateModelId';
     const anotherId = 'anotherRandomId';
-    const aProject = new Project(aId, 'aName', new Date());
+    const aProject = new Project(aId, aStateModelId,'aName', new Date());
     board = board.addProject(aProject);
 
     expect(function () { board.renameProject(anotherId, new Date(), undefined) }).throws();
@@ -80,10 +85,11 @@ describe('HeijunkaBoard', () => {
   it('renameProject: a more recent name leads to a change', () => {
     const aId = 'aRandomId';
     const initialName = 'initialName';
+    const aStateModelId = 'aStateModelId';
     const newName = 'newName';
     const initialDate = new Date(2000, 1, 1);
     const newDate = new Date(2001, 2, 2);
-    const aProject = new Project(aId, initialName, initialDate);
+    const aProject = new Project(aId, aStateModelId, initialName, initialDate);
     board = board.addProject(aProject);
     board = board.renameProject(aId, newDate, newName);
     expect(board.projects[0].name.value).to.equal(newName);
@@ -254,25 +260,5 @@ describe('HeijunkaBoard', () => {
     const anotherStateModel = new StateModel('anotherId', 'name', [oneState], oneState, []);
     board = board.addStateModel(aStateModel);
     expect(function () { board.addStateModel(anotherStateModel) }).throws();
-  });
-
-  it('setStateModel: throws exception if called with undefined as date', () => {
-    expect(function () { board.setStateModel(undefined) }).throws();
-  });
-
-  it('setStateModel: throws exception if called with state model not added before', () => {
-    const oneState = new State('stateId', 'stateName');
-    const aStateModel = new StateModel('id', 'name', [oneState], oneState, []);
-    const anotherStateModel = new StateModel('anotherId', 'name', [oneState], oneState, []);
-    board = board.addStateModel(aStateModel);
-    expect(function () { board.addStateModel(anotherStateModel) }).throws();
-  });
-
-  it('setStateModel: throws exception if called with state model not added before', () => {
-    const oneState = new State('stateId', 'stateName');
-    const aStateModel = new StateModel('id', 'name', [oneState], oneState, []);
-    board = board.addStateModel(aStateModel);
-    board = board.setStateModel(aStateModel.id);
-    expect(board.stateModel).to.equal(aStateModel);
   });
 });

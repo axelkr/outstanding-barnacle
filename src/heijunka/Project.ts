@@ -3,12 +3,17 @@ import { Property } from './Property';
 export class Project {
     readonly name: Property<string>;
     readonly id: string;
+    readonly stateModelId: string;
 
-    constructor(id: string, name: string, createdAt: Date) {
+    constructor(id: string, stateModelId: string, name: string, createdAt: Date) {
         if (typeof id === "undefined") {
             throw new Error('id cannot be undefined');
         }
+        if (typeof stateModelId === "undefined") {
+            throw new Error('stateModelId cannot be undefined');
+        }
         this.name = new Property<string>(name, createdAt);
+        this.stateModelId = stateModelId;
         this.id = id;
     }
 
@@ -17,6 +22,6 @@ export class Project {
         if (updatedNameProperty.value === this.name.value) {
             return this;
         }
-        return new Project(this.id,newName,updatedAt);
+        return new Project(this.id,this.stateModelId,newName,updatedAt);
     }
 }

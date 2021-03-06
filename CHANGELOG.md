@@ -1,3 +1,6 @@
+# v3.2.0
+- state models are now set per project
+
 # v3.1.2
 - separation of concerns: extract linearization of state model
 
