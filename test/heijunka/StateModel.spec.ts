@@ -70,52 +70,6 @@ describe('StateModel', () => {
     expect(afterRoundTrip.successors(afterRoundTrip.initialState())[0]).to.deep.equal(inputStateModel.successors(inputStateModel.initialState())[0]);
   })
 
-  it('linearizedStates: the initial state is returned as first state', () => {
-    const someStates = generateSomeStates();
-    const initialState = someStates[11];
-    const finalStates = [someStates[2],someStates[4],someStates[9]];
-    const inputStateModel =  new StateModel('id','name',someStates,initialState,finalStates);
-    expect(inputStateModel.linearizedStates()[0]).to.equal(initialState);
-  });
-
-  it('linearizedStates: each state is returned exactly once', () => {
-    const someStates = generateSomeStates();
-    const initialState = someStates[11];
-    const finalStates = [someStates[2],someStates[4],someStates[9]];
-    const inputStateModel =  new StateModel('id','name',someStates,initialState,finalStates);
-    expect(inputStateModel.linearizedStates()).to.have.lengthOf(someStates.length);
-    someStates.forEach(aState=> {
-      expect(inputStateModel.linearizedStates().indexOf(aState)).to.be.greaterThan(-1);
-    });
-  });
-
-  it('linearizedStates: a linear succession of states is returned like that', () => {
-    const someStates = generateSomeStates().splice(3,3);
-    const initialState = someStates[0];
-    const finalStates = [someStates[2]];
-    someStates.reverse();
-    const inputStateModel =  new StateModel('id','name',someStates,initialState,finalStates);
-    someStates.reverse();
-    inputStateModel.setSuccessorOf(someStates[0],someStates[1]);
-    inputStateModel.setSuccessorOf(someStates[1],someStates[2]);
-    expect(inputStateModel.linearizedStates()).to.have.lengthOf(someStates.length);
-    for (let i =0;i<someStates.length;i = i+1) {
-      expect(inputStateModel.linearizedStates()[i]).to.equal(someStates[i]);
-    }
-  });
-
-  function generateSomeStates() : State[] {
-    const result: State[] = [];
-    const idString = 'abcdefghijklmnopqrstuvw';
-    let nextStateIndex = 0;
-    while (nextStateIndex<idString.length) {
-      result.push(new State(idString[nextStateIndex],idString[nextStateIndex]));
-      nextStateIndex = 1+ nextStateIndex;
-    }
-    return result;
-  }
-
-
   function PersonalKanban(): StateModel {
     const states: State[] = [];
     states.push(new State('Backlog', 'Backlog'));

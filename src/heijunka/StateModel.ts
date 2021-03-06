@@ -63,6 +63,10 @@ export class StateModel {
         return this._successors.get(state);
     }
 
+    public tempGetStates(): State[] {
+        return this.states;
+    }
+
     public predecessors(state: State): State[] {
         if (typeof state === "undefined") {
             throw new Error('state cannot be undefined');
@@ -133,30 +137,6 @@ export class StateModel {
             result.setSuccessorOf(result.getState(container.from), result.getState(container.to));
         })
         return result;
-    }
-
-    public linearizedStates(): State[] {
-        const stateStillToLinearize = [...this.states];
-        const linearizedStates = [this.initialState()];
-        stateStillToLinearize.splice(stateStillToLinearize.indexOf(this._initialState), 1);
-        while (stateStillToLinearize.length > 0) {
-            const lastState: State = linearizedStates[linearizedStates.length - 1];
-            const successors = this.successors(lastState);
-            successors.forEach(aState => {
-                const alreadyLinearized = linearizedStates.indexOf(aState) > -1;
-                if (!alreadyLinearized) {
-                    linearizedStates.push(aState);
-                    stateStillToLinearize.splice(stateStillToLinearize.indexOf(aState), 1);
-                }
-            })
-            const atLeastOneStateWasJustLinearized = lastState.id !== linearizedStates[linearizedStates.length - 1].id;
-            if (!atLeastOneStateWasJustLinearized) {
-                const aState = stateStillToLinearize[0];
-                linearizedStates.push(aState);
-                stateStillToLinearize.splice(stateStillToLinearize.indexOf(aState), 1);
-            }
-        }
-        return linearizedStates;
     }
 
     private static serializeState(state: State): string {
