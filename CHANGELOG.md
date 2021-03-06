@@ -1,3 +1,6 @@
+# v3.1.2
+- separation of concerns: extract linearization of state model
+
 # v3.1.1
 - fix: PersonalKanban can be serialized itself
 

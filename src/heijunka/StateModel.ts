@@ -63,10 +63,6 @@ export class StateModel {
         return this._successors.get(state);
     }
 
-    public tempGetStates(): State[] {
-        return this.states;
-    }
-
     public predecessors(state: State): State[] {
         if (typeof state === "undefined") {
             throw new Error('state cannot be undefined');
