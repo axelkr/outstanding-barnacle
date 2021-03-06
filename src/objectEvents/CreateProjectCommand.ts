@@ -13,8 +13,8 @@ export class CreateProjectCommand extends BaseCommand implements ProcessObjectEv
     super(ObjectType.project, 'Create');
   }
 
-  canProcess(): boolean {
-    return true;
+  canProcess(objectEvent: ObjectEvent, board: HeijunkaBoard): boolean {
+    return board.hasStateModel(objectEvent.payload.get(this.stateModelIdKey));
   }
 
   process(objectEvent: ObjectEvent, board: HeijunkaBoard): HeijunkaBoard {
