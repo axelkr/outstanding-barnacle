@@ -1,3 +1,6 @@
+# v3.2.1
+- shortcut to access state model of a specific project
+
 # v3.2.0
 - state models are now set per project
 

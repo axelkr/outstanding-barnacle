@@ -195,4 +195,11 @@ export class HeijunkaBoard {
         }
         return this.stateModels.some(stateModel => stateModel.id === aStateModelId);
     }
+
+    public getStateModelOf(project: Project): StateModel {
+        if (project === undefined) {
+            throw new Error('input project has to be defined');
+        }
+        return this.stateModels.find(aStateModel=>aStateModel.id === project.stateModelId);
+    }
 }
