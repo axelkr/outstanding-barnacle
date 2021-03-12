@@ -1,5 +1,6 @@
 # v3.3.2 
-- provid uuid generator
+- provide uuid generator
+
 # v3.3.1
 - provide command to move a card to trash
 
