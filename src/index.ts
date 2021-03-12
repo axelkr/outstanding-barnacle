@@ -8,3 +8,4 @@ export { LinearizeStateModelService } from './heijunka/LinearizeStateModelServic
 export { StateTransition, TransitionType } from './heijunka/StateTransition';
 export { ObjectEventFactory } from './objectEvents/objectEventFactory'
 export { ObjectEventCommandProcessor } from './objectEvents/objectEventCommandProcessor'
+export { UUIDGenerator } from './heijunka/UUIDGenerator'

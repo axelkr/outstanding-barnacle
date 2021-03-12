@@ -1,3 +1,5 @@
+import { UUIDGenerator } from "./UUIDGenerator";
+
 export class State {
     readonly name: string;
     readonly id: string;
@@ -23,5 +25,9 @@ export class State {
     public static deserialize(serizalizedState: string): State {
         const items: Map<string, string> = new Map<string, string>(JSON.parse(serizalizedState));
         return new State(items.get('id'), items.get('name'));
+    }
+
+    public static generateState(name: string): State {
+        return new State(UUIDGenerator.createUUID(),name);
     }
 }
