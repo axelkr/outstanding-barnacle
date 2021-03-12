@@ -8,6 +8,7 @@ import { CreateStateModelCommand } from './CreateStateModelCommand';
 import { CreateKanbanCardCommand } from './CreateKanbanCardCommand';
 import { MoveKanbanCardInProgressCommand } from './MoveKanbanCardInProgressCommand';
 import { KanbanCardCompletedStateCommand } from './KanbanCardCompletedStateCommand';
+import { MoveKanbanCardToTrashCommand } from './MoveKanbanCardToTrashCommand';
 import { RenameKanbanCardCommand } from './RenameKanbanCardCommand';
 
 import { ObjectEvent } from 'choicest-barnacle';
@@ -47,6 +48,11 @@ export class ObjectEventFactory {
   public moveKanbanCardComplete(topic: string, kanbanCard: KanbanCard, state: State): ObjectEvent {
     const moveKanbanCardCompleteCommand = new KanbanCardCompletedStateCommand();
     return moveKanbanCardCompleteCommand.createEvent(topic, kanbanCard, state.id);
+  }
+
+  public moveKanbanCardToTrash(topic: string, kanbanCard: KanbanCard): ObjectEvent {
+    const moveKanbanCardToTrashCommand = new MoveKanbanCardToTrashCommand();
+    return moveKanbanCardToTrashCommand.createEvent(topic, kanbanCard);
   }
 
   private createUUID(): string {

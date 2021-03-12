@@ -1,3 +1,6 @@
+# v3.3.1
+- provide command to move a card to trash
+
 # v3.3.0
 - model trash state explicitly
 

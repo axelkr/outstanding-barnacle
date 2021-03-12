@@ -8,6 +8,7 @@ import { CreateKanbanCardCommand } from './CreateKanbanCardCommand';
 import { MoveKanbanCardInProgressCommand } from './MoveKanbanCardInProgressCommand';
 import { KanbanCardCompletedStateCommand } from './KanbanCardCompletedStateCommand';
 import { RenameKanbanCardCommand } from './RenameKanbanCardCommand';
+import { MoveKanbanCardToTrashCommand } from './MoveKanbanCardToTrashCommand';
 
 export class ObjectEventCommandProcessor {
   private currentBoard: HeijunkaBoard;
@@ -25,6 +26,7 @@ export class ObjectEventCommandProcessor {
     availableCommands.push(new KanbanCardCompletedStateCommand());
     availableCommands.push(new RenameKanbanCardCommand());
     availableCommands.push(new CreateStateModelCommand());
+    availableCommands.push(new MoveKanbanCardToTrashCommand());
 
     availableCommands.forEach(aCommand => this.commands.set(aCommand.objectEventTypeProcessing, aCommand));
   }
