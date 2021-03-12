@@ -3,12 +3,13 @@ import { State } from './State';
 export class StateModel {
     private readonly states: State[];
     private readonly _initialState: State;
+    private readonly _trashState: State;
     private readonly _finalStates: State[];
     private readonly _successors: Map<State, State[]> = new Map<State, State[]>();
     readonly name: string;
     readonly id: string
 
-    constructor(id: string, name: string, states: State[], initialState: State, finalStates: State[]) {
+    constructor(id: string, name: string, states: State[], initialState: State, finalStates: State[],trashState: State) {
         if (typeof states === "undefined") {
             throw new Error('states cannot be undefined');
         }
@@ -21,6 +22,9 @@ export class StateModel {
         if (typeof initialState === "undefined") {
             throw new Error('initialState cannot be undefined');
         }
+        if (typeof trashState === "undefined") {
+            throw new Error('trashState cannot be undefined');
+        }
         if (typeof finalStates === "undefined") {
             throw new Error('initialState cannot be undefined');
         }
@@ -29,6 +33,10 @@ export class StateModel {
         if (initialStateNotPartOfStates) {
             throw new Error('initial state has to be part of the set of states');
         }
+        const trashStateNotPartOfStates = (states.indexOf(trashState) === -1);
+        if (trashStateNotPartOfStates) {
+            throw new Error('trash state has to be part of the set of states');
+        }
         finalStates.forEach(aFinalState => {
             const aFinalStateIsPartOfStates = (states.indexOf(aFinalState) > -1);
             if (!aFinalStateIsPartOfStates) {
@@ -36,10 +44,16 @@ export class StateModel {
             }
         })
 
+        const trashStateNotPartOfFinalStates = (finalStates.indexOf(trashState) === -1);
+        if (trashStateNotPartOfFinalStates) {
+            finalStates.push(trashState);
+        }
+
         this.id = id;
         this.name = name;
         this.states = states;
         this._initialState = initialState;
+        this._trashState = trashState;
         this._finalStates = finalStates;
 
         this.states.forEach(aState => {
@@ -87,6 +101,10 @@ export class StateModel {
         return aState;
     }
 
+    public trashState(): State {
+        return this._trashState;
+    }
+
     public initialState(): State {
         return this._initialState;
     }
@@ -99,9 +117,10 @@ export class StateModel {
         let items = new Map<string, string>();
         items = items.set('name', stateModel.name);
         items = items.set('id', stateModel.id);
-        items = items.set('initialState', StateModel.serializeState(stateModel.initialState()));
-        items = items.set('finalStates', JSON.stringify(stateModel.finalStates().map(x => StateModel.serializeState(x))));
-        items = items.set('states', JSON.stringify(stateModel.states.map(x => StateModel.serializeState(x))));
+        items = items.set('initialState', State.serialize(stateModel.initialState()));
+        items = items.set('trashState', State.serialize(stateModel.trashState()));
+        items = items.set('finalStates', JSON.stringify(stateModel.finalStates().map(x => State.serialize(x))));
+        items = items.set('states', JSON.stringify(stateModel.states.map(x => State.serialize(x))));
         const linearizedSuccessorIds: Array<string> = new Array<string>();
         stateModel._successors.forEach((value, key) => {
             value.forEach(aSuccessor => {
@@ -118,33 +137,22 @@ export class StateModel {
         const items: Map<string, string> = new Map<string, string>(JSON.parse(stateModelSerialized));
         const name = items.get('name');
         const id = items.get('id');
-        const states: State[] = JSON.parse(items.get('states')).map((x: string) => StateModel.deserializeState(x));
-        const initialState = states.find(x => x.id === StateModel.deserializeState(items.get('initialState')).id);
+        const states: State[] = JSON.parse(items.get('states')).map((x: string) => State.deserialize(x));
+        const initialState = states.find(x => x.id === State.deserialize(items.get('initialState')).id);
+        const trashState = states.find(x => x.id === State.deserialize(items.get('trashState')).id);
         const linearizedSuccessorIds: Array<string> = JSON.parse(items.get('successors'));
 
         const finalStates = JSON.parse(items.get('finalStates')).map((x: string) => {
-            const idToLookFor = StateModel.deserializeState(x).id;
+            const idToLookFor = State.deserialize(x).id;
             return states.find(x => x.id === idToLookFor);
         });
-        const result = new StateModel(id, name, states, initialState, finalStates);
+        const result = new StateModel(id, name, states, initialState, finalStates, trashState);
 
         linearizedSuccessorIds.forEach((value) => {
             const container = JSON.parse(value);
             result.setSuccessorOf(result.getState(container.from), result.getState(container.to));
         })
         return result;
-    }
-
-    private static serializeState(state: State): string {
-        let items = new Map<string, string>();
-        items = items.set('name', state.name);
-        items = items.set('id', state.id);
-        return JSON.stringify(Array.from(items.entries()));
-    }
-
-    private static deserializeState(serizalizedState: string): State {
-        const items: Map<string, string> = new Map<string, string>(JSON.parse(serizalizedState));
-        return new State(items.get('id'), items.get('name'));
     }
 
     private hasState(state: State): boolean {

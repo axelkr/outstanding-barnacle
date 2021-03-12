@@ -24,7 +24,7 @@ describe('HeijunkaBoard', () => {
   it('addProject: adds new project', () => {
     const aId = 'aRandomId';
     const aStateModelId = 'aStateModelId';
-    const aProject = new Project(aId, aStateModelId,'aName', new Date());
+    const aProject = new Project(aId, aStateModelId, 'aName', new Date());
     board = board.addProject(aProject);
     expect(board.projects.length).to.equal(1);
   });
@@ -76,7 +76,7 @@ describe('HeijunkaBoard', () => {
     const aId = 'aRandomId';
     const aStateModelId = 'aStateModelId';
     const anotherId = 'anotherRandomId';
-    const aProject = new Project(aId, aStateModelId,'aName', new Date());
+    const aProject = new Project(aId, aStateModelId, 'aName', new Date());
     board = board.addProject(aProject);
 
     expect(function () { board.renameProject(anotherId, new Date(), undefined) }).throws();
@@ -238,14 +238,14 @@ describe('HeijunkaBoard', () => {
 
   it('hasStateModel: returns true if called with id of a model previously added', () => {
     const oneState = new State('stateId', 'stateName');
-    const aStateModel = new StateModel('id', 'name', [oneState], oneState, []);
+    const aStateModel = new StateModel('id', 'name', [oneState], oneState, [], oneState);
     board = board.addStateModel(aStateModel);
     expect(board.hasStateModel(aStateModel.id)).to.be.true;
   });
 
   it('hasStateModel: returns false if called with id of no model previously added', () => {
     const oneState = new State('stateId', 'stateName');
-    const aStateModel = new StateModel('id', 'name', [oneState], oneState, []);
+    const aStateModel = new StateModel('id', 'name', [oneState], oneState, [], oneState);
     board = board.addStateModel(aStateModel);
     expect(board.hasStateModel('anotherStateId')).to.be.false;
   });
@@ -256,8 +256,8 @@ describe('HeijunkaBoard', () => {
 
   it('addStateModel: throws exception if called with state model with same name', () => {
     const oneState = new State('stateId', 'stateName');
-    const aStateModel = new StateModel('id', 'name', [oneState], oneState, []);
-    const anotherStateModel = new StateModel('anotherId', 'name', [oneState], oneState, []);
+    const aStateModel = new StateModel('id', 'name', [oneState], oneState, [], oneState);
+    const anotherStateModel = new StateModel('anotherId', 'name', [oneState], oneState, [], oneState);
     board = board.addStateModel(aStateModel);
     expect(function () { board.addStateModel(anotherStateModel) }).throws();
   });

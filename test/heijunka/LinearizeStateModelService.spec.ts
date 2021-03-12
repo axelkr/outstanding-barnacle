@@ -8,18 +8,20 @@ describe('LinearizeStateModelService', () => {
   it('linearizedStates: the initial state is returned as first state', () => {
     const someStates = generateSomeStates();
     const initialState = someStates[11];
+    const trashState = someStates[14];
     const finalStates = [someStates[2], someStates[4], someStates[9]];
-    const inputStateModel = new StateModel('id', 'name', someStates, initialState, finalStates);
+    const inputStateModel = new StateModel('id', 'name', someStates, initialState, finalStates,trashState);
     const testService = new LinearizeStateModelService();
     expect(testService.linearize(inputStateModel)[0]).to.equal(initialState);
   });
 
   it('linearizedStates: each state is returned exactly once', () => {
     const someStates = generateSomeStates();
+    const trashState = someStates[14];
 
     const initialState = someStates[11];
     const finalStates = [someStates[2], someStates[4], someStates[9]];
-    const inputStateModel = new StateModel('id', 'name', someStates, initialState, finalStates);
+    const inputStateModel = new StateModel('id', 'name', someStates, initialState, finalStates,trashState);
     for (let i = 0; i < someStates.length - 3; i = i + 1) {
       inputStateModel.setSuccessorOf(someStates[i], someStates[i + 1]);
       inputStateModel.setSuccessorOf(someStates[i], someStates[i + 3]);
@@ -36,9 +38,10 @@ describe('LinearizeStateModelService', () => {
   it('linearizedStates: a linear succession of states is returned like that', () => {
     const someStates = generateSomeStates().splice(3, 3);
     const initialState = someStates[0];
+    const trashState = someStates[2];
     const finalStates = [someStates[2]];
     someStates.reverse();
-    const inputStateModel = new StateModel('id', 'name', someStates, initialState, finalStates);
+    const inputStateModel = new StateModel('id', 'name', someStates, initialState, finalStates,trashState);
     someStates.reverse();
     inputStateModel.setSuccessorOf(someStates[0], someStates[1]);
     inputStateModel.setSuccessorOf(someStates[1], someStates[2]);
