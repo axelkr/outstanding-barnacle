@@ -1,3 +1,6 @@
+# v3.3.0
+- model trash state explicitly
+
 # v3.2.1
 - shortcut to access state model of a specific project
 
