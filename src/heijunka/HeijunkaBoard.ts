@@ -44,6 +44,32 @@ export class HeijunkaBoard {
         return new HeijunkaBoard(this.projects, newKanbanCards, this.stateModels);
     }
 
+    public initializePropertyOfProject(id: string, propertyName: string, updateAt: Date, updateTo: string): HeijunkaBoard {
+        if (typeof id === "undefined") {
+            throw new Error('parameter id cannot be undefined.');
+        }
+        if (typeof updateAt === "undefined") {
+            throw new Error('parameter updateAt cannot be undefined.');
+        }
+        if (typeof updateTo === "undefined") {
+            throw new Error('parameter updateTo cannot be undefined.');
+        }
+        if (!this.hasProject(id)) {
+            throw new Error('unknown project with id ' + id);
+        }
+
+        const newProjects: Project[] = [];
+        this.projects.forEach(aProject => {
+            if (aProject.id === id) {
+                const updatedProject = aProject.initializeProperty(propertyName, updateTo, updateAt);
+                newProjects.push(updatedProject);
+            } else {
+                newProjects.push(aProject);
+            }
+        })
+        return new HeijunkaBoard(newProjects, this.kanbanCards, this.stateModels);
+    }
+
     public updatePropertyOfProject(id: string, propertyName: string, updateAt: Date, updateTo: string): HeijunkaBoard {
         if (typeof id === "undefined") {
             throw new Error('parameter id cannot be undefined.');
@@ -94,6 +120,12 @@ export class HeijunkaBoard {
         const updatePropertyOfCard = (aCard: KanbanCard) => aCard.updateProperty(propertyName, updateTo, updateAt);
         const differentName = (aCard: KanbanCard, anotherCard: KanbanCard) => aCard.valueOfProperty(propertyName) !== anotherCard.valueOfProperty(propertyName);
         return this.replaceKanbanCard(id, updatePropertyOfCard, differentName);
+    }
+
+    public initializePropertyKanbanCard(id: string, propertyName: string, updateAt: Date, updateTo: string): HeijunkaBoard {
+        const initializePropertyOfCard = (aCard: KanbanCard) => aCard.initializeProperty(propertyName, updateTo, updateAt);
+        const initializingAlwaysChanges = () => true;
+        return this.replaceKanbanCard(id, initializePropertyOfCard, initializingAlwaysChanges);
     }
 
     public completedState(aKanbanCard: string, aState: string, completedAt: Date): HeijunkaBoard {

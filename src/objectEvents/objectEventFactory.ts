@@ -12,6 +12,8 @@ import { MoveKanbanCardInProgressCommand } from './MoveKanbanCardInProgressComma
 import { KanbanCardCompletedStateCommand } from './KanbanCardCompletedStateCommand';
 import { MoveKanbanCardToTrashCommand } from './MoveKanbanCardToTrashCommand';
 import { UpdatePropertyKanbanCardCommand } from './UpdatePropertyKanbanCardCommand';
+import { InitializePropertyKanbanCardCommand} from './InitializePropertyKanbanCardCommand';
+import { InitializePropertyProjectCommand} from './InitializePropertyProjectCommand';
 
 import { ObjectEvent } from 'choicest-barnacle';
 
@@ -27,6 +29,11 @@ export class ObjectEventFactory {
     return createProjectCommand.createEvent(topic, stateModel, this.createUUID());
   }
 
+  public initializeProjectProperties(topic: string, project: Project, propertyName: string, newValue: string): ObjectEvent {
+    const initializePropertyProjectCommand = new InitializePropertyProjectCommand();
+    return initializePropertyProjectCommand.createEvent(topic, project, propertyName, newValue);
+  }
+
   public updateProjectProperties(topic: string, project: Project, propertyName: string, newValue: string): ObjectEvent {
     const updatePropertyProjectCommand = new UpdatePropertyProjectCommand();
     return updatePropertyProjectCommand.createEvent(topic, project, propertyName, newValue);
@@ -35,6 +42,11 @@ export class ObjectEventFactory {
   public createKanbanCard(topic: string, project: Project): ObjectEvent {
     const createKanbanCardCommand = new CreateKanbanCardCommand();
     return createKanbanCardCommand.createEvent(topic, project.id, this.createUUID());
+  }
+
+  public initializeKanbanCardProperties(topic: string, kanbanCard: KanbanCard, propertyName: string, newValue: string): ObjectEvent {
+    const initializePropertyKanbanCardCommand = new InitializePropertyKanbanCardCommand();
+    return initializePropertyKanbanCardCommand.createEvent(topic, kanbanCard, propertyName, newValue);
   }
 
   public updateKanbanCardProperties(topic: string, kanbanCard: KanbanCard, propertyName: string, newValue: string): ObjectEvent {

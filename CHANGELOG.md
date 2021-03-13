@@ -1,3 +1,6 @@
+# v4.1.3
+- fix: add possibility to initialize properties in the first place
+
 # v4.1.2
 - fix: rename method to new name.
 
