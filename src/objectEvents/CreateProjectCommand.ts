@@ -7,7 +7,6 @@ import { BaseCommand, ObjectType } from './BaseCommand';
 import { ReadOnlyProperties } from '../heijunka/ReadOnlyProperties';
 
 export class CreateProjectCommand extends BaseCommand implements ProcessObjectEventCommand {
-  private readonly projectNameKey = 'name';
   private readonly stateModelIdKey = 'stateModelId';
 
   constructor() {
@@ -19,13 +18,12 @@ export class CreateProjectCommand extends BaseCommand implements ProcessObjectEv
   }
 
   process(objectEvent: ObjectEvent, board: HeijunkaBoard): HeijunkaBoard {
-    let newProject = new Project(objectEvent.object, objectEvent.payload.get(this.stateModelIdKey), new ReadOnlyProperties());
-    newProject = newProject.initializeProperty('name',objectEvent.payload.get(this.projectNameKey), objectEvent.time)
+    const newProject = new Project(objectEvent.object, objectEvent.payload.get(this.stateModelIdKey), new ReadOnlyProperties());
     return board.addProject(newProject);
   }
 
-  createEvent(topic: string, projectName: string, stateModel: StateModel, newUUID: string): ObjectEvent {
-    const payload = new Map([[this.projectNameKey, projectName],[this.stateModelIdKey,stateModel.id]]);
+  createEvent(topic: string, stateModel: StateModel, newUUID: string): ObjectEvent {
+    const payload = new Map([[this.stateModelIdKey, stateModel.id]]);
     return this.createObjectEvent(topic, newUUID, payload);
   }
 }

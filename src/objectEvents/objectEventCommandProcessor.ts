@@ -2,12 +2,12 @@ import { ObjectEvent } from 'choicest-barnacle';
 import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
 import { CreateProjectCommand } from './CreateProjectCommand';
-import { RenameProjectCommand } from './RenameProjectCommand';
+import { UpdatePropertyProjectCommand } from './UpdatePropertyProjectCommand';
 import { CreateStateModelCommand } from './CreateStateModelCommand';
 import { CreateKanbanCardCommand } from './CreateKanbanCardCommand';
 import { MoveKanbanCardInProgressCommand } from './MoveKanbanCardInProgressCommand';
 import { KanbanCardCompletedStateCommand } from './KanbanCardCompletedStateCommand';
-import { RenameKanbanCardCommand } from './RenameKanbanCardCommand';
+import { UpdatePropertyKanbanCardCommand } from './UpdatePropertyKanbanCardCommand';
 import { MoveKanbanCardToTrashCommand } from './MoveKanbanCardToTrashCommand';
 
 export class ObjectEventCommandProcessor {
@@ -20,11 +20,11 @@ export class ObjectEventCommandProcessor {
 
     const availableCommands: ProcessObjectEventCommand[] = [];
     availableCommands.push(new CreateProjectCommand());
-    availableCommands.push(new RenameProjectCommand());
+    availableCommands.push(new UpdatePropertyProjectCommand());
     availableCommands.push(new CreateKanbanCardCommand());
     availableCommands.push(new MoveKanbanCardInProgressCommand());
     availableCommands.push(new KanbanCardCompletedStateCommand());
-    availableCommands.push(new RenameKanbanCardCommand());
+    availableCommands.push(new UpdatePropertyKanbanCardCommand());
     availableCommands.push(new CreateStateModelCommand());
     availableCommands.push(new MoveKanbanCardToTrashCommand());
 

@@ -5,13 +5,13 @@ import { StateModel } from '../heijunka/StateModel';
 import { UUIDGenerator } from '../heijunka/UUIDGenerator';
 
 import { CreateProjectCommand } from './CreateProjectCommand';
-import { RenameProjectCommand } from './RenameProjectCommand';
+import { UpdatePropertyProjectCommand } from './UpdatePropertyProjectCommand';
 import { CreateStateModelCommand } from './CreateStateModelCommand';
 import { CreateKanbanCardCommand } from './CreateKanbanCardCommand';
 import { MoveKanbanCardInProgressCommand } from './MoveKanbanCardInProgressCommand';
 import { KanbanCardCompletedStateCommand } from './KanbanCardCompletedStateCommand';
 import { MoveKanbanCardToTrashCommand } from './MoveKanbanCardToTrashCommand';
-import { RenameKanbanCardCommand } from './RenameKanbanCardCommand';
+import { UpdatePropertyKanbanCardCommand } from './UpdatePropertyKanbanCardCommand';
 
 import { ObjectEvent } from 'choicest-barnacle';
 
@@ -22,24 +22,24 @@ export class ObjectEventFactory {
     return createStateModelCommand.createEvent(topic, stateModel, this.createUUID());
   }
 
-  public createProject(topic: string, projectName: string, stateModel: StateModel): ObjectEvent {
+  public createProject(topic: string, stateModel: StateModel): ObjectEvent {
     const createProjectCommand = new CreateProjectCommand();
-    return createProjectCommand.createEvent(topic, projectName, stateModel, this.createUUID());
+    return createProjectCommand.createEvent(topic, stateModel, this.createUUID());
   }
 
-  public renameProject(topic: string, project: Project, newName: string): ObjectEvent {
-    const renameProjectCommand = new RenameProjectCommand();
-    return renameProjectCommand.createEvent(topic, project, newName);
+  public updateProjectProperties(topic: string, project: Project, propertyName: string, newValue: string): ObjectEvent {
+    const updatePropertyProjectCommand = new UpdatePropertyProjectCommand();
+    return updatePropertyProjectCommand.createEvent(topic, project, propertyName, newValue);
   }
 
-  public createKanbanCard(topic: string, project: Project, name: string): ObjectEvent {
+  public createKanbanCard(topic: string, project: Project): ObjectEvent {
     const createKanbanCardCommand = new CreateKanbanCardCommand();
-    return createKanbanCardCommand.createEvent(topic, project.id, name, this.createUUID());
+    return createKanbanCardCommand.createEvent(topic, project.id, this.createUUID());
   }
 
-  public renameKanbanCard(topic: string, kanbanCard: KanbanCard, newName: string): ObjectEvent {
-    const renameKanbanCardCommand = new RenameKanbanCardCommand();
-    return renameKanbanCardCommand.createEvent(topic, kanbanCard, newName);
+  public renameKanbanCard(topic: string, kanbanCard: KanbanCard, propertyName: string, newValue: string): ObjectEvent {
+    const updatePropertyKanbanCardCommand = new UpdatePropertyKanbanCardCommand();
+    return updatePropertyKanbanCardCommand.createEvent(topic, kanbanCard, propertyName, newValue);
   }
 
   public moveKanbanCardInProgress(topic: string, kanbanCard: KanbanCard, state: State): ObjectEvent {

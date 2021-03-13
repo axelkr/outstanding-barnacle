@@ -14,13 +14,12 @@ export class CreateKanbanCardCommand extends BaseCommand implements ProcessObjec
   }
 
   process(objectEvent: ObjectEvent, board: HeijunkaBoard): HeijunkaBoard {
-    let newCard = KanbanCard.create(objectEvent.object, objectEvent.payload.get('project'));
-    newCard = newCard.initializeProperty('name',objectEvent.payload.get('name'), objectEvent.time);
+    const newCard = KanbanCard.create(objectEvent.object, objectEvent.payload.get('project'));
     return board.addKanbanCard(newCard);
   }
 
-  createEvent(topic: string, project: string, name: string, newUUID: string): ObjectEvent {
-    const payload = new Map([['name', name], ['project', project]]);
+  createEvent(topic: string, project: string, newUUID: string): ObjectEvent {
+    const payload = new Map([['project', project]]);
     return this.createObjectEvent(topic, newUUID, payload);
   }
 }
