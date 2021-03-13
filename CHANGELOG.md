@@ -1,3 +1,6 @@
+# next version
+- fix: names of factory methods related to properties reflect now the fact that they are about one property only.
+
 # v4.1.3
 - fix: add possibility to initialize properties in the first place
 
