@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import { Project } from '../../src/heijunka/Project';
-import { Property } from '../../src/heijunka/Property';
+import { ReadOnlyProperties } from '../../src/heijunka/ReadOnlyProperties';
 import { KanbanCard } from '../../src/heijunka/KanbanCard';
 import { HeijunkaBoard } from '../../src/heijunka/HeijunkaBoard';
 import { TransitionType } from '../../src/heijunka/StateTransition';
@@ -25,7 +25,7 @@ describe('HeijunkaBoard', () => {
   it('addProject: adds new project', () => {
     const aId = 'aRandomId';
     const aStateModelId = 'aStateModelId';
-    const aProject = new Project(aId, aStateModelId, new Map<string, Property<string>>());
+    const aProject = new Project(aId, aStateModelId, new ReadOnlyProperties());
     board = board.addProject(aProject);
     expect(board.projects.length).to.equal(1);
   });
@@ -33,8 +33,8 @@ describe('HeijunkaBoard', () => {
   it('addProject: doesn\'t add project with same id twice', () => {
     const aId = 'aRandomId';
     const aStateModelId = 'aStateModelId';
-    const aProject = new Project(aId, aStateModelId, new Map<string, Property<string>>());
-    const sameProjectId = new Project(aId, aStateModelId, new Map<string, Property<string>>());
+    const aProject = new Project(aId, aStateModelId, new ReadOnlyProperties());
+    const sameProjectId = new Project(aId, aStateModelId, new ReadOnlyProperties());
     board = board.addProject(aProject);
     board = board.addProject(sameProjectId);
     expect(board.projects.length).to.equal(1);
@@ -47,7 +47,7 @@ describe('HeijunkaBoard', () => {
   it('hasProject: true if project with id available', () => {
     const aId = 'aRandomId';
     const aStateModelId = 'aStateModelId';
-    const aProject = new Project(aId, aStateModelId, new Map<string, Property<string>>());
+    const aProject = new Project(aId, aStateModelId, new ReadOnlyProperties());
     board = board.addProject(aProject);
     expect(board.hasProject(aId)).to.be.true;
   });
@@ -56,7 +56,7 @@ describe('HeijunkaBoard', () => {
     const aId = 'aRandomId';
     const anotherId = 'anotherRandomId';
     const aStateModelId = 'aStateModelId';
-    const aProject = new Project(aId, aStateModelId, new Map<string, Property<string>>());
+    const aProject = new Project(aId, aStateModelId, new ReadOnlyProperties());
     board = board.addProject(aProject);
     expect(board.hasProject(anotherId)).to.be.false;
   });
@@ -77,7 +77,7 @@ describe('HeijunkaBoard', () => {
     const aId = 'aRandomId';
     const aStateModelId = 'aStateModelId';
     const anotherId = 'anotherRandomId';
-    const aProject = new Project(aId, aStateModelId, new Map<string, Property<string>>());
+    const aProject = new Project(aId, aStateModelId, new ReadOnlyProperties());
     board = board.addProject(aProject);
 
     expect(function () { board.updatePropertyOfProject(anotherId, 'propertyName', new Date(), undefined) }).throws();
@@ -91,7 +91,7 @@ describe('HeijunkaBoard', () => {
     const newName = 'newName';
     const initialDate = new Date(2000, 1, 1);
     const newDate = new Date(2001, 2, 2);
-    const aProject = new Project(aId, aStateModelId, new Map<string, Property<string>>()).initializeProperty(propertyName, initialName, initialDate);
+    const aProject = new Project(aId, aStateModelId, new ReadOnlyProperties()).initializeProperty(propertyName, initialName, initialDate);
     board = board.addProject(aProject);
     board = board.updatePropertyOfProject(aId, propertyName, newDate, newName);
     expect(board.projects[0].valueOfProperty(propertyName)).to.equal(newName);

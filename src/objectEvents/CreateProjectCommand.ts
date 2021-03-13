@@ -1,10 +1,10 @@
 import { Project } from '../heijunka/Project';
-import { Property } from '../heijunka/Property';
 import { StateModel } from '../heijunka/StateModel';
 import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { ObjectEvent } from 'choicest-barnacle';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
 import { BaseCommand, ObjectType } from './BaseCommand';
+import { ReadOnlyProperties } from '../heijunka/ReadOnlyProperties';
 
 export class CreateProjectCommand extends BaseCommand implements ProcessObjectEventCommand {
   private readonly projectNameKey = 'name';
@@ -19,7 +19,7 @@ export class CreateProjectCommand extends BaseCommand implements ProcessObjectEv
   }
 
   process(objectEvent: ObjectEvent, board: HeijunkaBoard): HeijunkaBoard {
-    let newProject = new Project(objectEvent.object, objectEvent.payload.get(this.stateModelIdKey), new Map<string,Property<string>>());
+    let newProject = new Project(objectEvent.object, objectEvent.payload.get(this.stateModelIdKey), new ReadOnlyProperties());
     newProject = newProject.initializeProperty('name',objectEvent.payload.get(this.projectNameKey), objectEvent.time)
     return board.addProject(newProject);
   }

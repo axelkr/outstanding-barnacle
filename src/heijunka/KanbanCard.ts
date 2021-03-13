@@ -1,14 +1,14 @@
-import { Property } from './Property';
 import { StateHistory } from './StateHistory';
 import { StateTransition } from './StateTransition';
+import { ReadOnlyProperties } from '../../src/heijunka/ReadOnlyProperties';
 
 export class KanbanCard {
     readonly id: string;
     readonly project: string;
     readonly history: StateHistory;
-    private readonly properties: Map<string, Property<string>>;
+    private readonly properties: ReadOnlyProperties;
 
-    private constructor(id: string, project: string, history: StateHistory, properties: Map<string, Property<string>>) {
+    private constructor(id: string, project: string, history: StateHistory, properties: ReadOnlyProperties) {
         this.id = id;
         this.project = project;
         this.history = history;
@@ -22,30 +22,24 @@ export class KanbanCard {
         if (typeof project === "undefined") {
             throw new Error('project cannot be undefined');
         }
-        const properties = new Map<string, Property<string>>();
+        const properties = new ReadOnlyProperties();
         return new KanbanCard(id, project, StateHistory.emptyHistory(), properties);
     }
 
     initializeProperty(propertyName: string, initialPropertyValue: string, initializedAt: Date): KanbanCard {
-        const newProperty = new Property<string>(initialPropertyValue, initializedAt);
-        const updatedProperties = new Map<string, Property<string>>(this.properties);
-        updatedProperties.set(propertyName, newProperty)
-        return new KanbanCard(this.id, this.project, this.history, updatedProperties);
+        return new KanbanCard(this.id, this.project, this.history, this.properties.initialize(propertyName, initialPropertyValue, initializedAt));
     }
 
     updateProperty(propertyName: string, newPropertyValue: string, updatedAt: Date): KanbanCard {
-        const updatedProperty = this.properties.get(propertyName).update(newPropertyValue, updatedAt);
-        if (updatedProperty.value === this.properties.get(propertyName).value) {
+        const updatedProperties = this.properties.update(propertyName, newPropertyValue, updatedAt);
+        if (updatedProperties.valueOf(propertyName) === this.properties.valueOf(propertyName)) {
             return this;
         }
-        const updatedProperties = new Map<string, Property<string>>(this.properties);
-        updatedProperties.set(propertyName, updatedProperty)
-
         return new KanbanCard(this.id, this.project, this.history, updatedProperties);
     }
 
     valueOfProperty(propertyName: string): string {
-        return this.properties.get(propertyName).value;
+        return this.properties.valueOf(propertyName);
     }
 
     transitToNewState(aStateTransition: StateTransition): KanbanCard {
