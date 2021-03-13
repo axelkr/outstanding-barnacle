@@ -15,7 +15,7 @@ export class RenameProjectCommand extends BaseCommand implements ProcessObjectEv
   }
 
   process(objectEvent: ObjectEvent, board: HeijunkaBoard): HeijunkaBoard {
-    return board.renameProject(objectEvent.object, objectEvent.time, objectEvent.payload.get('name'));
+    return board.updatePropertyOfProject(objectEvent.object, 'name', objectEvent.time, objectEvent.payload.get('name'));
   }
 
   createEvent(topic: string, project: Project, newName: string): ObjectEvent {

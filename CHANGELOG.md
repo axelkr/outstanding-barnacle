@@ -1,3 +1,6 @@
+# v4.0.0
+- Kanban Cards and projects can now have generic string properties. Name has been discontinued as object property; use a generic string property instead.
+
 # v3.3.2 
 - provide uuid generator
 

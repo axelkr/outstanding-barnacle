@@ -1,4 +1,5 @@
 import { Project } from '../heijunka/Project';
+import { Property } from '../heijunka/Property';
 import { StateModel } from '../heijunka/StateModel';
 import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { ObjectEvent } from 'choicest-barnacle';
@@ -18,7 +19,9 @@ export class CreateProjectCommand extends BaseCommand implements ProcessObjectEv
   }
 
   process(objectEvent: ObjectEvent, board: HeijunkaBoard): HeijunkaBoard {
-    return board.addProject(new Project(objectEvent.object, objectEvent.payload.get(this.stateModelIdKey), objectEvent.payload.get(this.projectNameKey), objectEvent.time));
+    let newProject = new Project(objectEvent.object, objectEvent.payload.get(this.stateModelIdKey), new Map<string,Property<string>>());
+    newProject = newProject.initializeProperty('name',objectEvent.payload.get(this.projectNameKey), objectEvent.time)
+    return board.addProject(newProject);
   }
 
   createEvent(topic: string, projectName: string, stateModel: StateModel, newUUID: string): ObjectEvent {

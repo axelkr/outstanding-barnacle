@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 
 import { Project } from '../../src/heijunka/Project';
+import { Property } from '../../src/heijunka/Property';
 import { KanbanCard } from '../../src/heijunka/KanbanCard';
 import { HeijunkaBoard } from '../../src/heijunka/HeijunkaBoard';
 import { TransitionType } from '../../src/heijunka/StateTransition';
@@ -24,7 +25,7 @@ describe('HeijunkaBoard', () => {
   it('addProject: adds new project', () => {
     const aId = 'aRandomId';
     const aStateModelId = 'aStateModelId';
-    const aProject = new Project(aId, aStateModelId, 'aName', new Date());
+    const aProject = new Project(aId, aStateModelId, new Map<string, Property<string>>());
     board = board.addProject(aProject);
     expect(board.projects.length).to.equal(1);
   });
@@ -32,8 +33,8 @@ describe('HeijunkaBoard', () => {
   it('addProject: doesn\'t add project with same id twice', () => {
     const aId = 'aRandomId';
     const aStateModelId = 'aStateModelId';
-    const aProject = new Project(aId, aStateModelId, 'aName', new Date());
-    const sameProjectId = new Project(aId, aStateModelId, 'anotherName', new Date());
+    const aProject = new Project(aId, aStateModelId, new Map<string, Property<string>>());
+    const sameProjectId = new Project(aId, aStateModelId, new Map<string, Property<string>>());
     board = board.addProject(aProject);
     board = board.addProject(sameProjectId);
     expect(board.projects.length).to.equal(1);
@@ -46,7 +47,7 @@ describe('HeijunkaBoard', () => {
   it('hasProject: true if project with id available', () => {
     const aId = 'aRandomId';
     const aStateModelId = 'aStateModelId';
-    const aProject = new Project(aId, aStateModelId, 'aName', new Date());
+    const aProject = new Project(aId, aStateModelId, new Map<string, Property<string>>());
     board = board.addProject(aProject);
     expect(board.hasProject(aId)).to.be.true;
   });
@@ -55,44 +56,45 @@ describe('HeijunkaBoard', () => {
     const aId = 'aRandomId';
     const anotherId = 'anotherRandomId';
     const aStateModelId = 'aStateModelId';
-    const aProject = new Project(aId, aStateModelId, 'aName', new Date());
+    const aProject = new Project(aId, aStateModelId, new Map<string, Property<string>>());
     board = board.addProject(aProject);
     expect(board.hasProject(anotherId)).to.be.false;
   });
 
-  it('renameProject: throws exception if called with undefined as id', () => {
-    expect(function () { board.renameProject(undefined, new Date(), "renameTo") }).throws();
+  it('updatePropertyOfProject: throws exception if called with undefined as id', () => {
+    expect(function () { board.updatePropertyOfProject(undefined, 'propertyName', new Date(), 'renameTo') }).throws();
   });
 
-  it('renameProject: throws exception if called with undefined as date', () => {
-    expect(function () { board.renameProject('aId', undefined, 'renameTo') }).throws();
+  it('updatePropertyOfProject: throws exception if called with undefined as date', () => {
+    expect(function () { board.updatePropertyOfProject('aId', 'propertyName', undefined, 'renameTo') }).throws();
   });
 
-  it('renameProject: throws exception if called with undefined as new name', () => {
-    expect(function () { board.renameProject('aId', new Date(), undefined) }).throws();
+  it('updatePropertyOfProject: throws exception if called with undefined as new name', () => {
+    expect(function () { board.updatePropertyOfProject('aId', 'propertyName', new Date(), undefined) }).throws();
   });
 
-  it('renameProject: throws exception if called with unknown id', () => {
+  it('updatePropertyOfProject: throws exception if called with unknown id', () => {
     const aId = 'aRandomId';
     const aStateModelId = 'aStateModelId';
     const anotherId = 'anotherRandomId';
-    const aProject = new Project(aId, aStateModelId, 'aName', new Date());
+    const aProject = new Project(aId, aStateModelId, new Map<string, Property<string>>());
     board = board.addProject(aProject);
 
-    expect(function () { board.renameProject(anotherId, new Date(), undefined) }).throws();
+    expect(function () { board.updatePropertyOfProject(anotherId, 'propertyName', new Date(), undefined) }).throws();
   });
 
-  it('renameProject: a more recent name leads to a change', () => {
+  it('updatePropertyOfProject: a more recent name leads to a change', () => {
     const aId = 'aRandomId';
     const initialName = 'initialName';
     const aStateModelId = 'aStateModelId';
+    const propertyName = 'propertyName';
     const newName = 'newName';
     const initialDate = new Date(2000, 1, 1);
     const newDate = new Date(2001, 2, 2);
-    const aProject = new Project(aId, aStateModelId, initialName, initialDate);
+    const aProject = new Project(aId, aStateModelId, new Map<string, Property<string>>()).initializeProperty(propertyName, initialName, initialDate);
     board = board.addProject(aProject);
-    board = board.renameProject(aId, newDate, newName);
-    expect(board.projects[0].name.value).to.equal(newName);
+    board = board.updatePropertyOfProject(aId, propertyName, newDate, newName);
+    expect(board.projects[0].valueOfProperty(propertyName)).to.equal(newName);
   });
 
   it('addKanbanCard: throws exception if called with undefined as KanbanCard', () => {
@@ -101,15 +103,15 @@ describe('HeijunkaBoard', () => {
 
   it('addKanbanCard: adds KanbanCard.create', () => {
     const aId = 'aRandomId';
-    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(), 'aProject');
+    const aKanbanCard = KanbanCard.create(aId, 'aProject');
     board = board.addKanbanCard(aKanbanCard);
     expect(board.kanbanCards.length).to.equal(1);
   });
 
   it('addKanbanCard: doesn\'t add KanbanCard with same id twice', () => {
     const aId = 'aRandomId';
-    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(), 'aProject');
-    const sameKanbanCardId = KanbanCard.create(aId, 'anotherName', new Date(), 'aProject');
+    const aKanbanCard = KanbanCard.create(aId, 'aProject');
+    const sameKanbanCardId = KanbanCard.create(aId, 'aProject');
     board = board.addKanbanCard(aKanbanCard);
     board = board.addKanbanCard(sameKanbanCardId);
     expect(board.kanbanCards.length).to.equal(1);
@@ -121,7 +123,7 @@ describe('HeijunkaBoard', () => {
 
   it('hasKanbanCard: true if KanbanCard with id available', () => {
     const aId = 'aRandomId';
-    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(), 'aProject');
+    const aKanbanCard = KanbanCard.create(aId, 'aProject');
     board = board.addKanbanCard(aKanbanCard);
     expect(board.hasKanbanCard(aId)).to.be.true;
   });
@@ -129,42 +131,44 @@ describe('HeijunkaBoard', () => {
   it('hasKanbanCard: false if KanbanCard with id is not available', () => {
     const aId = 'aRandomId';
     const anotherId = 'anotherRandomId';
-    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(), 'aProject');
+    const aKanbanCard = KanbanCard.create(aId, 'aProject');
     board = board.addKanbanCard(aKanbanCard);
     expect(board.hasKanbanCard(anotherId)).to.be.false;
   });
 
-  it('renameKanbanCard: throws exception if called with undefined as id', () => {
-    expect(function () { board.renameKanbanCard(undefined, new Date(), "renameTo") }).throws();
+  it('updatePropertyKanbanCard: throws exception if called with undefined as id', () => {
+    expect(function () { board.updatePropertyKanbanCard(undefined, 'propertyName', new Date(), "renameTo") }).throws();
   });
 
-  it('renameKanbanCard: throws exception if called with undefined as date', () => {
-    expect(function () { board.renameKanbanCard('aId', undefined, 'renameTo') }).throws();
+  it('updatePropertyKanbanCard: throws exception if called with undefined as date', () => {
+    expect(function () { board.updatePropertyKanbanCard('aId', 'propertyName', undefined, 'renameTo') }).throws();
   });
 
-  it('renameKanbanCard: throws exception if called with undefined as new name', () => {
-    expect(function () { board.renameKanbanCard('aId', new Date(), undefined) }).throws();
+  it('updatePropertyKanbanCard: throws exception if called with undefined as new name', () => {
+    expect(function () { board.updatePropertyKanbanCard('aId', 'propertyName', new Date(), undefined) }).throws();
   });
 
-  it('renameKanbanCard: throws exception if called with unknown id', () => {
+  it('updatePropertyKanbanCard: throws exception if called with unknown id', () => {
     const aId = 'aRandomId';
     const anotherId = 'anotherRandomId';
-    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(), 'aProjectId');
+    const aKanbanCard = KanbanCard.create(aId, 'aProjectId');
     board = board.addKanbanCard(aKanbanCard);
 
-    expect(function () { board.renameKanbanCard(anotherId, new Date(), undefined) }).throws();
+    expect(function () { board.updatePropertyKanbanCard(anotherId, 'propertyName', new Date(), undefined) }).throws();
   });
 
-  it('renameKanbanBoard: a more recent name leads to a change', () => {
+  it('updatePropertyKanbanCard: a more recent name leads to a change', () => {
     const aId = 'aRandomId';
+    const propertyName = 'propertyName';
     const initialName = 'initialName';
     const newName = 'newName';
     const initialDate = new Date(2000, 1, 1);
     const newDate = new Date(2001, 2, 2);
-    const aKanbanCard = KanbanCard.create(aId, initialName, initialDate, 'aProjectId');
+    let aKanbanCard = KanbanCard.create(aId, 'aProjectId');
+    aKanbanCard = aKanbanCard.initializeProperty(propertyName, initialName, initialDate);
     board = board.addKanbanCard(aKanbanCard);
-    board = board.renameKanbanCard(aId, newDate, newName);
-    expect(board.kanbanCards[0].name.value).to.equal(newName);
+    board = board.updatePropertyKanbanCard(aId, propertyName, newDate, newName);
+    expect(board.kanbanCards[0].valueOfProperty(propertyName)).to.equal(newName);
   });
 
   it('completedState: throws exception if called with undefined as kanban card id', () => {
@@ -194,7 +198,7 @@ describe('HeijunkaBoard', () => {
   it('completedState: throws exception if called with unknown kanban card id', () => {
     const aId = 'aRandomId';
     const anotherId = 'anotherRandomId';
-    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(), 'aProjectId');
+    const aKanbanCard = KanbanCard.create(aId, 'aProjectId');
     board = board.addKanbanCard(aKanbanCard);
 
     expect(function () { board.completedState(anotherId, validStateId, new Date()) }).throws();
@@ -203,7 +207,7 @@ describe('HeijunkaBoard', () => {
   it('inProgressInState: throws exception if called with unknown kanban card id', () => {
     const aId = 'aRandomId';
     const anotherId = 'anotherRandomId';
-    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(), 'aProjectId');
+    const aKanbanCard = KanbanCard.create(aId, 'aProjectId');
     board = board.addKanbanCard(aKanbanCard);
 
     expect(function () { board.inProgressInState(anotherId, validStateId, new Date()) }).throws();
@@ -211,14 +215,14 @@ describe('HeijunkaBoard', () => {
 
   it('findKanbanCards: Kanban cards with undefined state are reported.', () => {
     const aId = 'aRandomId';
-    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(), 'aProjectId');
+    const aKanbanCard = KanbanCard.create(aId, 'aProjectId');
     board = board.addKanbanCard(aKanbanCard);
     expect(board.findKanbanCards().length).to.equal(1);
   });
 
   it('findKanbanCards: filtering explicitly for states ignores cards with undefined states.', () => {
     const aId = 'aRandomId';
-    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(), 'aProjectId');
+    const aKanbanCard = KanbanCard.create(aId, 'aProjectId');
     board = board.addKanbanCard(aKanbanCard);
     const withStateOptions = { states: testStates };
     expect(board.findKanbanCards(withStateOptions).length).to.equal(0);
@@ -226,7 +230,7 @@ describe('HeijunkaBoard', () => {
 
   it('findKanbanCards: filtering explicitly for transition types ignores cards with undefined states.', () => {
     const aId = 'aRandomId';
-    const aKanbanCard = KanbanCard.create(aId, 'aName', new Date(), 'aProjectId');
+    const aKanbanCard = KanbanCard.create(aId, 'aProjectId');
     board = board.addKanbanCard(aKanbanCard);
     const withTransitionOption = { transitionType: TransitionType.inProgress };
     expect(board.findKanbanCards(withTransitionOption).length).to.equal(0);

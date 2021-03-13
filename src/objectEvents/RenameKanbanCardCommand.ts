@@ -15,7 +15,7 @@ export class RenameKanbanCardCommand extends BaseCommand implements ProcessObjec
   }
 
   process(objectEvent: ObjectEvent, board: HeijunkaBoard): HeijunkaBoard {
-    return board.renameKanbanCard(objectEvent.object, objectEvent.time, objectEvent.payload.get('name'));
+    return board.updatePropertyKanbanCard(objectEvent.object, 'name', objectEvent.time, objectEvent.payload.get('name'));
   }
 
   createEvent(topic: string, kanbanCard: KanbanCard, newName: string): ObjectEvent {

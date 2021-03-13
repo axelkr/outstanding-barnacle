@@ -14,7 +14,8 @@ export class CreateKanbanCardCommand extends BaseCommand implements ProcessObjec
   }
 
   process(objectEvent: ObjectEvent, board: HeijunkaBoard): HeijunkaBoard {
-    const newCard = KanbanCard.create(objectEvent.object, objectEvent.payload.get('name'), objectEvent.time, objectEvent.payload.get('project'));
+    let newCard = KanbanCard.create(objectEvent.object, objectEvent.payload.get('project'));
+    newCard = newCard.initializeProperty('name',objectEvent.payload.get('name'), objectEvent.time);
     return board.addKanbanCard(newCard);
   }
 

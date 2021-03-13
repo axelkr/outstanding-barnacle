@@ -44,32 +44,32 @@ export class HeijunkaBoard {
         return new HeijunkaBoard(this.projects, newKanbanCards, this.stateModels);
     }
 
-    public renameProject(id: string, renameAt: Date, renameTo: string): HeijunkaBoard {
+    public updatePropertyOfProject(id: string, propertyName: string, updateAt: Date, updateTo: string): HeijunkaBoard {
         if (typeof id === "undefined") {
             throw new Error('parameter id cannot be undefined.');
         }
-        if (typeof renameAt === "undefined") {
-            throw new Error('parameter renameAt cannot be undefined.');
+        if (typeof updateAt === "undefined") {
+            throw new Error('parameter updateAt cannot be undefined.');
         }
-        if (typeof renameTo === "undefined") {
-            throw new Error('parameter renameTo cannot be undefined.');
+        if (typeof updateTo === "undefined") {
+            throw new Error('parameter updateTo cannot be undefined.');
         }
         if (!this.hasProject(id)) {
             throw new Error('unknown project with id ' + id);
         }
 
-        let didRename = true;
+        let didUpdate = true;
         const newProjects: Project[] = [];
         this.projects.forEach(aProject => {
             if (aProject.id === id) {
-                const renamedProject = aProject.rename(renameTo, renameAt);
-                didRename = renamedProject.name.value !== aProject.name.value;
-                newProjects.push(renamedProject);
+                const updatedProject = aProject.updateProperty(propertyName, updateTo, updateAt);
+                didUpdate = updatedProject.valueOfProperty(propertyName) !== aProject.valueOfProperty(propertyName);
+                newProjects.push(updatedProject);
             } else {
                 newProjects.push(aProject);
             }
         })
-        if (didRename) {
+        if (didUpdate) {
             return new HeijunkaBoard(newProjects, this.kanbanCards, this.stateModels);
         } else {
             return this;
@@ -90,10 +90,10 @@ export class HeijunkaBoard {
         return this.kanbanCards.some(aKanbanCard => aKanbanCard.id === id);
     }
 
-    public renameKanbanCard(id: string, renameAt: Date, renameTo: string): HeijunkaBoard {
-        const renameCard = (aCard: KanbanCard) => aCard.rename(renameTo, renameAt);
-        const differentName = (aCard: KanbanCard, anotherCard: KanbanCard) => aCard.name.value !== anotherCard.name.value;
-        return this.replaceKanbanCard(id, renameCard, differentName);
+    public updatePropertyKanbanCard(id: string, propertyName: string, updateAt: Date, updateTo: string): HeijunkaBoard {
+        const updatePropertyOfCard = (aCard: KanbanCard) => aCard.updateProperty(propertyName, updateTo, updateAt);
+        const differentName = (aCard: KanbanCard, anotherCard: KanbanCard) => aCard.valueOfProperty(propertyName) !== anotherCard.valueOfProperty(propertyName);
+        return this.replaceKanbanCard(id, updatePropertyOfCard, differentName);
     }
 
     public completedState(aKanbanCard: string, aState: string, completedAt: Date): HeijunkaBoard {
@@ -200,6 +200,6 @@ export class HeijunkaBoard {
         if (project === undefined) {
             throw new Error('input project has to be defined');
         }
-        return this.stateModels.find(aStateModel=>aStateModel.id === project.stateModelId);
+        return this.stateModels.find(aStateModel => aStateModel.id === project.stateModelId);
     }
 }
