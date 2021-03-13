@@ -1,5 +1,8 @@
+# v4.1.1
+- fix: rebuild without types for old commands
+
 # v4.1.0 
-- replace Rename(KanbanCard|Project) with generic versions. Name is no longer implicitly handled
+- replace Rename(KanbanCard|Project) with generic versions. Name is no longer implicitly handled.
 
 # v4.0.0
 - Kanban Cards and projects can now have generic string properties. Name has been discontinued as object property; use a generic string property instead.
