@@ -1,3 +1,6 @@
+# v4.1.2
+- fix: rename method to new name.
+
 # v4.1.1
 - fix: rebuild without types for old commands
 

@@ -37,7 +37,7 @@ export class ObjectEventFactory {
     return createKanbanCardCommand.createEvent(topic, project.id, this.createUUID());
   }
 
-  public renameKanbanCard(topic: string, kanbanCard: KanbanCard, propertyName: string, newValue: string): ObjectEvent {
+  public updateKanbanCardProperties(topic: string, kanbanCard: KanbanCard, propertyName: string, newValue: string): ObjectEvent {
     const updatePropertyKanbanCardCommand = new UpdatePropertyKanbanCardCommand();
     return updatePropertyKanbanCardCommand.createEvent(topic, kanbanCard, propertyName, newValue);
   }
