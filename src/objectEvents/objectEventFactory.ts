@@ -29,12 +29,12 @@ export class ObjectEventFactory {
     return createProjectCommand.createEvent(topic, stateModel, this.createUUID());
   }
 
-  public initializeProjectProperties(topic: string, project: Project, propertyName: string, newValue: string): ObjectEvent {
+  public initializeProjectProperty(topic: string, project: Project, propertyName: string, newValue: string): ObjectEvent {
     const initializePropertyProjectCommand = new InitializePropertyProjectCommand();
     return initializePropertyProjectCommand.createEvent(topic, project, propertyName, newValue);
   }
 
-  public updateProjectProperties(topic: string, project: Project, propertyName: string, newValue: string): ObjectEvent {
+  public updateProjectProperty(topic: string, project: Project, propertyName: string, newValue: string): ObjectEvent {
     const updatePropertyProjectCommand = new UpdatePropertyProjectCommand();
     return updatePropertyProjectCommand.createEvent(topic, project, propertyName, newValue);
   }
@@ -44,12 +44,12 @@ export class ObjectEventFactory {
     return createKanbanCardCommand.createEvent(topic, project.id, this.createUUID());
   }
 
-  public initializeKanbanCardProperties(topic: string, kanbanCard: KanbanCard, propertyName: string, newValue: string): ObjectEvent {
+  public initializeKanbanCardProperty(topic: string, kanbanCard: KanbanCard, propertyName: string, newValue: string): ObjectEvent {
     const initializePropertyKanbanCardCommand = new InitializePropertyKanbanCardCommand();
     return initializePropertyKanbanCardCommand.createEvent(topic, kanbanCard, propertyName, newValue);
   }
 
-  public updateKanbanCardProperties(topic: string, kanbanCard: KanbanCard, propertyName: string, newValue: string): ObjectEvent {
+  public updateKanbanCardProperty(topic: string, kanbanCard: KanbanCard, propertyName: string, newValue: string): ObjectEvent {
     const updatePropertyKanbanCardCommand = new UpdatePropertyKanbanCardCommand();
     return updatePropertyKanbanCardCommand.createEvent(topic, kanbanCard, propertyName, newValue);
   }
