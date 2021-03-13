@@ -1,4 +1,4 @@
-# next version
+# v4.1.4
 - fix: names of factory methods related to properties reflect now the fact that they are about one property only.
 
 # v4.1.3
