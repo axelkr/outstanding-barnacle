@@ -1,4 +1,5 @@
 import { ObjectEvent } from 'choicest-barnacle';
+import { Topic } from './Topic';
 
 export enum ObjectType {
   project = 'Project',
@@ -10,15 +11,15 @@ export class BaseCommand {
   readonly objectEventTypeProcessing: string;
   private readonly objectType: ObjectType;
 
-  constructor(objectType: ObjectType, commandName:string) {
+  constructor(objectType: ObjectType, commandName: string) {
     this.objectEventTypeProcessing = objectType + commandName;
     this.objectType = objectType;
   }
-  
-  protected createObjectEvent(topic:string,object:string,payload:Map<string,string>): ObjectEvent {
+
+  protected createObjectEvent(topic: Topic, object: string, payload: Map<string, string>): ObjectEvent {
     const eventIdDiscardedByBackend = 0;
     const createdObjectEvent: ObjectEvent = {
-      topic,
+      topic: topic.id,
       time: new Date(),
       id: eventIdDiscardedByBackend,
       eventType: this.objectEventTypeProcessing,

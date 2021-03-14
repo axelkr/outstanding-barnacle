@@ -1,3 +1,6 @@
+# v4.3.0
+- refactor topic to a class, to enable adding properties later on
+
 # v4.2.1
 - fix: creation of a kanban card also moves it to the initial state
 

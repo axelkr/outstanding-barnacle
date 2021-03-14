@@ -4,6 +4,7 @@ import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { ObjectEvent } from 'choicest-barnacle';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
 import { BaseCommand, ObjectType } from './BaseCommand';
+import { Topic } from './Topic';
 
 export class CreateStateModelCommand extends BaseCommand implements ProcessObjectEventCommand {
   constructor() {
@@ -19,7 +20,7 @@ export class CreateStateModelCommand extends BaseCommand implements ProcessObjec
     return board.addStateModel(stateModel);
   }
 
-  createEvent(topic: string, stateModel: StateModel, newUUID: string): ObjectEvent {
+  createEvent(topic: Topic, stateModel: StateModel, newUUID: string): ObjectEvent {
     const payload = new Map([['stateModel', StateModel.serialize(stateModel)]]);
     return this.createObjectEvent(topic, newUUID, payload);
   }

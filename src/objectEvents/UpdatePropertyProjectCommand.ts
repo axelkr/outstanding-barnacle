@@ -4,6 +4,7 @@ import { Project } from '../heijunka/Project';
 import { ObjectEvent } from 'choicest-barnacle';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
 import { BaseCommand, ObjectType } from './BaseCommand';
+import { Topic } from './Topic';
 
 export class UpdatePropertyProjectCommand extends BaseCommand implements ProcessObjectEventCommand {
   constructor() {
@@ -18,8 +19,8 @@ export class UpdatePropertyProjectCommand extends BaseCommand implements Process
     return board.updatePropertyOfProject(objectEvent.object, objectEvent.payload.get('property'), objectEvent.time, objectEvent.payload.get('value'));
   }
 
-  createEvent(topic: string, project: Project, propertyName: string, newValue: string): ObjectEvent {
-    const payload = new Map([['property', propertyName],['value', newValue]]);
+  createEvent(topic: Topic, project: Project, propertyName: string, newValue: string): ObjectEvent {
+    const payload = new Map([['property', propertyName], ['value', newValue]]);
     return this.createObjectEvent(topic, project.id, payload);
   }
 }

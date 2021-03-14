@@ -11,6 +11,7 @@ import { KanbanCardCompletedStateCommand } from './KanbanCardCompletedStateComma
 import { MoveKanbanCardToTrashCommand } from './MoveKanbanCardToTrashCommand';
 import { UpdatePropertyKanbanCardCommand } from './UpdatePropertyKanbanCardCommand';
 import { InitializePropertyKanbanCardCommand } from './InitializePropertyKanbanCardCommand';
+import { Topic } from './Topic';
 
 import { ObjectEvent } from 'choicest-barnacle';
 
@@ -19,7 +20,7 @@ export enum KanbanCardProperties {
 }
 
 export class KanbanCardEventFactory {
-  public create(topic: string, name: string, project: Project, stateModel: StateModel): ObjectEvent[] {
+  public create(topic: Topic, name: string, project: Project, stateModel: StateModel): ObjectEvent[] {
     const events: ObjectEvent[] = [];
     const newKanbanCardId = UUIDGenerator.createUUID();
     events.push(new CreateKanbanCardCommand().createEvent(topic, project.id, newKanbanCardId));
@@ -28,27 +29,27 @@ export class KanbanCardEventFactory {
     return events;
   }
 
-  public initializeProperty(topic: string, kanbanCard: KanbanCard, propertyName: string, newValue: string): ObjectEvent {
+  public initializeProperty(topic: Topic, kanbanCard: KanbanCard, propertyName: string, newValue: string): ObjectEvent {
     const initializePropertyKanbanCardCommand = new InitializePropertyKanbanCardCommand();
     return initializePropertyKanbanCardCommand.createEvent(topic, kanbanCard.id, propertyName, newValue);
   }
 
-  public updateProperty(topic: string, kanbanCard: KanbanCard, propertyName: string, newValue: string): ObjectEvent {
+  public updateProperty(topic: Topic, kanbanCard: KanbanCard, propertyName: string, newValue: string): ObjectEvent {
     const updatePropertyKanbanCardCommand = new UpdatePropertyKanbanCardCommand();
     return updatePropertyKanbanCardCommand.createEvent(topic, kanbanCard, propertyName, newValue);
   }
 
-  public moveToInProgress(topic: string, kanbanCard: KanbanCard, state: State): ObjectEvent {
+  public moveToInProgress(topic: Topic, kanbanCard: KanbanCard, state: State): ObjectEvent {
     const moveKanbanCardInProgressCommand = new MoveKanbanCardInProgressCommand();
     return moveKanbanCardInProgressCommand.createEvent(topic, kanbanCard.id, state.id);
   }
 
-  public moveToComplete(topic: string, kanbanCard: KanbanCard, state: State): ObjectEvent {
+  public moveToComplete(topic: Topic, kanbanCard: KanbanCard, state: State): ObjectEvent {
     const moveKanbanCardCompleteCommand = new KanbanCardCompletedStateCommand();
     return moveKanbanCardCompleteCommand.createEvent(topic, kanbanCard, state.id);
   }
 
-  public moveToTrash(topic: string, kanbanCard: KanbanCard): ObjectEvent {
+  public moveToTrash(topic: Topic, kanbanCard: KanbanCard): ObjectEvent {
     const moveKanbanCardToTrashCommand = new MoveKanbanCardToTrashCommand();
     return moveKanbanCardToTrashCommand.createEvent(topic, kanbanCard);
   }

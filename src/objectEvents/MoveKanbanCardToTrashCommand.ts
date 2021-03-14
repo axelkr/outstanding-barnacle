@@ -6,6 +6,7 @@ import { State } from '../heijunka/State';
 import { ObjectEvent } from 'choicest-barnacle';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
 import { BaseCommand, ObjectType } from './BaseCommand';
+import { Topic } from './Topic';
 
 export class MoveKanbanCardToTrashCommand extends BaseCommand implements ProcessObjectEventCommand {
   constructor() {
@@ -22,7 +23,7 @@ export class MoveKanbanCardToTrashCommand extends BaseCommand implements Process
     return board.completedState(objectEvent.object, trashState.id, objectEvent.time);
   }
 
-  createEvent(topic: string, kanbanCard: KanbanCard): ObjectEvent {
+  createEvent(topic: Topic, kanbanCard: KanbanCard): ObjectEvent {
     const payload: Map<string,string> = new Map([]);
     return this.createObjectEvent(topic, kanbanCard.id, payload);
   }

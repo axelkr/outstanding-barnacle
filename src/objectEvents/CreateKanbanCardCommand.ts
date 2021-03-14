@@ -3,6 +3,7 @@ import { ObjectEvent } from 'choicest-barnacle';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
 import { KanbanCard } from '../heijunka/KanbanCard';
 import { BaseCommand, ObjectType } from './BaseCommand';
+import { Topic } from './Topic';
 
 export class CreateKanbanCardCommand extends BaseCommand implements ProcessObjectEventCommand {
   constructor() {
@@ -18,7 +19,7 @@ export class CreateKanbanCardCommand extends BaseCommand implements ProcessObjec
     return board.addKanbanCard(newCard);
   }
 
-  createEvent(topic: string, project: string, newUUID: string): ObjectEvent {
+  createEvent(topic: Topic, project: string, newUUID: string): ObjectEvent {
     const payload = new Map([['project', project]]);
     return this.createObjectEvent(topic, newUUID, payload);
   }
