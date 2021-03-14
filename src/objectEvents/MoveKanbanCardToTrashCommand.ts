@@ -3,10 +3,9 @@ import { KanbanCard } from '../heijunka/KanbanCard';
 import { Project } from '../heijunka/Project';
 import { State } from '../heijunka/State';
 
-import { ObjectEvent } from 'choicest-barnacle';
+import { ObjectEvent, Topic } from 'choicest-barnacle';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
 import { BaseCommand, ObjectType } from './BaseCommand';
-import { Topic } from './Topic';
 
 export class MoveKanbanCardToTrashCommand extends BaseCommand implements ProcessObjectEventCommand {
   constructor() {

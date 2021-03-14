@@ -1,6 +1,6 @@
 {
   "name": "outstanding-barnacle",
-  "version": "4.3.1",
+  "version": "4.3.2",
   "description": "Task model, which is modified through events only.",
   "keywords": [],
   "author": "Axel",
@@ -38,6 +38,6 @@
     "typescript": "^4.2.3"
   },
   "dependencies": {
-    "choicest-barnacle": "^2.0.0"
+    "choicest-barnacle": "^2.1.0"
   }
 }

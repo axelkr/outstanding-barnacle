@@ -5,9 +5,8 @@ import { UUIDGenerator } from '../heijunka/UUIDGenerator';
 import { CreateProjectCommand } from './CreateProjectCommand';
 import { UpdatePropertyProjectCommand } from './UpdatePropertyProjectCommand';
 import { InitializePropertyProjectCommand } from './InitializePropertyProjectCommand';
-import { Topic } from './Topic';
 
-import { ObjectEvent } from 'choicest-barnacle';
+import { ObjectEvent,Topic } from 'choicest-barnacle';
 
 export enum ProjectProperties {
   NAME = "name"

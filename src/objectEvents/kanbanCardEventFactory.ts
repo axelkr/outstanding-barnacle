@@ -11,9 +11,8 @@ import { KanbanCardCompletedStateCommand } from './KanbanCardCompletedStateComma
 import { MoveKanbanCardToTrashCommand } from './MoveKanbanCardToTrashCommand';
 import { UpdatePropertyKanbanCardCommand } from './UpdatePropertyKanbanCardCommand';
 import { InitializePropertyKanbanCardCommand } from './InitializePropertyKanbanCardCommand';
-import { Topic } from './Topic';
 
-import { ObjectEvent } from 'choicest-barnacle';
+import { ObjectEvent, Topic } from 'choicest-barnacle';
 
 export enum KanbanCardProperties {
   NAME = "name"

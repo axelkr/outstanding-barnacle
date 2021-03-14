@@ -1,3 +1,6 @@
+# v4.3.2
+- fix: topic really belongs to a separate component.
+
 # v4.3.1
 - fix: add constructor to topic class...
 

@@ -2,9 +2,8 @@ import { StateModel } from '../heijunka/StateModel';
 import { UUIDGenerator } from '../heijunka/UUIDGenerator';
 
 import { CreateStateModelCommand } from './CreateStateModelCommand';
-import { Topic } from './Topic';
 
-import { ObjectEvent } from 'choicest-barnacle';
+import { ObjectEvent, Topic } from 'choicest-barnacle';
 
 export class ObjectEventFactory {
   public createStateModel(topic: Topic, stateModel: StateModel): ObjectEvent {
