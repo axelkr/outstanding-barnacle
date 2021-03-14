@@ -1,5 +1,4 @@
 import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
-import { KanbanCard } from '../heijunka/KanbanCard';
 
 import { ObjectEvent } from 'choicest-barnacle';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
@@ -18,8 +17,8 @@ export class InitializePropertyKanbanCardCommand extends BaseCommand implements 
     return board.initializePropertyKanbanCard(objectEvent.object, objectEvent.payload.get('property'), objectEvent.time, objectEvent.payload.get('value'));
   }
 
-  createEvent(topic: string, kanbanCard: KanbanCard, propertyName: string, newValue: string): ObjectEvent {
+  createEvent(topic: string, kanbanCardId: string, propertyName: string, newValue: string): ObjectEvent {
     const payload = new Map([['property', propertyName],['value', newValue]]);
-    return this.createObjectEvent(topic, kanbanCard.id, payload);
+    return this.createObjectEvent(topic, kanbanCardId, payload);
   }
 }

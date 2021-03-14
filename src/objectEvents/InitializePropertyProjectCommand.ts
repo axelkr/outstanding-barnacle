@@ -1,5 +1,4 @@
 import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
-import { Project } from '../heijunka/Project';
 
 import { ObjectEvent } from 'choicest-barnacle';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
@@ -18,8 +17,8 @@ export class InitializePropertyProjectCommand extends BaseCommand implements Pro
     return board.initializePropertyOfProject(objectEvent.object, objectEvent.payload.get('property'), objectEvent.time, objectEvent.payload.get('value'));
   }
 
-  createEvent(topic: string, project: Project, propertyName: string, initialValue: string): ObjectEvent {
+  createEvent(topic: string, projectId: string, propertyName: string, initialValue: string): ObjectEvent {
     const payload = new Map([['property', propertyName],['value', initialValue]]);
-    return this.createObjectEvent(topic, project.id, payload);
+    return this.createObjectEvent(topic, projectId, payload);
   }
 }

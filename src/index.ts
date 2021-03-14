@@ -7,5 +7,7 @@ export { StateModel } from './heijunka/StateModel';
 export { LinearizeStateModelService } from './heijunka/LinearizeStateModelService';
 export { StateTransition, TransitionType } from './heijunka/StateTransition';
 export { ObjectEventFactory } from './objectEvents/objectEventFactory'
+export { ProjectEventFactory, ProjectProperties } from './objectEvents/projectEventFactory'
+export { KanbanCardEventFactory, KanbanCardProperties } from './objectEvents/kanbanCardEventFactory'
 export { ObjectEventCommandProcessor } from './objectEvents/objectEventCommandProcessor'
 export { UUIDGenerator } from './heijunka/UUIDGenerator'
