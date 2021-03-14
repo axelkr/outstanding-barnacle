@@ -1,3 +1,7 @@
+# v4.2.0
+- extract event factories for KanbanCards and Projects to provide aggregate commands.
+- define common properties in one place. 
+
 # v4.1.4
 - fix: names of factory methods related to properties reflect now the fact that they are about one property only.
 
