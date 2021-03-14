@@ -1,3 +1,6 @@
+# v4.3.1
+- fix: add constructor to topic class...
+
 # v4.3.0
 - refactor topic to a class, to enable adding properties later on
 
