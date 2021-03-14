@@ -1,6 +1,8 @@
 import { Project } from '../heijunka/Project';
 import { KanbanCard } from '../heijunka/KanbanCard';
 import { State } from '../heijunka/State';
+import { StateModel } from '../heijunka/StateModel';
+
 import { UUIDGenerator } from '../heijunka/UUIDGenerator';
 
 import { CreateKanbanCardCommand } from './CreateKanbanCardCommand';
@@ -17,12 +19,12 @@ export enum KanbanCardProperties {
 }
 
 export class KanbanCardEventFactory {
-
-  public create(topic: string, name: string, project: Project): ObjectEvent[] {
+  public create(topic: string, name: string, project: Project, stateModel: StateModel): ObjectEvent[] {
     const events: ObjectEvent[] = [];
     const newKanbanCardId = UUIDGenerator.createUUID();
     events.push(new CreateKanbanCardCommand().createEvent(topic, project.id, newKanbanCardId));
     events.push(new InitializePropertyKanbanCardCommand().createEvent(topic, newKanbanCardId, KanbanCardProperties.NAME, name));
+    events.push(new MoveKanbanCardInProgressCommand().createEvent(topic, newKanbanCardId, stateModel.initialState().id));
     return events;
   }
 
@@ -38,7 +40,7 @@ export class KanbanCardEventFactory {
 
   public moveToInProgress(topic: string, kanbanCard: KanbanCard, state: State): ObjectEvent {
     const moveKanbanCardInProgressCommand = new MoveKanbanCardInProgressCommand();
-    return moveKanbanCardInProgressCommand.createEvent(topic, kanbanCard, state.id);
+    return moveKanbanCardInProgressCommand.createEvent(topic, kanbanCard.id, state.id);
   }
 
   public moveToComplete(topic: string, kanbanCard: KanbanCard, state: State): ObjectEvent {

@@ -1,3 +1,6 @@
+# v4.2.1
+- fix: creation of a kanban card also moves it to the initial state
+
 # v4.2.0
 - extract event factories for KanbanCards and Projects to provide aggregate commands.
 - define common properties in one place. 

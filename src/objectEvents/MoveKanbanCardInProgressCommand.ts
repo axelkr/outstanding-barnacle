@@ -1,5 +1,4 @@
 import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
-import { KanbanCard } from '../heijunka/KanbanCard';
 
 import { ObjectEvent } from 'choicest-barnacle';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
@@ -18,8 +17,8 @@ export class MoveKanbanCardInProgressCommand extends BaseCommand implements Proc
     return board.inProgressInState(objectEvent.object, objectEvent.payload.get('newState'), objectEvent.time);
   }
 
-  createEvent(topic: string, kanbanCard: KanbanCard, idNewState: string): ObjectEvent {
+  createEvent(topic: string, kanbanCardId: string, idNewState: string): ObjectEvent {
     const payload = new Map([['newState', idNewState]]);
-    return this.createObjectEvent(topic, kanbanCard.id, payload);
+    return this.createObjectEvent(topic, kanbanCardId, payload);
   }
 }
