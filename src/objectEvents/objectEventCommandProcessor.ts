@@ -1,17 +1,10 @@
 import { ObjectEvent } from 'choicest-barnacle';
 import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
-import { CreateProjectCommand } from './CreateProjectCommand';
-import { UpdatePropertyProjectCommand } from './UpdatePropertyProjectCommand';
-import { CreateKanbanCardCommand } from './CreateKanbanCardCommand';
-import { MoveKanbanCardInProgressCommand } from './MoveKanbanCardInProgressCommand';
-import { KanbanCardCompletedStateCommand } from './KanbanCardCompletedStateCommand';
-import { UpdatePropertyKanbanCardCommand } from './UpdatePropertyKanbanCardCommand';
-import { MoveKanbanCardToTrashCommand } from './MoveKanbanCardToTrashCommand';
-import { InitializePropertyKanbanCardCommand} from './InitializePropertyKanbanCardCommand';
-import { InitializePropertyProjectCommand} from './InitializePropertyProjectCommand';
 import { IEventFactory } from './IEventFactory';
 import { ObjectEventFactory } from './objectEventFactory';
+import { ProjectEventFactory } from './projectEventFactory';
+import { KanbanCardEventFactory } from './kanbanCardEventFactory';
 
 export class ObjectEventCommandProcessor {
   private currentBoard: HeijunkaBoard;
@@ -21,25 +14,11 @@ export class ObjectEventCommandProcessor {
   constructor() {
     this.currentBoard = HeijunkaBoard.createEmptyHeijunkaBoard();
 
-    const factories: IEventFactory[] = [new ObjectEventFactory()];
+    const factories: IEventFactory[] = [new ObjectEventFactory(), new ProjectEventFactory(), new KanbanCardEventFactory()];
     factories.forEach(aFactory => {
       const usedCommands = aFactory.usedCommands();
       usedCommands.forEach(aCommand => this.commands.set(aCommand.objectEventTypeProcessing, aCommand));
     })
-
-    const availableCommands: ProcessObjectEventCommand[] = [];
-    availableCommands.push(new CreateProjectCommand());
-    availableCommands.push(new InitializePropertyProjectCommand());
-    availableCommands.push(new UpdatePropertyProjectCommand());
-
-    availableCommands.push(new CreateKanbanCardCommand());
-    availableCommands.push(new InitializePropertyKanbanCardCommand());
-    availableCommands.push(new UpdatePropertyKanbanCardCommand());
-    availableCommands.push(new MoveKanbanCardInProgressCommand());
-    availableCommands.push(new KanbanCardCompletedStateCommand());
-    availableCommands.push(new MoveKanbanCardToTrashCommand());
-
-    availableCommands.forEach(aCommand => this.commands.set(aCommand.objectEventTypeProcessing, aCommand));
   }
 
   process(objectEvent: ObjectEvent): HeijunkaBoard {

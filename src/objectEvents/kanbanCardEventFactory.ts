@@ -13,12 +13,25 @@ import { UpdatePropertyKanbanCardCommand } from './UpdatePropertyKanbanCardComma
 import { InitializePropertyKanbanCardCommand } from './InitializePropertyKanbanCardCommand';
 
 import { ObjectEvent, Topic } from 'choicest-barnacle';
+import { IEventFactory } from './IEventFactory';
+import { ProcessObjectEventCommand } from './processObjectEventCommand';
 
 export enum KanbanCardProperties {
   NAME = "name"
 }
 
-export class KanbanCardEventFactory {
+export class KanbanCardEventFactory implements IEventFactory {
+  public usedCommands(): ProcessObjectEventCommand[] {
+    const result: ProcessObjectEventCommand[] = [];
+    result.push(new CreateKanbanCardCommand());
+    result.push(new MoveKanbanCardInProgressCommand());
+    result.push(new KanbanCardCompletedStateCommand());
+    result.push(new MoveKanbanCardToTrashCommand());
+    result.push(new UpdatePropertyKanbanCardCommand());
+    result.push(new InitializePropertyKanbanCardCommand());
+    return result;
+  }
+  
   public create(topic: Topic, name: string, project: Project, stateModel: StateModel): ObjectEvent[] {
     const events: ObjectEvent[] = [];
     const newKanbanCardId = UUIDGenerator.createUUID();

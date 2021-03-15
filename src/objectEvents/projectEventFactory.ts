@@ -7,12 +7,23 @@ import { UpdatePropertyProjectCommand } from './UpdatePropertyProjectCommand';
 import { InitializePropertyProjectCommand } from './InitializePropertyProjectCommand';
 
 import { ObjectEvent,Topic } from 'choicest-barnacle';
+import { IEventFactory } from './IEventFactory';
+import { ProcessObjectEventCommand } from './processObjectEventCommand';
 
 export enum ProjectProperties {
   NAME = "name"
 }
 
-export class ProjectEventFactory {
+export class ProjectEventFactory implements IEventFactory {
+
+  public usedCommands(): ProcessObjectEventCommand[] {
+    const result: ProcessObjectEventCommand[] = [];
+    result.push( new CreateProjectCommand());
+    result.push( new UpdatePropertyProjectCommand());
+    result.push( new InitializePropertyProjectCommand());
+    return result;
+  }
+
   public create(topic: Topic, name: string, stateModel: StateModel): ObjectEvent[] {
     const events: ObjectEvent[] = [];
     const newProjectID = UUIDGenerator.createUUID();
