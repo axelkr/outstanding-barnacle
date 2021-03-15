@@ -31,7 +31,7 @@ export class KanbanCardEventFactory implements IEventFactory {
     result.push(new InitializePropertyKanbanCardCommand());
     return result;
   }
-  
+
   public create(topic: Topic, name: string, project: Project, stateModel: StateModel): ObjectEvent[] {
     const events: ObjectEvent[] = [];
     const newKanbanCardId = UUIDGenerator.createUUID();
@@ -42,27 +42,22 @@ export class KanbanCardEventFactory implements IEventFactory {
   }
 
   public initializeProperty(topic: Topic, kanbanCard: KanbanCard, propertyName: string, newValue: string): ObjectEvent {
-    const initializePropertyKanbanCardCommand = new InitializePropertyKanbanCardCommand();
-    return initializePropertyKanbanCardCommand.createEvent(topic, kanbanCard.id, propertyName, newValue);
+    return new InitializePropertyKanbanCardCommand().createEvent(topic, kanbanCard.id, propertyName, newValue);
   }
 
   public updateProperty(topic: Topic, kanbanCard: KanbanCard, propertyName: string, newValue: string): ObjectEvent {
-    const updatePropertyKanbanCardCommand = new UpdatePropertyKanbanCardCommand();
-    return updatePropertyKanbanCardCommand.createEvent(topic, kanbanCard, propertyName, newValue);
+    return new UpdatePropertyKanbanCardCommand().createEvent(topic, kanbanCard, propertyName, newValue);
   }
 
   public moveToInProgress(topic: Topic, kanbanCard: KanbanCard, state: State): ObjectEvent {
-    const moveKanbanCardInProgressCommand = new MoveKanbanCardInProgressCommand();
-    return moveKanbanCardInProgressCommand.createEvent(topic, kanbanCard.id, state.id);
+    return new MoveKanbanCardInProgressCommand().createEvent(topic, kanbanCard.id, state.id);
   }
 
   public moveToComplete(topic: Topic, kanbanCard: KanbanCard, state: State): ObjectEvent {
-    const moveKanbanCardCompleteCommand = new KanbanCardCompletedStateCommand();
-    return moveKanbanCardCompleteCommand.createEvent(topic, kanbanCard, state.id);
+    return new KanbanCardCompletedStateCommand().createEvent(topic, kanbanCard, state.id);
   }
 
   public moveToTrash(topic: Topic, kanbanCard: KanbanCard): ObjectEvent {
-    const moveKanbanCardToTrashCommand = new MoveKanbanCardToTrashCommand();
-    return moveKanbanCardToTrashCommand.createEvent(topic, kanbanCard);
+    return new MoveKanbanCardToTrashCommand().createEvent(topic, kanbanCard);
   }
 }

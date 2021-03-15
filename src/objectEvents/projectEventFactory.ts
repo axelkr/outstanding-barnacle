@@ -6,7 +6,7 @@ import { CreateProjectCommand } from './CreateProjectCommand';
 import { UpdatePropertyProjectCommand } from './UpdatePropertyProjectCommand';
 import { InitializePropertyProjectCommand } from './InitializePropertyProjectCommand';
 
-import { ObjectEvent,Topic } from 'choicest-barnacle';
+import { ObjectEvent, Topic } from 'choicest-barnacle';
 import { IEventFactory } from './IEventFactory';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
 
@@ -18,9 +18,9 @@ export class ProjectEventFactory implements IEventFactory {
 
   public usedCommands(): ProcessObjectEventCommand[] {
     const result: ProcessObjectEventCommand[] = [];
-    result.push( new CreateProjectCommand());
-    result.push( new UpdatePropertyProjectCommand());
-    result.push( new InitializePropertyProjectCommand());
+    result.push(new CreateProjectCommand());
+    result.push(new UpdatePropertyProjectCommand());
+    result.push(new InitializePropertyProjectCommand());
     return result;
   }
 
@@ -33,12 +33,10 @@ export class ProjectEventFactory implements IEventFactory {
   }
 
   public initializeProperty(topic: Topic, project: Project, propertyName: string, newValue: string): ObjectEvent {
-    const initializePropertyProjectCommand = new InitializePropertyProjectCommand();
-    return initializePropertyProjectCommand.createEvent(topic, project.id, propertyName, newValue);
+    return new InitializePropertyProjectCommand().createEvent(topic, project.id, propertyName, newValue);
   }
 
   public updateProperty(topic: Topic, project: Project, propertyName: string, newValue: string): ObjectEvent {
-    const updatePropertyProjectCommand = new UpdatePropertyProjectCommand();
-    return updatePropertyProjectCommand.createEvent(topic, project, propertyName, newValue);
+    return new UpdatePropertyProjectCommand().createEvent(topic, project, propertyName, newValue);
   }
 }
