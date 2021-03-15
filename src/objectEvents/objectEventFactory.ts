@@ -17,12 +17,10 @@ export class ObjectEventFactory implements IEventFactory {
   }
 
   public createStateModel(topic: Topic, stateModel: StateModel): ObjectEvent {
-    const createStateModelCommand = new CreateStateModelCommand();
-    return createStateModelCommand.createEvent(topic, stateModel, UUIDGenerator.createUUID());
+    return new CreateStateModelCommand().createEvent(topic, stateModel, UUIDGenerator.createUUID());
   }
 
   public createContext(topic: Topic, name: string): ObjectEvent {
-    const createContextCommand = new CreateContextCommand();
-    return createContextCommand.createEvent(topic, name, UUIDGenerator.createUUID());
+    return new CreateContextCommand().createEvent(topic, name, UUIDGenerator.createUUID());
   }
 }
