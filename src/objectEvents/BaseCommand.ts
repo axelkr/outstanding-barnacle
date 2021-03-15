@@ -3,7 +3,8 @@ import { ObjectEvent, Topic } from 'choicest-barnacle';
 export enum ObjectType {
   project = 'Project',
   kanbanCard = 'KanbanCard',
-  stateModel = 'StateModel'
+  stateModel = 'StateModel',
+  context = 'Context'
 }
 
 export class BaseCommand {
