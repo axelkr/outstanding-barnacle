@@ -3,7 +3,6 @@ import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
 import { CreateProjectCommand } from './CreateProjectCommand';
 import { UpdatePropertyProjectCommand } from './UpdatePropertyProjectCommand';
-import { CreateStateModelCommand } from './CreateStateModelCommand';
 import { CreateKanbanCardCommand } from './CreateKanbanCardCommand';
 import { MoveKanbanCardInProgressCommand } from './MoveKanbanCardInProgressCommand';
 import { KanbanCardCompletedStateCommand } from './KanbanCardCompletedStateCommand';
@@ -11,6 +10,8 @@ import { UpdatePropertyKanbanCardCommand } from './UpdatePropertyKanbanCardComma
 import { MoveKanbanCardToTrashCommand } from './MoveKanbanCardToTrashCommand';
 import { InitializePropertyKanbanCardCommand} from './InitializePropertyKanbanCardCommand';
 import { InitializePropertyProjectCommand} from './InitializePropertyProjectCommand';
+import { IEventFactory } from './IEventFactory';
+import { ObjectEventFactory } from './objectEventFactory';
 
 export class ObjectEventCommandProcessor {
   private currentBoard: HeijunkaBoard;
@@ -19,6 +20,12 @@ export class ObjectEventCommandProcessor {
 
   constructor() {
     this.currentBoard = HeijunkaBoard.createEmptyHeijunkaBoard();
+
+    const factories: IEventFactory[] = [new ObjectEventFactory()];
+    factories.forEach(aFactory => {
+      const usedCommands = aFactory.usedCommands();
+      usedCommands.forEach(aCommand => this.commands.set(aCommand.objectEventTypeProcessing, aCommand));
+    })
 
     const availableCommands: ProcessObjectEventCommand[] = [];
     availableCommands.push(new CreateProjectCommand());
@@ -31,8 +38,6 @@ export class ObjectEventCommandProcessor {
     availableCommands.push(new MoveKanbanCardInProgressCommand());
     availableCommands.push(new KanbanCardCompletedStateCommand());
     availableCommands.push(new MoveKanbanCardToTrashCommand());
-
-    availableCommands.push(new CreateStateModelCommand());
 
     availableCommands.forEach(aCommand => this.commands.set(aCommand.objectEventTypeProcessing, aCommand));
   }
