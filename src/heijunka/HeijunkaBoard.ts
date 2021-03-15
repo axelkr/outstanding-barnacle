@@ -2,21 +2,24 @@ import { Project } from './Project';
 import { KanbanCard } from './KanbanCard';
 import { StateModel } from './StateModel';
 import { State } from './State';
+import { Context } from './Context';
 import { StateTransition, TransitionType } from './StateTransition';
 
 export class HeijunkaBoard {
     readonly projects: Array<Project>;
     readonly kanbanCards: Array<KanbanCard>;
     readonly stateModels: StateModel[];
+    readonly contexts: Context[];
 
     static createEmptyHeijunkaBoard(): HeijunkaBoard {
-        return new HeijunkaBoard([], [], []);
+        return new HeijunkaBoard([], [], [], []);
     }
 
-    private constructor(projects: Array<Project>, kanbanCards: Array<KanbanCard>, stateModels: Array<StateModel>) {
+    private constructor(projects: Array<Project>, kanbanCards: Array<KanbanCard>, stateModels: Array<StateModel>, contexts: Array<Context>) {
         this.projects = projects;
         this.kanbanCards = kanbanCards;
         this.stateModels = stateModels;
+        this.contexts = contexts;
     }
 
     public addProject(aProject: Project): HeijunkaBoard {
@@ -28,9 +31,20 @@ export class HeijunkaBoard {
         }
         const newProjects = [...this.projects];
         newProjects.push(aProject);
-        return new HeijunkaBoard(newProjects, this.kanbanCards, this.stateModels);
+        return new HeijunkaBoard(newProjects, this.kanbanCards, this.stateModels, this.contexts);
     }
 
+    public addContext(aContext: Context): HeijunkaBoard {
+        if (typeof aContext === "undefined") {
+            throw new Error('parameter aContext cannot be undefined.');
+        }
+        if (this.hasContext(aContext.id)) {
+            return this;
+        }
+        const newContexts = [...this.contexts];
+        newContexts.push(aContext);
+        return new HeijunkaBoard(this.projects, this.kanbanCards, this.stateModels, newContexts);
+    }
 
     public addKanbanCard(aKanbanCard: KanbanCard): HeijunkaBoard {
         if (typeof aKanbanCard === "undefined") {
@@ -41,7 +55,7 @@ export class HeijunkaBoard {
         }
         const newKanbanCards = [...this.kanbanCards];
         newKanbanCards.push(aKanbanCard);
-        return new HeijunkaBoard(this.projects, newKanbanCards, this.stateModels);
+        return new HeijunkaBoard(this.projects, newKanbanCards, this.stateModels, this.contexts);
     }
 
     public initializePropertyOfProject(id: string, propertyName: string, updateAt: Date, updateTo: string): HeijunkaBoard {
@@ -67,7 +81,7 @@ export class HeijunkaBoard {
                 newProjects.push(aProject);
             }
         })
-        return new HeijunkaBoard(newProjects, this.kanbanCards, this.stateModels);
+        return new HeijunkaBoard(newProjects, this.kanbanCards, this.stateModels, this.contexts);
     }
 
     public updatePropertyOfProject(id: string, propertyName: string, updateAt: Date, updateTo: string): HeijunkaBoard {
@@ -96,7 +110,7 @@ export class HeijunkaBoard {
             }
         })
         if (didUpdate) {
-            return new HeijunkaBoard(newProjects, this.kanbanCards, this.stateModels);
+            return new HeijunkaBoard(newProjects, this.kanbanCards, this.stateModels, this.contexts);
         } else {
             return this;
         }
@@ -114,6 +128,13 @@ export class HeijunkaBoard {
             throw new Error('parameter id cannot be undefined.');
         }
         return this.kanbanCards.some(aKanbanCard => aKanbanCard.id === id);
+    }
+
+    public hasContext(id: string): boolean {
+        if (typeof id === "undefined") {
+            throw new Error('parameter id cannot be undefined.');
+        }
+        return this.contexts.some(aContext => aContext.id === id);
     }
 
     public updatePropertyKanbanCard(id: string, propertyName: string, updateAt: Date, updateTo: string): HeijunkaBoard {
@@ -163,7 +184,7 @@ export class HeijunkaBoard {
             }
         })
         if (didModify) {
-            return new HeijunkaBoard(this.projects, newKanbanCards, this.stateModels);
+            return new HeijunkaBoard(this.projects, newKanbanCards, this.stateModels, this.contexts);
         } else {
             return this;
         }
@@ -218,7 +239,7 @@ export class HeijunkaBoard {
         if (this.stateModels.some(stateModel => stateModel.name === aStateModel.name)) {
             throw new Error('state model with same name already defined');
         }
-        return new HeijunkaBoard(this.projects, this.kanbanCards, [...this.stateModels, aStateModel]);
+        return new HeijunkaBoard(this.projects, this.kanbanCards, [...this.stateModels, aStateModel], this.contexts);
     }
 
     public hasStateModel(aStateModelId: string): boolean {
