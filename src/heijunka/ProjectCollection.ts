@@ -83,11 +83,6 @@ export class ProjectCollection {
     }
 
     public add(aProject: Project): ProjectCollection {
-        const updatedProjects = this._projects.add(aProject);
-        const noChange = (updatedProjects === this._projects);
-        if (noChange) {
-            return this;
-        }
-        return new ProjectCollection(updatedProjects);
+        return new ProjectCollection(this._projects.add(aProject));
     }
 }
