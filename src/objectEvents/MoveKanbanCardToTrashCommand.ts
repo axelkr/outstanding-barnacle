@@ -13,13 +13,13 @@ export class MoveKanbanCardToTrashCommand extends BaseCommand implements Process
   }
 
   canProcess(objectEvent: ObjectEvent, root: RootAggregate): boolean {
-    return root.heijunkaBoard.hasKanbanCard(objectEvent.object) && root.projects.has(root.heijunkaBoard.getKanbanCard(objectEvent.object).project);
+    return root.kanbanCards.hasKanbanCard(objectEvent.object) && root.projects.has(root.kanbanCards.getKanbanCard(objectEvent.object).project);
   }
 
   process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
-    const project: Project = root.projects.get(root.heijunkaBoard.getKanbanCard(objectEvent.object).project);
+    const project: Project = root.projects.get(root.kanbanCards.getKanbanCard(objectEvent.object).project);
     const trashState: State = root.getStateModelOf(project).trashState();
-    return root.updateHeijunkaBoard(root.heijunkaBoard.completedState(objectEvent.object, trashState.id, objectEvent.time));
+    return root.updateKanbanCards(root.kanbanCards.completedState(objectEvent.object, trashState.id, objectEvent.time));
   }
 
   createEvent(topic: Topic, kanbanCard: KanbanCard): ObjectEvent {

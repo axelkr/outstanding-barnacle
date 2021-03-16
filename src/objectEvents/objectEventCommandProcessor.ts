@@ -1,7 +1,7 @@
 import { ObjectEvent } from 'choicest-barnacle';
 
-import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { RootAggregate } from '../heijunka/RootAggregate';
+import { KanbanCardCollection } from '../heijunka/KanbanCardCollection';
 import { ContextCollection } from '../heijunka/ContextCollection';
 import { StateModelCollection } from '../heijunka/StateModelCollection';
 
@@ -41,8 +41,8 @@ export class ObjectEventCommandProcessor {
     }
   }
 
-  public getHeijunkaBoard(): HeijunkaBoard {
-    return this.currentEntity.heijunkaBoard;
+  public getKanbanCards(): KanbanCardCollection {
+    return this.currentEntity.kanbanCards;
   }
 
   public getContexts(): ContextCollection {

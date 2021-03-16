@@ -1,18 +1,18 @@
 import { expect } from 'chai';
 
 import { KanbanCard } from '../../src/heijunka/KanbanCard';
-import { HeijunkaBoard } from '../../src/heijunka/HeijunkaBoard';
+import { KanbanCardCollection } from '../../src/heijunka/KanbanCardCollection';
 import { TransitionType } from '../../src/heijunka/StateTransition';
 import { State } from '../../src/heijunka/State';
 
 
-describe('HeijunkaBoard', () => {
-  let board: HeijunkaBoard;
+describe('KanbanCardCollection', () => {
+  let board: KanbanCardCollection;
   const testStates: State[] = [new State('Backlog', 'Backlog'), new State('Done', 'Done')];
   const validStateId = testStates[0].id;
 
   beforeEach(() => {
-    board = HeijunkaBoard.createEmptyHeijunkaBoard();
+    board = KanbanCardCollection.createEmptyCollection();
   });
 
   it('addKanbanCard: throws exception if called with undefined as KanbanCard', () => {

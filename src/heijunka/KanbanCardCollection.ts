@@ -3,18 +3,18 @@ import { KanbanCard } from './KanbanCard';
 import { State } from './State';
 import { StateTransition, TransitionType } from './StateTransition';
 
-export class HeijunkaBoard {
+export class KanbanCardCollection {
     readonly kanbanCards: Array<KanbanCard>;
 
-    static createEmptyHeijunkaBoard(): HeijunkaBoard {
-        return new HeijunkaBoard([]);
+    static createEmptyCollection(): KanbanCardCollection {
+        return new KanbanCardCollection([]);
     }
 
     private constructor(kanbanCards: Array<KanbanCard>) {
         this.kanbanCards = kanbanCards;
     }
 
-    public addKanbanCard(aKanbanCard: KanbanCard): HeijunkaBoard {
+    public addKanbanCard(aKanbanCard: KanbanCard): KanbanCardCollection {
         if (typeof aKanbanCard === "undefined") {
             throw new Error('parameter aKanbanCard cannot be undefined.');
         }
@@ -23,7 +23,7 @@ export class HeijunkaBoard {
         }
         const newKanbanCards = [...this.kanbanCards];
         newKanbanCards.push(aKanbanCard);
-        return new HeijunkaBoard(newKanbanCards);
+        return new KanbanCardCollection(newKanbanCards);
     }
 
     public hasKanbanCard(id: string): boolean {
@@ -33,35 +33,35 @@ export class HeijunkaBoard {
         return this.kanbanCards.some(aKanbanCard => aKanbanCard.id === id);
     }
 
-    public updatePropertyKanbanCard(id: string, propertyName: string, updateAt: Date, updateTo: string): HeijunkaBoard {
+    public updatePropertyKanbanCard(id: string, propertyName: string, updateAt: Date, updateTo: string): KanbanCardCollection {
         const updatePropertyOfCard = (aCard: KanbanCard) => aCard.updateProperty(propertyName, updateTo, updateAt);
         const differentName = (aCard: KanbanCard, anotherCard: KanbanCard) => aCard.valueOfProperty(propertyName) !== anotherCard.valueOfProperty(propertyName);
         return this.replaceKanbanCard(id, updatePropertyOfCard, differentName);
     }
 
-    public initializePropertyKanbanCard(id: string, propertyName: string, updateAt: Date, updateTo: string): HeijunkaBoard {
+    public initializePropertyKanbanCard(id: string, propertyName: string, updateAt: Date, updateTo: string): KanbanCardCollection {
         const initializePropertyOfCard = (aCard: KanbanCard) => aCard.initializeProperty(propertyName, updateTo, updateAt);
         const initializingAlwaysChanges = () => true;
         return this.replaceKanbanCard(id, initializePropertyOfCard, initializingAlwaysChanges);
     }
 
-    public completedState(aKanbanCard: string, aState: string, completedAt: Date): HeijunkaBoard {
+    public completedState(aKanbanCard: string, aState: string, completedAt: Date): KanbanCardCollection {
         const transition = StateTransition.completedState(aState, completedAt);
         return this.addStateTransition(transition, aKanbanCard);
     }
 
-    public inProgressInState(aKanbanCard: string, aState: string, inProgressAt: Date): HeijunkaBoard {
+    public inProgressInState(aKanbanCard: string, aState: string, inProgressAt: Date): KanbanCardCollection {
         const transition = StateTransition.inProgressInState(aState, inProgressAt);
         return this.addStateTransition(transition, aKanbanCard);
     }
 
-    private addStateTransition(aTransition: StateTransition, aKanbanCard: string): HeijunkaBoard {
+    private addStateTransition(aTransition: StateTransition, aKanbanCard: string): KanbanCardCollection {
         const addTransition = (aCard: KanbanCard) => aCard.transitToNewState(aTransition);
         const differentEntriesInHistory = (aCard: KanbanCard, anotherCard: KanbanCard) => aCard.history.transitions.length !== anotherCard.history.transitions.length;
         return this.replaceKanbanCard(aKanbanCard, addTransition, differentEntriesInHistory);
     }
 
-    private replaceKanbanCard(id: string, replaceKanbanCard: { (aCard: KanbanCard): KanbanCard }, hasModified: { (before: KanbanCard, after: KanbanCard): boolean }): HeijunkaBoard {
+    private replaceKanbanCard(id: string, replaceKanbanCard: { (aCard: KanbanCard): KanbanCard }, hasModified: { (before: KanbanCard, after: KanbanCard): boolean }): KanbanCardCollection {
         if (typeof id === "undefined") {
             throw new Error('parameter id cannot be undefined.');
         }
@@ -80,7 +80,7 @@ export class HeijunkaBoard {
             }
         })
         if (didModify) {
-            return new HeijunkaBoard(newKanbanCards);
+            return new KanbanCardCollection(newKanbanCards);
         } else {
             return this;
         }

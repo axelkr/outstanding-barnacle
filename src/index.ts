@@ -1,4 +1,4 @@
-export { HeijunkaBoard } from './heijunka/HeijunkaBoard';
+export { RootAggregate } from './heijunka/RootAggregate';
 export { KanbanCard } from './heijunka/KanbanCard';
 export { Project } from './heijunka/Project';
 export { State } from './heijunka/State';
