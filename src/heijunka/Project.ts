@@ -1,19 +1,16 @@
+import { IdObject } from './IdObject';
 import { ReadOnlyProperties } from './ReadOnlyProperties';
 
-export class Project {
-    readonly id: string;
+export class Project extends IdObject{
     readonly stateModelId: string;
     private readonly properties: ReadOnlyProperties;
 
     constructor(id: string, stateModelId: string, properties: ReadOnlyProperties) {
-        if (typeof id === "undefined") {
-            throw new Error('id cannot be undefined');
-        }
+        super(id);
         if (typeof stateModelId === "undefined") {
             throw new Error('stateModelId cannot be undefined');
         }
         this.stateModelId = stateModelId;
-        this.id = id;
         this.properties = properties;
     }
 

@@ -1,23 +1,21 @@
+import { IdObject } from './IdObject';
 import { State } from './State';
 
-export class StateModel {
+export class StateModel extends IdObject {
     private readonly states: State[];
     private readonly _initialState: State;
     private readonly _trashState: State;
     private readonly _finalStates: State[];
     private readonly _successors: Map<State, State[]> = new Map<State, State[]>();
     readonly name: string;
-    readonly id: string
 
-    constructor(id: string, name: string, states: State[], initialState: State, finalStates: State[],trashState: State) {
+    constructor(id: string, name: string, states: State[], initialState: State, finalStates: State[], trashState: State) {
+        super(id);
         if (typeof states === "undefined") {
             throw new Error('states cannot be undefined');
         }
         if (typeof name === "undefined") {
             throw new Error('name cannot be undefined');
-        }
-        if (typeof id === "undefined") {
-            throw new Error('id cannot be undefined');
         }
         if (typeof initialState === "undefined") {
             throw new Error('initialState cannot be undefined');
@@ -49,7 +47,6 @@ export class StateModel {
             finalStates.push(trashState);
         }
 
-        this.id = id;
         this.name = name;
         this.states = states;
         this._initialState = initialState;

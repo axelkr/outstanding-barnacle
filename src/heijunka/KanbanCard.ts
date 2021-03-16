@@ -1,15 +1,15 @@
 import { StateHistory } from './StateHistory';
 import { StateTransition } from './StateTransition';
 import { ReadOnlyProperties } from '../../src/heijunka/ReadOnlyProperties';
+import { IdObject } from './IdObject';
 
-export class KanbanCard {
-    readonly id: string;
+export class KanbanCard extends IdObject {
     readonly project: string;
     readonly history: StateHistory;
     private readonly properties: ReadOnlyProperties;
 
     private constructor(id: string, project: string, history: StateHistory, properties: ReadOnlyProperties) {
-        this.id = id;
+        super(id);
         this.project = project;
         this.history = history;
         this.properties = properties;
