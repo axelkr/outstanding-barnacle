@@ -1,4 +1,9 @@
 export { RootAggregate } from './heijunka/RootAggregate';
+export { ContextCollection } from './heijunka/ContextCollection';
+export { StateModelCollection } from './heijunka/StateModelCollection';
+export { ProjectCollection } from './heijunka/ProjectCollection';
+export { KanbanCardCollection } from './heijunka/KanbanCardCollection';
+
 export { KanbanCard } from './heijunka/KanbanCard';
 export { Project } from './heijunka/Project';
 export { State } from './heijunka/State';
