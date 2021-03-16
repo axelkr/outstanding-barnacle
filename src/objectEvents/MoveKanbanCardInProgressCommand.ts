@@ -14,7 +14,7 @@ export class MoveKanbanCardInProgressCommand extends BaseCommand implements Proc
   }
 
   process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
-    return root.setHeijunkaBoard(root.heijunkaBoard.inProgressInState(objectEvent.object, objectEvent.payload.get('newState'), objectEvent.time));
+    return root.updateHeijunkaBoard(root.heijunkaBoard.inProgressInState(objectEvent.object, objectEvent.payload.get('newState'), objectEvent.time));
   }
 
   createEvent(topic: Topic, kanbanCardId: string, idNewState: string): ObjectEvent {

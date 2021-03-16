@@ -19,7 +19,7 @@ export class CreateProjectCommand extends BaseCommand implements ProcessObjectEv
 
   process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
     const newProject = new Project(objectEvent.object, objectEvent.payload.get(this.stateModelIdKey), new ReadOnlyProperties());
-    return root.setHeijunkaBoard(root.heijunkaBoard.addProject(newProject));
+    return root.updateHeijunkaBoard(root.heijunkaBoard.addProject(newProject));
   }
 
   createEvent(topic: Topic, stateModel: StateModel, newUUID: string): ObjectEvent {

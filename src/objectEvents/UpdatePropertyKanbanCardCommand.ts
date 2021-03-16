@@ -15,7 +15,7 @@ export class UpdatePropertyKanbanCardCommand extends BaseCommand implements Proc
   }
 
   process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
-    return root.setHeijunkaBoard(root.heijunkaBoard.updatePropertyKanbanCard(objectEvent.object, objectEvent.payload.get('property'), objectEvent.time, objectEvent.payload.get('value')));
+    return root.updateHeijunkaBoard(root.heijunkaBoard.updatePropertyKanbanCard(objectEvent.object, objectEvent.payload.get('property'), objectEvent.time, objectEvent.payload.get('value')));
   }
 
   createEvent(topic: Topic, kanbanCard: KanbanCard, propertyName: string, newValue: string): ObjectEvent {

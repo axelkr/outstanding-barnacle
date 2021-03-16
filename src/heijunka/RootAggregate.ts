@@ -1,4 +1,3 @@
-import { Context } from './Context';
 import { ContextCollection } from './ContextCollection';
 import { StateModelCollection } from './StateModelCollection';
 import { HeijunkaBoard } from './HeijunkaBoard';
@@ -20,21 +19,28 @@ export class RootAggregate {
         return new RootAggregate(HeijunkaBoard.createEmptyHeijunkaBoard(), new ContextCollection(), new StateModelCollection());
     }
 
-    public setHeijunkaBoard(heijunkaBoard: HeijunkaBoard): RootAggregate {
+    public updateHeijunkaBoard(heijunkaBoard: HeijunkaBoard): RootAggregate {
+        const noChange = ( heijunkaBoard === this.heijunkaBoard);
+        if ( noChange) {
+            return this;
+        }
         return new RootAggregate(heijunkaBoard, this.contexts, this.stateModels);
     }
 
-    public addContext(aContext: Context): RootAggregate {
-        const updatedContextModel = this.contexts.add(aContext);
-        const noChange = ( updatedContextModel === this.contexts);
+    public updateContexts(contexts: ContextCollection): RootAggregate {
+        const noChange = ( contexts === this.contexts);
         if (noChange) {
             return;
         }
-        return new RootAggregate(this.heijunkaBoard, updatedContextModel, this.stateModels);
+        return new RootAggregate(this.heijunkaBoard, contexts, this.stateModels);
     }
-
-    public addStateModel(aStateModel: StateModel): RootAggregate {
-        return new RootAggregate(this.heijunkaBoard,this.contexts,this.stateModels.add(aStateModel));
+    
+    public updateStateModels(stateModels: StateModelCollection): RootAggregate {
+        const noChange = ( stateModels === this.stateModels);
+        if (noChange) {
+            return;
+        }
+        return new RootAggregate(this.heijunkaBoard, this.contexts, stateModels);
     }
 
     public getStateModelOf(project: Project): StateModel {

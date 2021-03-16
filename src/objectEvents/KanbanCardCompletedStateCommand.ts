@@ -15,7 +15,7 @@ export class KanbanCardCompletedStateCommand extends BaseCommand implements Proc
   }
 
   process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
-    return root.setHeijunkaBoard(root.heijunkaBoard.completedState(objectEvent.object, objectEvent.payload.get('state'), objectEvent.time));
+    return root.updateHeijunkaBoard(root.heijunkaBoard.completedState(objectEvent.object, objectEvent.payload.get('state'), objectEvent.time));
   }
 
   createEvent(topic: Topic, kanbanCard: KanbanCard, idState: string): ObjectEvent {

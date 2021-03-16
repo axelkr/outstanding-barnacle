@@ -19,7 +19,7 @@ export class MoveKanbanCardToTrashCommand extends BaseCommand implements Process
   process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
     const project: Project = root.heijunkaBoard.getProject(root.heijunkaBoard.getKanbanCard(objectEvent.object).project);
     const trashState: State = root.getStateModelOf(project).trashState();
-    return root.setHeijunkaBoard(root.heijunkaBoard.completedState(objectEvent.object, trashState.id, objectEvent.time));
+    return root.updateHeijunkaBoard(root.heijunkaBoard.completedState(objectEvent.object, trashState.id, objectEvent.time));
   }
 
   createEvent(topic: Topic, kanbanCard: KanbanCard): ObjectEvent {

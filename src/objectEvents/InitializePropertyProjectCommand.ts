@@ -14,7 +14,7 @@ export class InitializePropertyProjectCommand extends BaseCommand implements Pro
   }
 
   process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
-    return root.setHeijunkaBoard(root.heijunkaBoard.initializePropertyOfProject(objectEvent.object, objectEvent.payload.get('property'), objectEvent.time, objectEvent.payload.get('value')));
+    return root.updateHeijunkaBoard(root.heijunkaBoard.initializePropertyOfProject(objectEvent.object, objectEvent.payload.get('property'), objectEvent.time, objectEvent.payload.get('value')));
   }
 
   createEvent(topic: Topic, projectId: string, propertyName: string, initialValue: string): ObjectEvent {

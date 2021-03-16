@@ -15,7 +15,7 @@ export class CreateStateModelCommand extends BaseCommand implements ProcessObjec
 
   process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
     const stateModel: StateModel = StateModel.deserialize(objectEvent.payload.get('stateModel'))
-    return root.addStateModel(stateModel);
+    return root.updateStateModels(root.stateModels.add(stateModel));
   }
 
   createEvent(topic: Topic, stateModel: StateModel, newUUID: string): ObjectEvent {

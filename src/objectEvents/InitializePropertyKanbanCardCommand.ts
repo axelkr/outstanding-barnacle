@@ -14,7 +14,7 @@ export class InitializePropertyKanbanCardCommand extends BaseCommand implements 
   }
 
   process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
-    return root.setHeijunkaBoard(root.heijunkaBoard.initializePropertyKanbanCard(objectEvent.object, objectEvent.payload.get('property'), objectEvent.time, objectEvent.payload.get('value')));
+    return root.updateHeijunkaBoard(root.heijunkaBoard.initializePropertyKanbanCard(objectEvent.object, objectEvent.payload.get('property'), objectEvent.time, objectEvent.payload.get('value')));
   }
 
   createEvent(topic: Topic, kanbanCardId: string, propertyName: string, newValue: string): ObjectEvent {
