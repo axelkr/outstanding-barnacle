@@ -1,12 +1,9 @@
 import { expect } from 'chai';
 
-import { Project } from '../../src/heijunka/Project';
-import { ReadOnlyProperties } from '../../src/heijunka/ReadOnlyProperties';
 import { KanbanCard } from '../../src/heijunka/KanbanCard';
 import { HeijunkaBoard } from '../../src/heijunka/HeijunkaBoard';
 import { TransitionType } from '../../src/heijunka/StateTransition';
 import { State } from '../../src/heijunka/State';
-import { StateModel } from '../../src/heijunka/StateModel';
 
 
 describe('HeijunkaBoard', () => {
@@ -16,85 +13,6 @@ describe('HeijunkaBoard', () => {
 
   beforeEach(() => {
     board = HeijunkaBoard.createEmptyHeijunkaBoard();
-  });
-
-  it('addProject: throws exception if called with undefined as Project', () => {
-    expect(function () { board.addProject(undefined) }).throws();
-  });
-
-  it('addProject: adds new project', () => {
-    const aId = 'aRandomId';
-    const aStateModelId = 'aStateModelId';
-    const aProject = new Project(aId, aStateModelId, new ReadOnlyProperties());
-    board = board.addProject(aProject);
-    expect(board.projects.length).to.equal(1);
-  });
-
-  it('addProject: doesn\'t add project with same id twice', () => {
-    const aId = 'aRandomId';
-    const aStateModelId = 'aStateModelId';
-    const aProject = new Project(aId, aStateModelId, new ReadOnlyProperties());
-    const sameProjectId = new Project(aId, aStateModelId, new ReadOnlyProperties());
-    board = board.addProject(aProject);
-    board = board.addProject(sameProjectId);
-    expect(board.projects.length).to.equal(1);
-  });
-
-  it('hasProject: throws exception if called with undefined as id', () => {
-    expect(function () { board.hasProject(undefined) }).throws();
-  });
-
-  it('hasProject: true if project with id available', () => {
-    const aId = 'aRandomId';
-    const aStateModelId = 'aStateModelId';
-    const aProject = new Project(aId, aStateModelId, new ReadOnlyProperties());
-    board = board.addProject(aProject);
-    expect(board.hasProject(aId)).to.be.true;
-  });
-
-  it('hasProject: false if project with id is not available', () => {
-    const aId = 'aRandomId';
-    const anotherId = 'anotherRandomId';
-    const aStateModelId = 'aStateModelId';
-    const aProject = new Project(aId, aStateModelId, new ReadOnlyProperties());
-    board = board.addProject(aProject);
-    expect(board.hasProject(anotherId)).to.be.false;
-  });
-
-  it('updatePropertyOfProject: throws exception if called with undefined as id', () => {
-    expect(function () { board.updatePropertyOfProject(undefined, 'propertyName', new Date(), 'renameTo') }).throws();
-  });
-
-  it('updatePropertyOfProject: throws exception if called with undefined as date', () => {
-    expect(function () { board.updatePropertyOfProject('aId', 'propertyName', undefined, 'renameTo') }).throws();
-  });
-
-  it('updatePropertyOfProject: throws exception if called with undefined as new name', () => {
-    expect(function () { board.updatePropertyOfProject('aId', 'propertyName', new Date(), undefined) }).throws();
-  });
-
-  it('updatePropertyOfProject: throws exception if called with unknown id', () => {
-    const aId = 'aRandomId';
-    const aStateModelId = 'aStateModelId';
-    const anotherId = 'anotherRandomId';
-    const aProject = new Project(aId, aStateModelId, new ReadOnlyProperties());
-    board = board.addProject(aProject);
-
-    expect(function () { board.updatePropertyOfProject(anotherId, 'propertyName', new Date(), undefined) }).throws();
-  });
-
-  it('updatePropertyOfProject: a more recent name leads to a change', () => {
-    const aId = 'aRandomId';
-    const initialName = 'initialName';
-    const aStateModelId = 'aStateModelId';
-    const propertyName = 'propertyName';
-    const newName = 'newName';
-    const initialDate = new Date(2000, 1, 1);
-    const newDate = new Date(2001, 2, 2);
-    const aProject = new Project(aId, aStateModelId, new ReadOnlyProperties()).initializeProperty(propertyName, initialName, initialDate);
-    board = board.addProject(aProject);
-    board = board.updatePropertyOfProject(aId, propertyName, newDate, newName);
-    expect(board.projects[0].valueOfProperty(propertyName)).to.equal(newName);
   });
 
   it('addKanbanCard: throws exception if called with undefined as KanbanCard', () => {

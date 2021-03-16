@@ -4,28 +4,14 @@ import { State } from './State';
 import { StateTransition, TransitionType } from './StateTransition';
 
 export class HeijunkaBoard {
-    readonly projects: Array<Project>;
     readonly kanbanCards: Array<KanbanCard>;
 
     static createEmptyHeijunkaBoard(): HeijunkaBoard {
-        return new HeijunkaBoard([], []);
+        return new HeijunkaBoard([]);
     }
 
-    private constructor(projects: Array<Project>, kanbanCards: Array<KanbanCard>) {
-        this.projects = projects;
+    private constructor(kanbanCards: Array<KanbanCard>) {
         this.kanbanCards = kanbanCards;
-    }
-
-    public addProject(aProject: Project): HeijunkaBoard {
-        if (typeof aProject === "undefined") {
-            throw new Error('parameter aProject cannot be undefined.');
-        }
-        if (this.hasProject(aProject.id)) {
-            return this;
-        }
-        const newProjects = [...this.projects];
-        newProjects.push(aProject);
-        return new HeijunkaBoard(newProjects, this.kanbanCards);
     }
 
     public addKanbanCard(aKanbanCard: KanbanCard): HeijunkaBoard {
@@ -37,72 +23,7 @@ export class HeijunkaBoard {
         }
         const newKanbanCards = [...this.kanbanCards];
         newKanbanCards.push(aKanbanCard);
-        return new HeijunkaBoard(this.projects, newKanbanCards);
-    }
-
-    public initializePropertyOfProject(id: string, propertyName: string, updateAt: Date, updateTo: string): HeijunkaBoard {
-        if (typeof id === "undefined") {
-            throw new Error('parameter id cannot be undefined.');
-        }
-        if (typeof updateAt === "undefined") {
-            throw new Error('parameter updateAt cannot be undefined.');
-        }
-        if (typeof updateTo === "undefined") {
-            throw new Error('parameter updateTo cannot be undefined.');
-        }
-        if (!this.hasProject(id)) {
-            throw new Error('unknown project with id ' + id);
-        }
-
-        const newProjects: Project[] = [];
-        this.projects.forEach(aProject => {
-            if (aProject.id === id) {
-                const updatedProject = aProject.initializeProperty(propertyName, updateTo, updateAt);
-                newProjects.push(updatedProject);
-            } else {
-                newProjects.push(aProject);
-            }
-        })
-        return new HeijunkaBoard(newProjects, this.kanbanCards);
-    }
-
-    public updatePropertyOfProject(id: string, propertyName: string, updateAt: Date, updateTo: string): HeijunkaBoard {
-        if (typeof id === "undefined") {
-            throw new Error('parameter id cannot be undefined.');
-        }
-        if (typeof updateAt === "undefined") {
-            throw new Error('parameter updateAt cannot be undefined.');
-        }
-        if (typeof updateTo === "undefined") {
-            throw new Error('parameter updateTo cannot be undefined.');
-        }
-        if (!this.hasProject(id)) {
-            throw new Error('unknown project with id ' + id);
-        }
-
-        let didUpdate = true;
-        const newProjects: Project[] = [];
-        this.projects.forEach(aProject => {
-            if (aProject.id === id) {
-                const updatedProject = aProject.updateProperty(propertyName, updateTo, updateAt);
-                didUpdate = updatedProject.valueOfProperty(propertyName) !== aProject.valueOfProperty(propertyName);
-                newProjects.push(updatedProject);
-            } else {
-                newProjects.push(aProject);
-            }
-        })
-        if (didUpdate) {
-            return new HeijunkaBoard(newProjects, this.kanbanCards);
-        } else {
-            return this;
-        }
-    }
-
-    public hasProject(id: string): boolean {
-        if (typeof id === "undefined") {
-            throw new Error('parameter id cannot be undefined.');
-        }
-        return this.projects.some(aProject => aProject.id === id);
+        return new HeijunkaBoard(newKanbanCards);
     }
 
     public hasKanbanCard(id: string): boolean {
@@ -159,7 +80,7 @@ export class HeijunkaBoard {
             }
         })
         if (didModify) {
-            return new HeijunkaBoard(this.projects, newKanbanCards);
+            return new HeijunkaBoard(newKanbanCards);
         } else {
             return this;
         }
@@ -194,16 +115,6 @@ export class HeijunkaBoard {
             throw new Error('no kanban card available with id ' + id);
         } else {
             return aCard;
-        }
-    }
-
-    public getProject(id: string): Project {
-        const aProject = this.projects.find(project => project.id === id);
-
-        if (aProject === undefined) {
-            throw new Error('no project available with id ' + id);
-        } else {
-            return aProject;
         }
     }
 }

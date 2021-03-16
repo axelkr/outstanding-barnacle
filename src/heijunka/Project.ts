@@ -1,7 +1,7 @@
 import { IdObject } from './IdObject';
 import { ReadOnlyProperties } from './ReadOnlyProperties';
 
-export class Project extends IdObject{
+export class Project extends IdObject {
     readonly stateModelId: string;
     private readonly properties: ReadOnlyProperties;
 

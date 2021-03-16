@@ -11,11 +11,11 @@ export class UpdatePropertyProjectCommand extends BaseCommand implements Process
   }
 
   canProcess(objectEvent: ObjectEvent, root: RootAggregate): boolean {
-    return root.heijunkaBoard.hasProject(objectEvent.object);
+    return root.projects.has(objectEvent.object);
   }
 
   process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
-    return root.updateHeijunkaBoard(root.heijunkaBoard.updatePropertyOfProject(objectEvent.object, objectEvent.payload.get('property'), objectEvent.time, objectEvent.payload.get('value')));
+    return root.updateProjects(root.projects.updateProperty(objectEvent.object, objectEvent.payload.get('property'), objectEvent.time, objectEvent.payload.get('value')));
   }
 
   createEvent(topic: Topic, project: Project, propertyName: string, newValue: string): ObjectEvent {
