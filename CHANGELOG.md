@@ -1,3 +1,7 @@
+# v5.0.1
+- fix: publish types of collections as well.
+- fix: create commands now don't try to add the same new object again
+
 # v5.0.0
 - refactored a lot 
 - kanban cards and projects are now individual collections with correct information hiding
