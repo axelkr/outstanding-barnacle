@@ -6,6 +6,7 @@ export { KanbanCardCollection } from './heijunka/KanbanCardCollection';
 
 export { KanbanCard } from './heijunka/KanbanCard';
 export { Project } from './heijunka/Project';
+export { Context } from './heijunka/Context';
 export { State } from './heijunka/State';
 export { StateHistory } from './heijunka/StateHistory';
 export { StateModel } from './heijunka/StateModel';
