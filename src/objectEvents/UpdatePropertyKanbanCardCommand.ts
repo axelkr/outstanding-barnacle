@@ -11,11 +11,11 @@ export class UpdatePropertyKanbanCardCommand extends BaseCommand implements Proc
   }
 
   canProcess(objectEvent: ObjectEvent, root: RootAggregate): boolean {
-    return root.kanbanCards.hasKanbanCard(objectEvent.object);
+    return root.kanbanCards.has(objectEvent.object);
   }
 
   process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
-    return root.updateKanbanCards(root.kanbanCards.updatePropertyKanbanCard(objectEvent.object, objectEvent.payload.get('property'), objectEvent.time, objectEvent.payload.get('value')));
+    return root.updateKanbanCards(root.kanbanCards.updateProperty(objectEvent.object, objectEvent.payload.get('property'), objectEvent.time, objectEvent.payload.get('value')));
   }
 
   createEvent(topic: Topic, kanbanCard: KanbanCard, propertyName: string, newValue: string): ObjectEvent {

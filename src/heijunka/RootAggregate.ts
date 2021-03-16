@@ -9,7 +9,7 @@ export class RootAggregate {
     readonly kanbanCards: KanbanCardCollection;
     readonly projects: ProjectCollection;
     readonly contexts: ContextCollection;
-    readonly stateModels:StateModelCollection;
+    readonly stateModels: StateModelCollection;
 
     private constructor(kanbanCards: KanbanCardCollection, contexts: ContextCollection, stateModels: StateModelCollection, projects: ProjectCollection) {
         this.kanbanCards = kanbanCards;
@@ -19,36 +19,36 @@ export class RootAggregate {
     }
 
     public static createEmptyRootAggregate(): RootAggregate {
-        return new RootAggregate(KanbanCardCollection.createEmptyCollection(), ContextCollection.createEmptyCollection(), 
-        StateModelCollection.createEmptyCollection(), new ProjectCollection());
+        return new RootAggregate(KanbanCardCollection.createEmptyCollection(), ContextCollection.createEmptyCollection(),
+            StateModelCollection.createEmptyCollection(), ProjectCollection.createEmptyCollection());
     }
 
     public updateKanbanCards(kanbanCards: KanbanCardCollection): RootAggregate {
-        const noChange = ( kanbanCards === this.kanbanCards);
-        if ( noChange) {
+        const noChange = (kanbanCards === this.kanbanCards);
+        if (noChange) {
             return this;
         }
-        return new RootAggregate(kanbanCards, this.contexts, this.stateModels,this.projects);
+        return new RootAggregate(kanbanCards, this.contexts, this.stateModels, this.projects);
     }
 
     public updateContexts(contexts: ContextCollection): RootAggregate {
-        const noChange = ( contexts === this.contexts);
+        const noChange = (contexts === this.contexts);
         if (noChange) {
             return;
         }
-        return new RootAggregate(this.kanbanCards, contexts, this.stateModels,this.projects);
+        return new RootAggregate(this.kanbanCards, contexts, this.stateModels, this.projects);
     }
-    
+
     public updateStateModels(stateModels: StateModelCollection): RootAggregate {
-        const noChange = ( stateModels === this.stateModels);
+        const noChange = (stateModels === this.stateModels);
         if (noChange) {
             return;
         }
-        return new RootAggregate(this.kanbanCards, this.contexts, stateModels,this.projects);
+        return new RootAggregate(this.kanbanCards, this.contexts, stateModels, this.projects);
     }
-    
+
     public updateProjects(projects: ProjectCollection): RootAggregate {
-        const noChange = ( projects === this.projects);
+        const noChange = (projects === this.projects);
         if (noChange) {
             return;
         }

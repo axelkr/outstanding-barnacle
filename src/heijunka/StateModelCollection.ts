@@ -23,7 +23,7 @@ export class StateModelCollection {
         if (anotherStateModelWithSameNameExists) {
             throw new Error('another state model with name '+aStateModel.name+" already exists");
         }
-        
+
         return new StateModelCollection(updatedStateModels);
     }
 
@@ -33,5 +33,9 @@ export class StateModelCollection {
 
     public get(aStateModelId: string): StateModel {
         return this.stateModels.get(aStateModelId);
+    }
+    
+    public getStateModels(): StateModel[] {
+        return this.stateModels.idObjects;
     }
 }

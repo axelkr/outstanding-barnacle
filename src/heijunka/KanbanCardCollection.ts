@@ -4,45 +4,45 @@ import { State } from './State';
 import { StateTransition, TransitionType } from './StateTransition';
 
 export class KanbanCardCollection {
-    readonly kanbanCards: Array<KanbanCard>;
+    private readonly _kanbanCards: Array<KanbanCard>;
 
     static createEmptyCollection(): KanbanCardCollection {
         return new KanbanCardCollection([]);
     }
 
     private constructor(kanbanCards: Array<KanbanCard>) {
-        this.kanbanCards = kanbanCards;
+        this._kanbanCards = kanbanCards;
     }
 
-    public addKanbanCard(aKanbanCard: KanbanCard): KanbanCardCollection {
+    public add(aKanbanCard: KanbanCard): KanbanCardCollection {
         if (typeof aKanbanCard === "undefined") {
             throw new Error('parameter aKanbanCard cannot be undefined.');
         }
-        if (this.hasKanbanCard(aKanbanCard.id)) {
+        if (this.has(aKanbanCard.id)) {
             return this;
         }
-        const newKanbanCards = [...this.kanbanCards];
+        const newKanbanCards = [...this._kanbanCards];
         newKanbanCards.push(aKanbanCard);
         return new KanbanCardCollection(newKanbanCards);
     }
 
-    public hasKanbanCard(id: string): boolean {
+    public has(id: string): boolean {
         if (typeof id === "undefined") {
             throw new Error('parameter id cannot be undefined.');
         }
-        return this.kanbanCards.some(aKanbanCard => aKanbanCard.id === id);
+        return this._kanbanCards.some(aKanbanCard => aKanbanCard.id === id);
     }
 
-    public updatePropertyKanbanCard(id: string, propertyName: string, updateAt: Date, updateTo: string): KanbanCardCollection {
+    public updateProperty(id: string, propertyName: string, updateAt: Date, updateTo: string): KanbanCardCollection {
         const updatePropertyOfCard = (aCard: KanbanCard) => aCard.updateProperty(propertyName, updateTo, updateAt);
         const differentName = (aCard: KanbanCard, anotherCard: KanbanCard) => aCard.valueOfProperty(propertyName) !== anotherCard.valueOfProperty(propertyName);
-        return this.replaceKanbanCard(id, updatePropertyOfCard, differentName);
+        return this.replace(id, updatePropertyOfCard, differentName);
     }
 
-    public initializePropertyKanbanCard(id: string, propertyName: string, updateAt: Date, updateTo: string): KanbanCardCollection {
+    public initializeProperty(id: string, propertyName: string, updateAt: Date, updateTo: string): KanbanCardCollection {
         const initializePropertyOfCard = (aCard: KanbanCard) => aCard.initializeProperty(propertyName, updateTo, updateAt);
         const initializingAlwaysChanges = () => true;
-        return this.replaceKanbanCard(id, initializePropertyOfCard, initializingAlwaysChanges);
+        return this.replace(id, initializePropertyOfCard, initializingAlwaysChanges);
     }
 
     public completedState(aKanbanCard: string, aState: string, completedAt: Date): KanbanCardCollection {
@@ -58,19 +58,19 @@ export class KanbanCardCollection {
     private addStateTransition(aTransition: StateTransition, aKanbanCard: string): KanbanCardCollection {
         const addTransition = (aCard: KanbanCard) => aCard.transitToNewState(aTransition);
         const differentEntriesInHistory = (aCard: KanbanCard, anotherCard: KanbanCard) => aCard.history.transitions.length !== anotherCard.history.transitions.length;
-        return this.replaceKanbanCard(aKanbanCard, addTransition, differentEntriesInHistory);
+        return this.replace(aKanbanCard, addTransition, differentEntriesInHistory);
     }
 
-    private replaceKanbanCard(id: string, replaceKanbanCard: { (aCard: KanbanCard): KanbanCard }, hasModified: { (before: KanbanCard, after: KanbanCard): boolean }): KanbanCardCollection {
+    private replace(id: string, replaceKanbanCard: { (aCard: KanbanCard): KanbanCard }, hasModified: { (before: KanbanCard, after: KanbanCard): boolean }): KanbanCardCollection {
         if (typeof id === "undefined") {
             throw new Error('parameter id cannot be undefined.');
         }
-        if (!this.hasKanbanCard(id)) {
+        if (!this.has(id)) {
             throw new Error('unknown kanban card with id ' + id);
         }
         let didModify = true;
         const newKanbanCards: KanbanCard[] = [];
-        this.kanbanCards.forEach(aKanbanCard => {
+        this._kanbanCards.forEach(aKanbanCard => {
             if (aKanbanCard.id === id) {
                 const replacedKanbanCard = replaceKanbanCard(aKanbanCard);
                 didModify = hasModified(aKanbanCard, replacedKanbanCard);
@@ -86,8 +86,8 @@ export class KanbanCardCollection {
         }
     }
 
-    public findKanbanCards(options?: { project?: Project, states?: State[], transitionType?: TransitionType }): KanbanCard[] {
-        let kanbanCards: KanbanCard[] = [...this.kanbanCards];
+    public find(options?: { project?: Project, states?: State[], transitionType?: TransitionType }): KanbanCard[] {
+        let kanbanCards: KanbanCard[] = [...this._kanbanCards];
         const hasStateTransition = function (kanbanCard: KanbanCard): boolean {
             return kanbanCard.history.currentStateTransition() !== undefined;
         };
@@ -108,13 +108,17 @@ export class KanbanCardCollection {
         return kanbanCards;
     }
 
-    public getKanbanCard(id: string): KanbanCard {
-        const aCard = this.kanbanCards.find(aKanbanCard => aKanbanCard.id === id);
+    public get(id: string): KanbanCard {
+        const aCard = this._kanbanCards.find(aKanbanCard => aKanbanCard.id === id);
 
         if (aCard === undefined) {
             throw new Error('no kanban card available with id ' + id);
         } else {
             return aCard;
         }
+    }
+
+    public getKanbanCards(): KanbanCard[] {
+        return this._kanbanCards;
     }
 }

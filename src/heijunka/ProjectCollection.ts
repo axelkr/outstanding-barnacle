@@ -1,31 +1,27 @@
 import { Project } from './Project';
+import { IdObjectCollection } from './IdObjectCollection';
 
 export class ProjectCollection {
-    private readonly _projects: Project[];
+    private readonly _projects: IdObjectCollection<Project>;
 
-    constructor(projects: Project[] = []) {
+    private constructor(projects: IdObjectCollection<Project>) {
         this._projects = projects;
     }
 
+    public static createEmptyCollection(): ProjectCollection {
+        return new ProjectCollection(new IdObjectCollection<Project>());
+    }
+
     public has(id: string): boolean {
-        if (typeof id === "undefined") {
-            throw new Error('parameter id cannot be undefined.');
-        }
-        return this._projects.some(aProject => aProject.id === id);
+        return this._projects.has(id);
     }
 
     public get(id: string): Project {
-        const aProject = this._projects.find(project => project.id === id);
-
-        if (aProject === undefined) {
-            throw new Error('no project available with id ' + id);
-        } else {
-            return aProject;
-        }
+        return this._projects.get(id);
     }
 
-    public projects(): Project[] {
-        return this._projects;
+    public getProjects(): Project[] {
+        return this._projects.idObjects;
     }
 
     public initializeProperty(id: string, propertyName: string, updateAt: Date, updateTo: string): ProjectCollection {
@@ -43,7 +39,7 @@ export class ProjectCollection {
         }
 
         const newProjects: Project[] = [];
-        this._projects.forEach(aProject => {
+        this._projects.idObjects.forEach(aProject => {
             if (aProject.id === id) {
                 const updatedProject = aProject.initializeProperty(propertyName, updateTo, updateAt);
                 newProjects.push(updatedProject);
@@ -51,7 +47,7 @@ export class ProjectCollection {
                 newProjects.push(aProject);
             }
         })
-        return new ProjectCollection(newProjects);
+        return new ProjectCollection(new IdObjectCollection<Project>(newProjects));
     }
 
     public updateProperty(id: string, propertyName: string, updateAt: Date, updateTo: string): ProjectCollection {
@@ -70,7 +66,7 @@ export class ProjectCollection {
 
         let didUpdate = true;
         const newProjects: Project[] = [];
-        this._projects.forEach(aProject => {
+        this._projects.idObjects.forEach(aProject => {
             if (aProject.id === id) {
                 const updatedProject = aProject.updateProperty(propertyName, updateTo, updateAt);
                 didUpdate = updatedProject.valueOfProperty(propertyName) !== aProject.valueOfProperty(propertyName);
@@ -80,21 +76,18 @@ export class ProjectCollection {
             }
         })
         if (didUpdate) {
-            return new ProjectCollection(newProjects);
+            return new ProjectCollection(new IdObjectCollection(newProjects));
         } else {
             return this;
         }
     }
 
     public add(aProject: Project): ProjectCollection {
-        if (typeof aProject === "undefined") {
-            throw new Error('parameter aProject cannot be undefined.');
-        }
-        if (this.has(aProject.id)) {
+        const updatedProjects = this._projects.add(aProject);
+        const noChange = (updatedProjects === this._projects);
+        if (noChange) {
             return this;
         }
-        const newProjects = [...this._projects];
-        newProjects.push(aProject);
-        return new ProjectCollection(newProjects);
+        return new ProjectCollection(updatedProjects);
     }
 }

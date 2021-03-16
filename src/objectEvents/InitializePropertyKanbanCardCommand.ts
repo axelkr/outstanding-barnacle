@@ -10,11 +10,11 @@ export class InitializePropertyKanbanCardCommand extends BaseCommand implements 
   }
 
   canProcess(objectEvent: ObjectEvent, root: RootAggregate): boolean {
-    return root.kanbanCards.hasKanbanCard(objectEvent.object);
+    return root.kanbanCards.has(objectEvent.object);
   }
 
   process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
-    return root.updateKanbanCards(root.kanbanCards.initializePropertyKanbanCard(objectEvent.object, objectEvent.payload.get('property'), objectEvent.time, objectEvent.payload.get('value')));
+    return root.updateKanbanCards(root.kanbanCards.initializeProperty(objectEvent.object, objectEvent.payload.get('property'), objectEvent.time, objectEvent.payload.get('value')));
   }
 
   createEvent(topic: Topic, kanbanCardId: string, propertyName: string, newValue: string): ObjectEvent {
