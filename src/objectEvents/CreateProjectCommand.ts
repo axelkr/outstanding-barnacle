@@ -14,7 +14,7 @@ export class CreateProjectCommand extends BaseCommand implements ProcessObjectEv
   }
 
   canProcess(objectEvent: ObjectEvent, root: RootAggregate): boolean {
-    return root.hasStateModel(objectEvent.payload.get(this.stateModelIdKey));
+    return root.stateModels.has(objectEvent.payload.get(this.stateModelIdKey));
   }
 
   process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {

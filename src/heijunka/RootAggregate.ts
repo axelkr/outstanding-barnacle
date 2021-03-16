@@ -1,5 +1,6 @@
 import { Context } from './Context';
 import { ContextCollection } from './ContextCollection';
+import { StateModelCollection } from './StateModelCollection';
 import { HeijunkaBoard } from './HeijunkaBoard';
 import { StateModel } from './StateModel';
 import { Project } from './Project';
@@ -7,16 +8,16 @@ import { Project } from './Project';
 export class RootAggregate {
     readonly heijunkaBoard: HeijunkaBoard;
     readonly contexts: ContextCollection;
-    readonly stateModels: StateModel[];
+    readonly stateModels:StateModelCollection;
 
-    private constructor(heijunkaBoard: HeijunkaBoard, contexts: ContextCollection, stateModels: StateModel[]) {
+    private constructor(heijunkaBoard: HeijunkaBoard, contexts: ContextCollection, stateModels: StateModelCollection) {
         this.heijunkaBoard = heijunkaBoard;
         this.contexts = contexts;
         this.stateModels = stateModels;
     }
 
     public static createEmptyRootAggregate(): RootAggregate {
-        return new RootAggregate(HeijunkaBoard.createEmptyHeijunkaBoard(), new ContextCollection(), []);
+        return new RootAggregate(HeijunkaBoard.createEmptyHeijunkaBoard(), new ContextCollection(), new StateModelCollection());
     }
 
     public setHeijunkaBoard(heijunkaBoard: HeijunkaBoard): RootAggregate {
@@ -33,26 +34,13 @@ export class RootAggregate {
     }
 
     public addStateModel(aStateModel: StateModel): RootAggregate {
-        if (typeof aStateModel === 'undefined') {
-            throw new Error('input aStateModel has to be defined');
-        }
-        if (this.stateModels.some(stateModel => stateModel.name === aStateModel.name)) {
-            throw new Error('state model with same name already defined');
-        }
-        return new RootAggregate(this.heijunkaBoard, this.contexts, [...this.stateModels, aStateModel])
-    }
-
-    public hasStateModel(aStateModelId: string): boolean {
-        if (typeof aStateModelId === 'undefined') {
-            throw new Error('input aStateModelId has to be defined');
-        }
-        return this.stateModels.some(stateModel => stateModel.id === aStateModelId);
+        return new RootAggregate(this.heijunkaBoard,this.contexts,this.stateModels.add(aStateModel));
     }
 
     public getStateModelOf(project: Project): StateModel {
         if (project === undefined) {
             throw new Error('input project has to be defined');
         }
-        return this.stateModels.find(aStateModel => aStateModel.id === project.stateModelId);
+        return this.stateModels.get(project.stateModelId);
     }
 }

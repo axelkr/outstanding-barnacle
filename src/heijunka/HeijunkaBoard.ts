@@ -1,8 +1,6 @@
 import { Project } from './Project';
 import { KanbanCard } from './KanbanCard';
-import { StateModel } from './StateModel';
 import { State } from './State';
-import { Context } from './Context';
 import { StateTransition, TransitionType } from './StateTransition';
 
 export class HeijunkaBoard {
