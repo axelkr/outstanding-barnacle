@@ -16,7 +16,7 @@ export class RootAggregate {
     }
 
     public static createEmptyRootAggregate(): RootAggregate {
-        return new RootAggregate(HeijunkaBoard.createEmptyHeijunkaBoard(), new ContextCollection(), new StateModelCollection());
+        return new RootAggregate(HeijunkaBoard.createEmptyHeijunkaBoard(), ContextCollection.createEmptyCollection(), StateModelCollection.createEmptyCollection());
     }
 
     public updateHeijunkaBoard(heijunkaBoard: HeijunkaBoard): RootAggregate {

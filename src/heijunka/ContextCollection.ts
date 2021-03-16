@@ -1,28 +1,31 @@
 import { Context } from './Context';
+import { IdObjectCollection} from './IdObjectCollection';
 
 export class ContextCollection {
-    readonly contexts: Context[];
+    private contexts : IdObjectCollection<Context>;
 
-    constructor(contexts:Context[]=[]) {
+    private constructor(contexts: IdObjectCollection<Context>) {
         this.contexts = contexts;
     }
 
+    public static createEmptyCollection(): ContextCollection {
+        return new ContextCollection(new IdObjectCollection<Context>([]));
+    }
+
     public add(aContext: Context): ContextCollection {
-        if (typeof aContext === "undefined") {
-            throw new Error('parameter aContext cannot be undefined.');
-        }
-        if (this.has(aContext.id)) {
+        const updatedContexts = this.contexts.add(aContext);
+        const noChange = (updatedContexts === this.contexts);
+        if (noChange) {
             return this;
         }
-        const newContexts = [...this.contexts];
-        newContexts.push(aContext);
-        return new ContextCollection(newContexts);
+        return new ContextCollection(updatedContexts);
     }
 
     public has(id: string): boolean {
-        if (typeof id === "undefined") {
-            throw new Error('parameter id cannot be undefined.');
-        }
-        return this.contexts.some(aContext => aContext.id === id);
+        return this.contexts.has(id);
+    }
+
+    public getContexts(): Context[] {
+        return this.contexts.idObjects;
     }
 }
