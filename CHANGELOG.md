@@ -1,3 +1,7 @@
+# v5.0.0
+- refactored a lot 
+- kanban cards and projects are now individual collections with correct information hiding
+
 # v4.3.2
 - fix: topic really belongs to a separate component.
 
