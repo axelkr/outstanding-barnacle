@@ -17,7 +17,7 @@ export class CreateContextCommand extends BaseCommand implements ProcessObjectEv
 
   process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
     const newContext = new Context( objectEvent.object, objectEvent.payload.get(this.nameKey));
-    return root.setHeijunkaBoard(root.heijunkaBoard.addContext(newContext));
+    return root.addContext(newContext);
   }
 
   createEvent(topic: Topic, name: string, newUUID: string): ObjectEvent {

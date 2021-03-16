@@ -235,34 +235,4 @@ describe('HeijunkaBoard', () => {
     const withTransitionOption = { transitionType: TransitionType.inProgress };
     expect(board.findKanbanCards(withTransitionOption).length).to.equal(0);
   });
-
-  it('hasStateModel: throws exception if called with undefined as date', () => {
-    expect(function () { board.hasStateModel(undefined) }).throws();
-  });
-
-  it('hasStateModel: returns true if called with id of a model previously added', () => {
-    const oneState = new State('stateId', 'stateName');
-    const aStateModel = new StateModel('id', 'name', [oneState], oneState, [], oneState);
-    board = board.addStateModel(aStateModel);
-    expect(board.hasStateModel(aStateModel.id)).to.be.true;
-  });
-
-  it('hasStateModel: returns false if called with id of no model previously added', () => {
-    const oneState = new State('stateId', 'stateName');
-    const aStateModel = new StateModel('id', 'name', [oneState], oneState, [], oneState);
-    board = board.addStateModel(aStateModel);
-    expect(board.hasStateModel('anotherStateId')).to.be.false;
-  });
-
-  it('addStateModel: throws exception if called with undefined as date', () => {
-    expect(function () { board.addStateModel(undefined) }).throws();
-  });
-
-  it('addStateModel: throws exception if called with state model with same name', () => {
-    const oneState = new State('stateId', 'stateName');
-    const aStateModel = new StateModel('id', 'name', [oneState], oneState, [], oneState);
-    const anotherStateModel = new StateModel('anotherId', 'name', [oneState], oneState, [], oneState);
-    board = board.addStateModel(aStateModel);
-    expect(function () { board.addStateModel(anotherStateModel) }).throws();
-  });
 });
