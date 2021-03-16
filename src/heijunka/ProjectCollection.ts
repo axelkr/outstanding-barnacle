@@ -2,10 +2,10 @@ import { Project } from './Project';
 import { IdObjectCollection } from './IdObjectCollection';
 
 export class ProjectCollection {
-    private readonly _projects: IdObjectCollection<Project>;
+    private readonly projects: IdObjectCollection<Project>;
 
     private constructor(projects: IdObjectCollection<Project>) {
-        this._projects = projects;
+        this.projects = projects;
     }
 
     public static createEmptyCollection(): ProjectCollection {
@@ -13,15 +13,15 @@ export class ProjectCollection {
     }
 
     public has(id: string): boolean {
-        return this._projects.has(id);
+        return this.projects.has(id);
     }
 
     public get(id: string): Project {
-        return this._projects.get(id);
+        return this.projects.get(id);
     }
 
     public getProjects(): Project[] {
-        return this._projects.idObjects;
+        return this.projects.idObjects;
     }
 
     public initializeProperty(id: string, propertyName: string, updateAt: Date, updateTo: string): ProjectCollection {
@@ -39,7 +39,7 @@ export class ProjectCollection {
         }
 
         const newProjects: Project[] = [];
-        this._projects.idObjects.forEach(aProject => {
+        this.projects.idObjects.forEach(aProject => {
             if (aProject.id === id) {
                 const updatedProject = aProject.initializeProperty(propertyName, updateTo, updateAt);
                 newProjects.push(updatedProject);
@@ -66,7 +66,7 @@ export class ProjectCollection {
 
         let didUpdate = true;
         const newProjects: Project[] = [];
-        this._projects.idObjects.forEach(aProject => {
+        this.projects.idObjects.forEach(aProject => {
             if (aProject.id === id) {
                 const updatedProject = aProject.updateProperty(propertyName, updateTo, updateAt);
                 didUpdate = updatedProject.valueOfProperty(propertyName) !== aProject.valueOfProperty(propertyName);
@@ -83,6 +83,6 @@ export class ProjectCollection {
     }
 
     public add(aProject: Project): ProjectCollection {
-        return new ProjectCollection(this._projects.add(aProject));
+        return new ProjectCollection(this.projects.add(aProject));
     }
 }
