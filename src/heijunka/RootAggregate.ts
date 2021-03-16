@@ -1,21 +1,22 @@
 import { Context } from './Context';
+import { ContextCollection } from './ContextCollection';
 import { HeijunkaBoard } from './HeijunkaBoard';
 import { StateModel } from './StateModel';
 import { Project } from './Project';
 
 export class RootAggregate {
     readonly heijunkaBoard: HeijunkaBoard;
-    readonly contexts: Context[];
+    readonly contexts: ContextCollection;
     readonly stateModels: StateModel[];
 
-    private constructor(heijunkaBoard: HeijunkaBoard, contexts: Context[], stateModels: StateModel[]) {
+    private constructor(heijunkaBoard: HeijunkaBoard, contexts: ContextCollection, stateModels: StateModel[]) {
         this.heijunkaBoard = heijunkaBoard;
         this.contexts = contexts;
         this.stateModels = stateModels;
     }
 
     public static createEmptyRootAggregate(): RootAggregate {
-        return new RootAggregate(HeijunkaBoard.createEmptyHeijunkaBoard(), [], []);
+        return new RootAggregate(HeijunkaBoard.createEmptyHeijunkaBoard(), new ContextCollection(), []);
     }
 
     public setHeijunkaBoard(heijunkaBoard: HeijunkaBoard): RootAggregate {
@@ -23,22 +24,12 @@ export class RootAggregate {
     }
 
     public addContext(aContext: Context): RootAggregate {
-        if (typeof aContext === "undefined") {
-            throw new Error('parameter aContext cannot be undefined.');
+        const updatedContextModel = this.contexts.add(aContext);
+        const noChange = ( updatedContextModel === this.contexts);
+        if (noChange) {
+            return;
         }
-        if (this.hasContext(aContext.id)) {
-            return this;
-        }
-        const newContexts = [...this.contexts];
-        newContexts.push(aContext);
-        return new RootAggregate(this.heijunkaBoard, newContexts, this.stateModels);
-    }
-
-    public hasContext(id: string): boolean {
-        if (typeof id === "undefined") {
-            throw new Error('parameter id cannot be undefined.');
-        }
-        return this.contexts.some(aContext => aContext.id === id);
+        return new RootAggregate(this.heijunkaBoard, updatedContextModel, this.stateModels);
     }
 
     public addStateModel(aStateModel: StateModel): RootAggregate {

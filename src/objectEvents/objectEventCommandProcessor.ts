@@ -2,7 +2,7 @@ import { ObjectEvent } from 'choicest-barnacle';
 
 import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { RootAggregate } from '../heijunka/RootAggregate';
-import { Context } from '../heijunka/Context';
+import { ContextCollection } from '../heijunka/ContextCollection';
 import { StateModel } from '../heijunka/StateModel';
 
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
@@ -45,7 +45,7 @@ export class ObjectEventCommandProcessor {
     return this.currentEntity.heijunkaBoard;
   }
 
-  public getContexts(): Context[] {
+  public getContexts(): ContextCollection {
     return this.currentEntity.contexts;
   }
 
