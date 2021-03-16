@@ -11,7 +11,7 @@ export class ContextCollection {
         if (typeof aContext === "undefined") {
             throw new Error('parameter aContext cannot be undefined.');
         }
-        if (this.hasContext(aContext.id)) {
+        if (this.has(aContext.id)) {
             return this;
         }
         const newContexts = [...this.contexts];
@@ -19,7 +19,7 @@ export class ContextCollection {
         return new ContextCollection(newContexts);
     }
 
-    public hasContext(id: string): boolean {
+    public has(id: string): boolean {
         if (typeof id === "undefined") {
             throw new Error('parameter id cannot be undefined.');
         }
