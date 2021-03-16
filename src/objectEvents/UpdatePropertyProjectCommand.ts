@@ -1,4 +1,4 @@
-import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
+import { RootAggregate } from '../heijunka/RootAggregate';
 import { Project } from '../heijunka/Project';
 
 import { ObjectEvent, Topic } from 'choicest-barnacle';
@@ -10,12 +10,12 @@ export class UpdatePropertyProjectCommand extends BaseCommand implements Process
     super(ObjectType.project, 'UpdateProperty');
   }
 
-  canProcess(objectEvent: ObjectEvent, board: HeijunkaBoard): boolean {
-    return board.hasProject(objectEvent.object);
+  canProcess(objectEvent: ObjectEvent, root: RootAggregate): boolean {
+    return root.heijunkaBoard.hasProject(objectEvent.object);
   }
 
-  process(objectEvent: ObjectEvent, board: HeijunkaBoard): HeijunkaBoard {
-    return board.updatePropertyOfProject(objectEvent.object, objectEvent.payload.get('property'), objectEvent.time, objectEvent.payload.get('value'));
+  process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
+    return root.setHeijunkaBoard(root.heijunkaBoard.updatePropertyOfProject(objectEvent.object, objectEvent.payload.get('property'), objectEvent.time, objectEvent.payload.get('value')));
   }
 
   createEvent(topic: Topic, project: Project, propertyName: string, newValue: string): ObjectEvent {

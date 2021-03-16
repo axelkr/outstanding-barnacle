@@ -1,4 +1,4 @@
-import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
+import { RootAggregate } from '../heijunka/RootAggregate';
 import { KanbanCard } from '../heijunka/KanbanCard';
 
 import { ObjectEvent, Topic } from 'choicest-barnacle';
@@ -10,16 +10,16 @@ export class UpdatePropertyKanbanCardCommand extends BaseCommand implements Proc
     super(ObjectType.kanbanCard, 'UpdateProperty');
   }
 
-  canProcess(objectEvent: ObjectEvent, board: HeijunkaBoard): boolean {
-    return board.hasKanbanCard(objectEvent.object);
+  canProcess(objectEvent: ObjectEvent, root: RootAggregate): boolean {
+    return root.heijunkaBoard.hasKanbanCard(objectEvent.object);
   }
 
-  process(objectEvent: ObjectEvent, board: HeijunkaBoard): HeijunkaBoard {
-    return board.updatePropertyKanbanCard(objectEvent.object, objectEvent.payload.get('property'), objectEvent.time, objectEvent.payload.get('value'));
+  process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
+    return root.setHeijunkaBoard(root.heijunkaBoard.updatePropertyKanbanCard(objectEvent.object, objectEvent.payload.get('property'), objectEvent.time, objectEvent.payload.get('value')));
   }
 
   createEvent(topic: Topic, kanbanCard: KanbanCard, propertyName: string, newValue: string): ObjectEvent {
-    const payload = new Map([['property', propertyName],['value', newValue]]);
+    const payload = new Map([['property', propertyName], ['value', newValue]]);
     return this.createObjectEvent(topic, kanbanCard.id, payload);
   }
 }

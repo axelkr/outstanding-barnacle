@@ -1,4 +1,4 @@
-import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
+import { RootAggregate } from '../heijunka/RootAggregate';
 import { KanbanCard } from '../heijunka/KanbanCard';
 import { Project } from '../heijunka/Project';
 import { State } from '../heijunka/State';
@@ -12,18 +12,18 @@ export class MoveKanbanCardToTrashCommand extends BaseCommand implements Process
     super(ObjectType.kanbanCard, 'MoveToTrash');
   }
 
-  canProcess(objectEvent: ObjectEvent, board: HeijunkaBoard): boolean {
-    return board.hasKanbanCard(objectEvent.object) && board.hasProject(board.getKanbanCard(objectEvent.object).project);
+  canProcess(objectEvent: ObjectEvent, root: RootAggregate): boolean {
+    return root.heijunkaBoard.hasKanbanCard(objectEvent.object) && root.heijunkaBoard.hasProject(root.heijunkaBoard.getKanbanCard(objectEvent.object).project);
   }
 
-  process(objectEvent: ObjectEvent, board: HeijunkaBoard): HeijunkaBoard {
-    const project: Project = board.getProject(board.getKanbanCard(objectEvent.object).project);
-    const trashState: State = board.getStateModelOf(project).trashState();
-    return board.completedState(objectEvent.object, trashState.id, objectEvent.time);
+  process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
+    const project: Project = root.heijunkaBoard.getProject(root.heijunkaBoard.getKanbanCard(objectEvent.object).project);
+    const trashState: State = root.heijunkaBoard.getStateModelOf(project).trashState();
+    return root.setHeijunkaBoard(root.heijunkaBoard.completedState(objectEvent.object, trashState.id, objectEvent.time));
   }
 
   createEvent(topic: Topic, kanbanCard: KanbanCard): ObjectEvent {
-    const payload: Map<string,string> = new Map([]);
+    const payload: Map<string, string> = new Map([]);
     return this.createObjectEvent(topic, kanbanCard.id, payload);
   }
 }

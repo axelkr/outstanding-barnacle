@@ -11,7 +11,7 @@ export class BaseCommand {
   readonly objectEventTypeProcessing: string;
   private readonly objectType: ObjectType;
 
-  constructor(objectType: ObjectType, commandName: string) {
+  public constructor(objectType: ObjectType, commandName: string) {
     this.objectEventTypeProcessing = objectType + commandName;
     this.objectType = objectType;
   }

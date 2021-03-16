@@ -1,4 +1,4 @@
-import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
+import { RootAggregate } from '../heijunka/RootAggregate';
 
 import { ObjectEvent, Topic } from 'choicest-barnacle';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
@@ -9,16 +9,16 @@ export class InitializePropertyProjectCommand extends BaseCommand implements Pro
     super(ObjectType.project, 'InitializeProperty');
   }
 
-  canProcess(objectEvent: ObjectEvent, board: HeijunkaBoard): boolean {
-    return board.hasProject(objectEvent.object);
+  canProcess(objectEvent: ObjectEvent, root: RootAggregate): boolean {
+    return root.heijunkaBoard.hasProject(objectEvent.object);
   }
 
-  process(objectEvent: ObjectEvent, board: HeijunkaBoard): HeijunkaBoard {
-    return board.initializePropertyOfProject(objectEvent.object, objectEvent.payload.get('property'), objectEvent.time, objectEvent.payload.get('value'));
+  process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
+    return root.setHeijunkaBoard(root.heijunkaBoard.initializePropertyOfProject(objectEvent.object, objectEvent.payload.get('property'), objectEvent.time, objectEvent.payload.get('value')));
   }
 
   createEvent(topic: Topic, projectId: string, propertyName: string, initialValue: string): ObjectEvent {
-    const payload = new Map([['property', propertyName],['value', initialValue]]);
+    const payload = new Map([['property', propertyName], ['value', initialValue]]);
     return this.createObjectEvent(topic, projectId, payload);
   }
 }
