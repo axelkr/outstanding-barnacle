@@ -26,27 +26,18 @@ describe('KanbanCardCollection', () => {
     expect(board.getKanbanCards().length).to.equal(1);
   });
 
-  it('add: doesn\'t add KanbanCard with same id twice', () => {
-    const aId = 'aRandomId';
-    const aKanbanCard = KanbanCard.create(aId, 'aProject');
-    const sameKanbanCardId = KanbanCard.create(aId, 'aProject');
-    board = board.add(aKanbanCard);
-    board = board.add(sameKanbanCardId);
-    expect(board.getKanbanCards().length).to.equal(1);
-  });
-
-  it('hasKanbanCard: throws exception if called with undefined as id', () => {
+  it('has: throws exception if called with undefined as id', () => {
     expect(function () { board.has(undefined) }).throws();
   });
 
-  it('hasKanbanCard: true if KanbanCard with id available', () => {
+  it('has: true if KanbanCard with id available', () => {
     const aId = 'aRandomId';
     const aKanbanCard = KanbanCard.create(aId, 'aProject');
     board = board.add(aKanbanCard);
     expect(board.has(aId)).to.be.true;
   });
 
-  it('hasKanbanCard: false if KanbanCard with id is not available', () => {
+  it('has: false if KanbanCard with id is not available', () => {
     const aId = 'aRandomId';
     const anotherId = 'anotherRandomId';
     const aKanbanCard = KanbanCard.create(aId, 'aProject');
