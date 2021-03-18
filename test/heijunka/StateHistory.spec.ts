@@ -54,4 +54,43 @@ describe('StateHistory', () => {
     const emptyStateHistory = StateHistory.emptyHistory();
     expect(emptyStateHistory.currentStateTransition()).to.be.undefined;
   });
+  
+  it('atDate raises an error if called without a date.', () => {
+    const emptyStateHistory = StateHistory.emptyHistory();
+    const aState = 'aState';
+    const atTheStart = StateTransition.inProgressInState(aState, new Date(2020, 1, 1));
+    const aStateHistory = emptyStateHistory
+    .add(atTheStart);
+    expect(()=> aStateHistory.atDate(undefined)).throws();
+  });
+  
+  it('atDate returns undefined if before earliest state.', () => {
+    const emptyStateHistory = StateHistory.emptyHistory();
+    const aState = 'aState';
+    const atTheStart = StateTransition.inProgressInState(aState, new Date(2020, 1, 1));
+    const aStateHistory = emptyStateHistory
+    .add(atTheStart);
+    expect(aStateHistory.atDate(new Date(2019,10,10))).to.be.undefined;
+  });
+
+  it('atDate returns last state if after last state.', () => {
+    const emptyStateHistory = StateHistory.emptyHistory();
+    const aState = 'aState';
+    const atTheStart = StateTransition.inProgressInState(aState, new Date(2020, 1, 1));
+    const aStateHistory = emptyStateHistory
+    .add(atTheStart);
+    expect(aStateHistory.atDate(new Date(2021,10,10))).to.equal(aState);
+  });
+
+  it('atDate returns first state if between first and second state.', () => {
+    const emptyStateHistory = StateHistory.emptyHistory();
+    const aState = 'aState';
+    const anotherState = 'anotherState';
+    const atTheStart = StateTransition.inProgressInState(aState, new Date(2020, 1, 1));
+    const atTheEnd = StateTransition.inProgressInState(anotherState, new Date(2020, 1, 3));
+    const aStateHistory = emptyStateHistory
+      .add(atTheStart)
+      .add(atTheEnd);
+    expect(aStateHistory.atDate(new Date(2020,1,2))).to.equal(aState);
+  });
 });

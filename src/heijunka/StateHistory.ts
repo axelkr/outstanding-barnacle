@@ -24,11 +24,24 @@ export class StateHistory {
         return new StateHistory(newTransitions);
     }
 
+    atDate(aDate: Date): StateTransition | undefined {
+        if (this.transitions.length === 0) {
+            return undefined;
+        }
+        let lastTransition: StateTransition | undefined = undefined;
+        let nextIndex = 0;
+        while (nextIndex < this.transitions.length && this.transitions[nextIndex].occurredAt < aDate) {
+            lastTransition = this.transitions[nextIndex];
+            nextIndex = nextIndex + 1;
+        }
+        return lastTransition;
+    }
+
     currentStateTransition(): StateTransition | undefined {
         if (this.transitions.length === 0) {
             return undefined;
         } else {
-            return this.transitions[this.transitions.length-1];
+            return this.transitions[this.transitions.length - 1];
         }
     }
 }
