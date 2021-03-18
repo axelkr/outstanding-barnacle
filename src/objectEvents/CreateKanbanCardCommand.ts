@@ -15,6 +15,9 @@ export class CreateKanbanCardCommand extends BaseCommand implements ProcessObjec
 
   process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
     const newCard = KanbanCard.create(objectEvent.object, objectEvent.payload.get('project'));
+    if (root.kanbanCards.has(newCard.id)) {
+      return root;
+    }
     return root.updateKanbanCards(root.kanbanCards.add(newCard));
   }
 

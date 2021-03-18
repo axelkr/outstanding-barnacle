@@ -1,3 +1,14 @@
+# v5.0.2
+- fix: provide access again for domain model root
+
+# v5.0.1
+- fix: publish types of collections as well.
+- fix: create commands now don't try to add the same new object again
+
+# v5.0.0
+- refactored a lot 
+- kanban cards and projects are now individual collections with correct information hiding
+
 # v4.3.2
 - fix: topic really belongs to a separate component.
 

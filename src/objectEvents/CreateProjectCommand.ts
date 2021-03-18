@@ -19,6 +19,9 @@ export class CreateProjectCommand extends BaseCommand implements ProcessObjectEv
 
   process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
     const newProject = new Project(objectEvent.object, objectEvent.payload.get(this.stateModelIdKey), new ReadOnlyProperties());
+    if (root.projects.has(newProject.id)) {
+      return root;
+    }
     return root.updateProjects(root.projects.add(newProject));
   }
 
