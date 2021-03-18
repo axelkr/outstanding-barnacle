@@ -59,9 +59,8 @@ describe('StateHistory', () => {
     const emptyStateHistory = StateHistory.emptyHistory();
     const aState = 'aState';
     const atTheStart = StateTransition.inProgressInState(aState, new Date(2020, 1, 1));
-    const aStateHistory = emptyStateHistory
-    .add(atTheStart);
-    expect(()=> aStateHistory.atDate(undefined)).throws();
+    const aStateHistory = emptyStateHistory.add(atTheStart);
+    expect(function () { aStateHistory.atDate(undefined)}).throws();
   });
   
   it('atDate returns undefined if before earliest state.', () => {
@@ -79,7 +78,7 @@ describe('StateHistory', () => {
     const atTheStart = StateTransition.inProgressInState(aState, new Date(2020, 1, 1));
     const aStateHistory = emptyStateHistory
     .add(atTheStart);
-    expect(aStateHistory.atDate(new Date(2021,10,10))).to.equal(aState);
+    expect(aStateHistory.atDate(new Date(2021,10,10)).state).to.equal(aState);
   });
 
   it('atDate returns first state if between first and second state.', () => {
@@ -91,6 +90,6 @@ describe('StateHistory', () => {
     const aStateHistory = emptyStateHistory
       .add(atTheStart)
       .add(atTheEnd);
-    expect(aStateHistory.atDate(new Date(2020,1,2))).to.equal(aState);
+    expect(aStateHistory.atDate(new Date(2020,1,2)).state).to.equal(aState);
   });
 });

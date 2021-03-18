@@ -1,3 +1,6 @@
+# v5.1.0
+- find active transition at specific point in time
+
 # v5.0.2
 - fix: provide access again for domain model root
 

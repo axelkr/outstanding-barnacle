@@ -25,6 +25,10 @@ export class StateHistory {
     }
 
     atDate(aDate: Date): StateTransition | undefined {
+        if (typeof aDate === "undefined") {
+            throw new Error('parameter aDate cannot be undefined.');
+        }
+        
         if (this.transitions.length === 0) {
             return undefined;
         }
