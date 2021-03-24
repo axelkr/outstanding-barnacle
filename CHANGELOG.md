@@ -1,3 +1,7 @@
+# v6.0.0
+- renamed object to proper domain names
+- command factories now mirror the domain 
+
 # v5.1.0
 - find active transition at specific point in time
 

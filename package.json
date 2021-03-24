@@ -1,6 +1,6 @@
 {
   "name": "outstanding-barnacle",
-  "version": "5.1.0",
+  "version": "6.0.0",
   "description": "Task model, which is modified through events only.",
   "keywords": [],
   "author": "Axel",
@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@types/chai": "^4.2.15",
-    "@types/mocha": "^8.2.1",
+    "@types/mocha": "^8.2.2",
     "@typescript-eslint/eslint-plugin": "^4.19.0",
     "@typescript-eslint/parser": "^4.19.0",
     "chai": "^4.3.4",
