@@ -2,10 +2,8 @@ import { ContextCollection } from './ContextCollection';
 import { StateModelCollection } from './StateModelCollection';
 import { ProjectCollection } from './ProjectCollection';
 import { KanbanCardCollection } from './KanbanCardCollection';
-import { StateModel } from './StateModel';
-import { Project } from './Project';
 
-export class RootAggregate {
+export class HeijunkaBoard {
     readonly kanbanCards: KanbanCardCollection;
     readonly projects: ProjectCollection;
     readonly contexts: ContextCollection;
@@ -18,47 +16,40 @@ export class RootAggregate {
         this.projects = projects;
     }
 
-    public static createEmptyRootAggregate(): RootAggregate {
-        return new RootAggregate(KanbanCardCollection.createEmptyCollection(), ContextCollection.createEmptyCollection(),
+    public static createEmptyHeijunkaBoard(): HeijunkaBoard {
+        return new HeijunkaBoard(KanbanCardCollection.createEmptyCollection(), ContextCollection.createEmptyCollection(),
             StateModelCollection.createEmptyCollection(), ProjectCollection.createEmptyCollection());
     }
 
-    public updateKanbanCards(kanbanCards: KanbanCardCollection): RootAggregate {
+    public updateKanbanCards(kanbanCards: KanbanCardCollection): HeijunkaBoard {
         const noChange = (kanbanCards === this.kanbanCards);
         if (noChange) {
             return this;
         }
-        return new RootAggregate(kanbanCards, this.contexts, this.stateModels, this.projects);
+        return new HeijunkaBoard(kanbanCards, this.contexts, this.stateModels, this.projects);
     }
 
-    public updateContexts(contexts: ContextCollection): RootAggregate {
+    public updateContexts(contexts: ContextCollection): HeijunkaBoard {
         const noChange = (contexts === this.contexts);
         if (noChange) {
             return;
         }
-        return new RootAggregate(this.kanbanCards, contexts, this.stateModels, this.projects);
+        return new HeijunkaBoard(this.kanbanCards, contexts, this.stateModels, this.projects);
     }
 
-    public updateStateModels(stateModels: StateModelCollection): RootAggregate {
+    public updateStateModels(stateModels: StateModelCollection): HeijunkaBoard {
         const noChange = (stateModels === this.stateModels);
         if (noChange) {
             return;
         }
-        return new RootAggregate(this.kanbanCards, this.contexts, stateModels, this.projects);
+        return new HeijunkaBoard(this.kanbanCards, this.contexts, stateModels, this.projects);
     }
 
-    public updateProjects(projects: ProjectCollection): RootAggregate {
+    public updateProjects(projects: ProjectCollection): HeijunkaBoard {
         const noChange = (projects === this.projects);
         if (noChange) {
             return;
         }
-        return new RootAggregate(this.kanbanCards, this.contexts, this.stateModels, projects);
-    }
-
-    public getStateModelOf(project: Project): StateModel {
-        if (project === undefined) {
-            throw new Error('input project has to be defined');
-        }
-        return this.stateModels.get(project.stateModelId);
+        return new HeijunkaBoard(this.kanbanCards, this.contexts, this.stateModels, projects);
     }
 }

@@ -1,4 +1,4 @@
-import { RootAggregate } from '../heijunka/RootAggregate';
+import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { KanbanCard } from '../heijunka/KanbanCard';
 import { Project } from '../heijunka/Project';
 import { State } from '../heijunka/State';
@@ -12,13 +12,13 @@ export class MoveKanbanCardToTrashCommand extends BaseCommand implements Process
     super(ObjectType.kanbanCard, 'MoveToTrash');
   }
 
-  canProcess(objectEvent: ObjectEvent, root: RootAggregate): boolean {
+  canProcess(objectEvent: ObjectEvent, root: HeijunkaBoard): boolean {
     return root.kanbanCards.has(objectEvent.object) && root.projects.has(root.kanbanCards.get(objectEvent.object).project);
   }
 
-  process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
+  process(objectEvent: ObjectEvent, root: HeijunkaBoard): HeijunkaBoard {
     const project: Project = root.projects.get(root.kanbanCards.get(objectEvent.object).project);
-    const trashState: State = root.getStateModelOf(project).trashState();
+    const trashState: State = root.stateModels.get(project.stateModelId).trashState();
     return root.updateKanbanCards(root.kanbanCards.completedState(objectEvent.object, trashState.id, objectEvent.time));
   }
 

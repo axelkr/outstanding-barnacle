@@ -1,4 +1,4 @@
-export { RootAggregate } from './heijunka/RootAggregate';
+export { HeijunkaBoard } from './heijunka/HeijunkaBoard';
 export { ContextCollection } from './heijunka/ContextCollection';
 export { StateModelCollection } from './heijunka/StateModelCollection';
 export { ProjectCollection } from './heijunka/ProjectCollection';

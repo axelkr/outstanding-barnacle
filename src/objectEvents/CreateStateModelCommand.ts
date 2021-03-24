@@ -1,5 +1,5 @@
 import { StateModel } from '../heijunka/StateModel';
-import { RootAggregate } from '../heijunka/RootAggregate';
+import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { ObjectEvent, Topic } from 'choicest-barnacle';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
 import { BaseCommand, ObjectType } from './BaseCommand';
@@ -13,7 +13,7 @@ export class CreateStateModelCommand extends BaseCommand implements ProcessObjec
     return true;
   }
 
-  process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
+  process(objectEvent: ObjectEvent, root: HeijunkaBoard): HeijunkaBoard {
     const stateModel: StateModel = StateModel.deserialize(objectEvent.payload.get('stateModel'))
     if (root.stateModels.has(stateModel.id)) {
       return root;

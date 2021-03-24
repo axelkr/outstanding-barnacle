@@ -1,4 +1,4 @@
-import { RootAggregate } from '../heijunka/RootAggregate';
+import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { KanbanCard } from '../heijunka/KanbanCard';
 
 import { ObjectEvent, Topic } from 'choicest-barnacle';
@@ -10,11 +10,11 @@ export class KanbanCardCompletedStateCommand extends BaseCommand implements Proc
     super(ObjectType.kanbanCard, 'CompletedState');
   }
 
-  canProcess(objectEvent: ObjectEvent, root: RootAggregate): boolean {
+  canProcess(objectEvent: ObjectEvent, root: HeijunkaBoard): boolean {
     return root.kanbanCards.has(objectEvent.object);
   }
 
-  process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
+  process(objectEvent: ObjectEvent, root: HeijunkaBoard): HeijunkaBoard {
     return root.updateKanbanCards(root.kanbanCards.completedState(objectEvent.object, objectEvent.payload.get('state'), objectEvent.time));
   }
 

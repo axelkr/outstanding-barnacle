@@ -1,6 +1,6 @@
 import { Project } from '../heijunka/Project';
 import { StateModel } from '../heijunka/StateModel';
-import { RootAggregate } from '../heijunka/RootAggregate';
+import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { ObjectEvent, Topic } from 'choicest-barnacle';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
 import { BaseCommand, ObjectType } from './BaseCommand';
@@ -13,11 +13,11 @@ export class CreateProjectCommand extends BaseCommand implements ProcessObjectEv
     super(ObjectType.project, 'Create');
   }
 
-  canProcess(objectEvent: ObjectEvent, root: RootAggregate): boolean {
+  canProcess(objectEvent: ObjectEvent, root: HeijunkaBoard): boolean {
     return root.stateModels.has(objectEvent.payload.get(this.stateModelIdKey));
   }
 
-  process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
+  process(objectEvent: ObjectEvent, root: HeijunkaBoard): HeijunkaBoard {
     const newProject = new Project(objectEvent.object, objectEvent.payload.get(this.stateModelIdKey), new ReadOnlyProperties());
     if (root.projects.has(newProject.id)) {
       return root;

@@ -1,6 +1,6 @@
 import { ObjectEvent } from 'choicest-barnacle';
 
-import { RootAggregate } from '../heijunka/RootAggregate';
+import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
 import { IEventFactory } from './IEventFactory';
@@ -10,12 +10,12 @@ import { KanbanCardEventFactory } from './kanbanCardEventFactory';
 
 
 export class ObjectEventCommandProcessor {
-  private currentEntity: RootAggregate;
+  private currentEntity: HeijunkaBoard;
   private commands: Map<string, ProcessObjectEventCommand> = new Map<string, ProcessObjectEventCommand>();
   private stillToProcess: ObjectEvent[] = [];
 
   constructor() {
-    this.currentEntity = RootAggregate.createEmptyRootAggregate();
+    this.currentEntity = HeijunkaBoard.createEmptyHeijunkaBoard();
 
     const factories: IEventFactory[] = [new ObjectEventFactory(), new ProjectEventFactory(), new KanbanCardEventFactory()];
     factories.forEach(aFactory => {
@@ -38,7 +38,7 @@ export class ObjectEventCommandProcessor {
     }
   }
 
-  public getRootAggregate(): RootAggregate {
+  public getHeijunkaBoard(): HeijunkaBoard {
     return this.currentEntity;
   }
 

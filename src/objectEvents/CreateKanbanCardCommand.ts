@@ -1,4 +1,4 @@
-import { RootAggregate } from '../heijunka/RootAggregate';
+import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { ObjectEvent, Topic } from 'choicest-barnacle';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
 import { KanbanCard } from '../heijunka/KanbanCard';
@@ -13,7 +13,7 @@ export class CreateKanbanCardCommand extends BaseCommand implements ProcessObjec
     return true;
   }
 
-  process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
+  process(objectEvent: ObjectEvent, root: HeijunkaBoard): HeijunkaBoard {
     const newCard = KanbanCard.create(objectEvent.object, objectEvent.payload.get('project'));
     if (root.kanbanCards.has(newCard.id)) {
       return root;

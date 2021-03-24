@@ -1,4 +1,4 @@
-import { RootAggregate } from '../heijunka/RootAggregate';
+import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { ObjectEvent, Topic } from 'choicest-barnacle';
 import { ProcessObjectEventCommand } from './processObjectEventCommand';
 import { BaseCommand, ObjectType } from './BaseCommand';
@@ -15,7 +15,7 @@ export class CreateContextCommand extends BaseCommand implements ProcessObjectEv
     return true;
   }
 
-  process(objectEvent: ObjectEvent, root: RootAggregate): RootAggregate {
+  process(objectEvent: ObjectEvent, root: HeijunkaBoard): HeijunkaBoard {
     const newContext = new Context( objectEvent.object, objectEvent.payload.get(this.nameKey));
     if (root.contexts.has(newContext.id)) {
       return root;
