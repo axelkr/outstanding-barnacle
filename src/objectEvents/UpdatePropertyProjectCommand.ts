@@ -2,10 +2,10 @@ import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { Project } from '../heijunka/Project';
 
 import { ObjectEvent, Topic } from 'choicest-barnacle';
-import { ProcessObjectEventCommand } from './processObjectEventCommand';
+import { IProcessObjectEventCommand } from './IProcessObjectEventCommand';
 import { BaseCommand, ObjectType } from './BaseCommand';
 
-export class UpdatePropertyProjectCommand extends BaseCommand implements ProcessObjectEventCommand {
+export class UpdatePropertyProjectCommand extends BaseCommand implements IProcessObjectEventCommand {
   constructor() {
     super(ObjectType.project, 'UpdateProperty');
   }

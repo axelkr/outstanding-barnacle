@@ -14,15 +14,15 @@ import { InitializePropertyKanbanCardCommand } from './InitializePropertyKanbanC
 
 import { ObjectEvent, Topic } from 'choicest-barnacle';
 import { IEventFactory } from './IEventFactory';
-import { ProcessObjectEventCommand } from './processObjectEventCommand';
+import { IProcessObjectEventCommand } from './IProcessObjectEventCommand';
 
 export enum KanbanCardProperties {
   NAME = "name"
 }
 
 export class KanbanCardEventFactory implements IEventFactory {
-  public usedCommands(): ProcessObjectEventCommand[] {
-    const result: ProcessObjectEventCommand[] = [];
+  public usedCommands(): IProcessObjectEventCommand[] {
+    const result: IProcessObjectEventCommand[] = [];
     result.push(new CreateKanbanCardCommand());
     result.push(new MoveKanbanCardInProgressCommand());
     result.push(new KanbanCardCompletedStateCommand());

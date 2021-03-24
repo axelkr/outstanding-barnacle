@@ -1,10 +1,10 @@
 import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { ObjectEvent, Topic } from 'choicest-barnacle';
-import { ProcessObjectEventCommand } from './processObjectEventCommand';
+import { IProcessObjectEventCommand } from './IProcessObjectEventCommand';
 import { BaseCommand, ObjectType } from './BaseCommand';
 import { Context } from '../heijunka/Context';
 
-export class CreateContextCommand extends BaseCommand implements ProcessObjectEventCommand {
+export class CreateContextCommand extends BaseCommand implements IProcessObjectEventCommand {
   private readonly nameKey = 'name';
 
   constructor() {

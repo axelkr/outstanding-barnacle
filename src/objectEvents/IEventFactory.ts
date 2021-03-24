@@ -1,5 +1,5 @@
-import { ProcessObjectEventCommand } from './processObjectEventCommand';
+import { IProcessObjectEventCommand } from './IProcessObjectEventCommand';
 
 export interface IEventFactory {
-    usedCommands(): ProcessObjectEventCommand[];
+    usedCommands(): IProcessObjectEventCommand[];
 }

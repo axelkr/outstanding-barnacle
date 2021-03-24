@@ -1,10 +1,10 @@
 import { StateModel } from '../heijunka/StateModel';
 import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { ObjectEvent, Topic } from 'choicest-barnacle';
-import { ProcessObjectEventCommand } from './processObjectEventCommand';
+import { IProcessObjectEventCommand } from './IProcessObjectEventCommand';
 import { BaseCommand, ObjectType } from './BaseCommand';
 
-export class CreateStateModelCommand extends BaseCommand implements ProcessObjectEventCommand {
+export class CreateStateModelCommand extends BaseCommand implements IProcessObjectEventCommand {
   constructor() {
     super(ObjectType.stateModel, 'Create');
   }

@@ -2,22 +2,22 @@ import { ObjectEvent } from 'choicest-barnacle';
 
 import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 
-import { ProcessObjectEventCommand } from './processObjectEventCommand';
+import { IProcessObjectEventCommand } from './IProcessObjectEventCommand';
 import { IEventFactory } from './IEventFactory';
-import { ObjectEventFactory } from './objectEventFactory';
+import { ContextEventFactory } from './contextEventFactory';
+import { StateModelEventFactory } from './stateModelEventFactory';
 import { ProjectEventFactory } from './projectEventFactory';
 import { KanbanCardEventFactory } from './kanbanCardEventFactory';
 
-
 export class ObjectEventCommandProcessor {
   private currentEntity: HeijunkaBoard;
-  private commands: Map<string, ProcessObjectEventCommand> = new Map<string, ProcessObjectEventCommand>();
+  private commands: Map<string, IProcessObjectEventCommand> = new Map<string, IProcessObjectEventCommand>();
   private stillToProcess: ObjectEvent[] = [];
 
   constructor() {
     this.currentEntity = HeijunkaBoard.createEmptyHeijunkaBoard();
 
-    const factories: IEventFactory[] = [new ObjectEventFactory(), new ProjectEventFactory(), new KanbanCardEventFactory()];
+    const factories: IEventFactory[] = [new ContextEventFactory(), new ProjectEventFactory(), new KanbanCardEventFactory(), new StateModelEventFactory()];
     factories.forEach(aFactory => {
       const usedCommands = aFactory.usedCommands();
       usedCommands.forEach(aCommand => this.commands.set(aCommand.objectEventTypeProcessing, aCommand));

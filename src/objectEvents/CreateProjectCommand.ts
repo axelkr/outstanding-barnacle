@@ -2,11 +2,11 @@ import { Project } from '../heijunka/Project';
 import { StateModel } from '../heijunka/StateModel';
 import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { ObjectEvent, Topic } from 'choicest-barnacle';
-import { ProcessObjectEventCommand } from './processObjectEventCommand';
+import { IProcessObjectEventCommand } from './IProcessObjectEventCommand';
 import { BaseCommand, ObjectType } from './BaseCommand';
 import { ReadOnlyProperties } from '../heijunka/ReadOnlyProperties';
 
-export class CreateProjectCommand extends BaseCommand implements ProcessObjectEventCommand {
+export class CreateProjectCommand extends BaseCommand implements IProcessObjectEventCommand {
   private readonly stateModelIdKey = 'stateModelId';
 
   constructor() {

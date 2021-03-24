@@ -8,7 +8,7 @@ import { InitializePropertyProjectCommand } from './InitializePropertyProjectCom
 
 import { ObjectEvent, Topic } from 'choicest-barnacle';
 import { IEventFactory } from './IEventFactory';
-import { ProcessObjectEventCommand } from './processObjectEventCommand';
+import { IProcessObjectEventCommand } from './IProcessObjectEventCommand';
 
 export enum ProjectProperties {
   NAME = "name"
@@ -16,8 +16,8 @@ export enum ProjectProperties {
 
 export class ProjectEventFactory implements IEventFactory {
 
-  public usedCommands(): ProcessObjectEventCommand[] {
-    const result: ProcessObjectEventCommand[] = [];
+  public usedCommands(): IProcessObjectEventCommand[] {
+    const result: IProcessObjectEventCommand[] = [];
     result.push(new CreateProjectCommand());
     result.push(new UpdatePropertyProjectCommand());
     result.push(new InitializePropertyProjectCommand());

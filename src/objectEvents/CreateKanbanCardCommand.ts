@@ -1,10 +1,10 @@
 import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { ObjectEvent, Topic } from 'choicest-barnacle';
-import { ProcessObjectEventCommand } from './processObjectEventCommand';
+import { IProcessObjectEventCommand } from './IProcessObjectEventCommand';
 import { KanbanCard } from '../heijunka/KanbanCard';
 import { BaseCommand, ObjectType } from './BaseCommand';
 
-export class CreateKanbanCardCommand extends BaseCommand implements ProcessObjectEventCommand {
+export class CreateKanbanCardCommand extends BaseCommand implements IProcessObjectEventCommand {
   constructor() {
     super(ObjectType.kanbanCard, 'Create');
   }
