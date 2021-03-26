@@ -1,3 +1,6 @@
+# v6.1.0
+- contexts can now be connected/disconnected with other ids on the board
+
 # v6.0.0
 - renamed object to proper domain names
 - command factories now mirror the domain 
