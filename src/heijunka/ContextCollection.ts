@@ -1,8 +1,8 @@
 import { Context } from './Context';
-import { IdObjectCollection} from './IdObjectCollection';
+import { IdObjectCollection } from './IdObjectCollection';
 
 export class ContextCollection {
-    private contexts : IdObjectCollection<Context>;
+    private contexts: IdObjectCollection<Context>;
 
     private constructor(contexts: IdObjectCollection<Context>) {
         this.contexts = contexts;
@@ -27,5 +27,23 @@ export class ContextCollection {
 
     public getContexts(): Context[] {
         return this.contexts.idObjects;
+    }
+
+    public get(id: string): Context {
+        return this.contexts.get(id);
+    }
+
+    public setContext(context: Context, id: string): ContextCollection {
+        const updatedContext = context.add(id);
+        return this.replace(updatedContext);
+    }
+
+    public unsetContext(context: Context, id: string): ContextCollection {
+        const updatedContext = context.remove(id);
+        return this.replace(updatedContext);
+    }
+
+    private replace(updatedContext: Context): ContextCollection {
+        return new ContextCollection(this.contexts.replace(updatedContext.id, updatedContext));
     }
 }

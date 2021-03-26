@@ -38,16 +38,8 @@ export class ProjectCollection {
             throw new Error('unknown project with id ' + id);
         }
 
-        const newProjects: Project[] = [];
-        this.projects.idObjects.forEach(aProject => {
-            if (aProject.id === id) {
-                const updatedProject = aProject.initializeProperty(propertyName, updateTo, updateAt);
-                newProjects.push(updatedProject);
-            } else {
-                newProjects.push(aProject);
-            }
-        })
-        return new ProjectCollection(new IdObjectCollection<Project>(newProjects));
+        const updatedProject = this.projects.get(id).initializeProperty(propertyName, updateTo, updateAt);
+        return new ProjectCollection(this.projects.replace(id, updatedProject));
     }
 
     public updateProperty(id: string, propertyName: string, updateAt: Date, updateTo: string): ProjectCollection {
@@ -64,22 +56,8 @@ export class ProjectCollection {
             throw new Error('unknown project with id ' + id);
         }
 
-        let didUpdate = true;
-        const newProjects: Project[] = [];
-        this.projects.idObjects.forEach(aProject => {
-            if (aProject.id === id) {
-                const updatedProject = aProject.updateProperty(propertyName, updateTo, updateAt);
-                didUpdate = updatedProject.valueOfProperty(propertyName) !== aProject.valueOfProperty(propertyName);
-                newProjects.push(updatedProject);
-            } else {
-                newProjects.push(aProject);
-            }
-        })
-        if (didUpdate) {
-            return new ProjectCollection(new IdObjectCollection(newProjects));
-        } else {
-            return this;
-        }
+        const updatedProject = this.projects.get(id).updateProperty(propertyName, updateTo, updateAt);
+        return new ProjectCollection(this.projects.replace(id, updatedProject));
     }
 
     public add(aProject: Project): ProjectCollection {

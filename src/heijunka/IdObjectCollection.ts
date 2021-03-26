@@ -12,7 +12,7 @@ export class IdObjectCollection<T extends IdObject> {
             throw new Error('parameter anIdObject cannot be undefined.');
         }
         if (this.has(anIdObject.id)) {
-            throw new Error('parameter anIdObject already contained with id '+anIdObject.id);
+            throw new Error('parameter anIdObject already contained with id ' + anIdObject.id);
         }
         const newIdObjects: Array<T> = [...this.idObjects, anIdObject];
         return new IdObjectCollection<T>(newIdObjects);
@@ -33,5 +33,20 @@ export class IdObjectCollection<T extends IdObject> {
             throw new Error('no object available with id ' + id);
         }
         return this.idObjects.find(aIdObject => aIdObject.id === id);
+    }
+
+    public replace(id: string, replaceWith: T): IdObjectCollection<T> {
+        if (typeof id === 'undefined') {
+            throw new Error('input id has to be defined');
+        }
+        if (typeof replaceWith === 'undefined') {
+            throw new Error('input replaceWith has to be defined');
+        }
+        if (!this.has(id)) {
+            return this;
+        }
+        const newIdObjects: Array<T> = [...this.idObjects];
+        newIdObjects[newIdObjects.findIndex(x => x.id === id)] = replaceWith;
+        return new IdObjectCollection<T>(newIdObjects);
     }
 }
