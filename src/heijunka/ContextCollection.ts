@@ -53,7 +53,7 @@ export class ContextCollection {
     }
 
     public deactivate(context: Context): ContextCollection {
-        if (this.active.indexOf(context.id) === 1) {
+        if (this.active.indexOf(context.id) === -1) {
             return this;
         }
         const currentlyActive = [...this.active];
