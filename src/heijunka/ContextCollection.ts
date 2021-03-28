@@ -46,23 +46,40 @@ export class ContextCollection {
     }
 
     public activate(context: Context): ContextCollection {
-        throw new Error('not implemented');
+        if (this.active.indexOf(context.id) >= 0) {
+            return this;
+        }
+        return new ContextCollection(this.contexts, [...this.active, context.id]);
     }
 
     public deactivate(context: Context): ContextCollection {
-        throw new Error('not implemented');
+        if (this.active.indexOf(context.id) === 1) {
+            return this;
+        }
+        const currentlyActive = [...this.active];
+        currentlyActive.splice(currentlyActive.indexOf(context.id), 1);
+        return new ContextCollection(this.contexts, currentlyActive);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public isImplicitlyActive(context: Context): boolean {
-        throw new Error('not implemented');
+        return this.active.length === 0;
     }
 
     public isExplicitlyActive(context: Context): boolean {
-        throw new Error('not implemented');
+        return this.active.some(a => a === context.id);
     }
 
     public isIdActive(id: string, context: Context | undefined = undefined): boolean {
-        throw new Error('not implemented');
+        let contextsToSearch: Context[];
+        if (typeof context === 'undefined') {
+            contextsToSearch = this.getContexts();
+        } else {
+            contextsToSearch = [this.get(context.id)];
+        }
+        return contextsToSearch
+            .filter(aContext => this.isExplicitlyActive(aContext) || this.isImplicitlyActive(aContext))
+            .some(aContext => aContext.contains(id));
     }
 
     private replace(updatedContext: Context): ContextCollection {
