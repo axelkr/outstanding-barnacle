@@ -1,3 +1,6 @@
+# v6.2.1
+- fix: deactivate context uses correct index
+
 # v6.2.0
 - minify output
 - commands can specify whether they're transient or not
