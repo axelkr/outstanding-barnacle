@@ -1,3 +1,7 @@
+# next version
+- minify output
+- commands can specify whether they're transient or not
+
 # v6.1.0
 - contexts can now be connected/disconnected with other ids on the board
 

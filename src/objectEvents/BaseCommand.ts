@@ -10,10 +10,12 @@ export enum ObjectType {
 export class BaseCommand {
   readonly objectEventTypeProcessing: string;
   private readonly objectType: ObjectType;
+  private readonly isTransient: boolean;
 
-  public constructor(objectType: ObjectType, commandName: string) {
+  public constructor(objectType: ObjectType, commandName: string, isTransient = false) {
     this.objectEventTypeProcessing = objectType + commandName;
     this.objectType = objectType;
+    this.isTransient = isTransient;
   }
 
   protected createObjectEvent(topic: Topic, object: string, payload: Map<string, string>): ObjectEvent {
@@ -25,7 +27,8 @@ export class BaseCommand {
       eventType: this.objectEventTypeProcessing,
       object: object,
       objectType: this.objectType,
-      payload
+      payload,
+      isTransient: this.isTransient
     }
     return createdObjectEvent;
   }
