@@ -23,7 +23,6 @@ export class MoveKanbanCardToTrashCommand extends BaseCommand implements IProces
   }
 
   createEvent(topic: Topic, kanbanCard: KanbanCard): ObjectEvent {
-    const payload: Map<string, string> = new Map([]);
-    return this.createObjectEvent(topic, kanbanCard.id, payload);
+    return this.createObjectEvent(topic, kanbanCard.id);
   }
 }

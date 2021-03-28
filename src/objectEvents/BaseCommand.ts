@@ -18,7 +18,7 @@ export class BaseCommand {
     this.isTransient = isTransient;
   }
 
-  protected createObjectEvent(topic: Topic, object: string, payload: Map<string, string>): ObjectEvent {
+  protected createObjectEvent(topic: Topic, object: string, payload: Map<string, string> = new Map<string, string>()): ObjectEvent {
     const eventIdDiscardedByBackend = 0;
     const createdObjectEvent: ObjectEvent = {
       topic: topic.id,
