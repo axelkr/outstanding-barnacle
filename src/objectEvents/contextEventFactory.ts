@@ -9,6 +9,8 @@ import { IProcessObjectEventCommand } from './IProcessObjectEventCommand';
 import { CreateContextCommand } from './CreateContextCommand';
 import { SetContextForKanbanCardCommand } from './SetContextForKanbanCardCommand';
 import { UnsetContextForKanbanCardCommand } from './UnsetContextForKanbanCardCommand';
+import { ActivateContextCommand } from './ActivateContextCommand';
+import { DeactivateContextCommand } from './DeactivateContextCommand';
 
 export class ContextEventFactory implements IEventFactory {
   public usedCommands(): IProcessObjectEventCommand[] {
@@ -16,6 +18,8 @@ export class ContextEventFactory implements IEventFactory {
     result.push(new CreateContextCommand());
     result.push(new SetContextForKanbanCardCommand());
     result.push(new UnsetContextForKanbanCardCommand());
+    result.push(new ActivateContextCommand());
+    result.push(new DeactivateContextCommand());
     return result;
   }
 
@@ -29,5 +33,13 @@ export class ContextEventFactory implements IEventFactory {
 
   public unsetContext(topic: Topic, context: Context, kanbanCard: KanbanCard): ObjectEvent {
     return new UnsetContextForKanbanCardCommand().createEvent(topic, context, kanbanCard);
+  }
+
+  public activate(topic: Topic, context: Context): ObjectEvent {
+    return new ActivateContextCommand().createEvent(topic, context);
+  }
+
+  public deactivate(topic: Topic, context: Context): ObjectEvent {
+    return new DeactivateContextCommand().createEvent(topic, context);
   }
 }
