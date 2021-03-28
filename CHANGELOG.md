@@ -1,6 +1,7 @@
-# next version
+# v6.2.0
 - minify output
 - commands can specify whether they're transient or not
+- contexts can now be set to active or deactive. If no contexts are explicitly active, all are implicitly active.
 
 # v6.1.0
 - contexts can now be connected/disconnected with other ids on the board
