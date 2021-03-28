@@ -24,5 +24,13 @@ describe('ContextCollection', () => {
     expect(aContextActivatedTwiceDeactivatedOnce.isExplicitlyActive(aContext)).to.be.false;
   });
 
+  it('any id is active if no context has been defined so far', () => {
+    expect(ContextCollection.createEmptyCollection().isIdActive('id')).to.be.true;
+  })
+
+  it('any id is active if all contexts are implicitly active', () => {
+    expect(ContextCollection.createEmptyCollection().add(generateContext('contextId')).isIdActive('id')).to.be.true;
+  })
+
   const generateContext = (id: string) => new Context(id, id);
 });

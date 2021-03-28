@@ -71,15 +71,23 @@ export class ContextCollection {
     }
 
     public isIdActive(id: string, context: Context | undefined = undefined): boolean {
+        if (this.contexts.idObjects.length === 0) {
+            return true;
+        }
         let contextsToSearch: Context[];
         if (typeof context === 'undefined') {
             contextsToSearch = this.getContexts();
         } else {
             contextsToSearch = [this.get(context.id)];
         }
-        return contextsToSearch
-            .filter(aContext => this.isExplicitlyActive(aContext) || this.isImplicitlyActive(aContext))
-            .some(aContext => aContext.contains(id));
+        return contextsToSearch.some(aContext => {
+            if (this.isImplicitlyActive(aContext)) {
+                return true;
+            } else if (this.isExplicitlyActive(aContext)) {
+                return aContext.contains(id)
+            }
+            return false;
+        })
     }
 
     private replace(updatedContext: Context): ContextCollection {
