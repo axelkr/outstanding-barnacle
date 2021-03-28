@@ -3,13 +3,15 @@ import { IdObjectCollection } from './IdObjectCollection';
 
 export class ContextCollection {
     private contexts: IdObjectCollection<Context>;
+    private active: string[];
 
-    private constructor(contexts: IdObjectCollection<Context>) {
+    private constructor(contexts: IdObjectCollection<Context>, active: string[]) {
         this.contexts = contexts;
+        this.active = active;
     }
 
     public static createEmptyCollection(): ContextCollection {
-        return new ContextCollection(new IdObjectCollection<Context>([]));
+        return new ContextCollection(new IdObjectCollection<Context>([]), []);
     }
 
     public add(aContext: Context): ContextCollection {
@@ -18,7 +20,7 @@ export class ContextCollection {
         if (noChange) {
             return this;
         }
-        return new ContextCollection(updatedContexts);
+        return new ContextCollection(updatedContexts, this.active);
     }
 
     public has(id: string): boolean {
@@ -43,7 +45,27 @@ export class ContextCollection {
         return this.replace(updatedContext);
     }
 
+    public activate(context: Context): ContextCollection {
+        throw new Error('not implemented');
+    }
+
+    public deactivate(context: Context): ContextCollection {
+        throw new Error('not implemented');
+    }
+
+    public isImplicitlyActive(context: Context): boolean {
+        throw new Error('not implemented');
+    }
+
+    public isExplicitlyActive(context: Context): boolean {
+        throw new Error('not implemented');
+    }
+
+    public isIdActive(id: string, context: Context | undefined = undefined): boolean {
+        throw new Error('not implemented');
+    }
+
     private replace(updatedContext: Context): ContextCollection {
-        return new ContextCollection(this.contexts.replace(updatedContext.id, updatedContext));
+        return new ContextCollection(this.contexts.replace(updatedContext.id, updatedContext), this.active);
     }
 }
