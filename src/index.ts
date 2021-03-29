@@ -8,6 +8,7 @@ export { KanbanCard } from './heijunka/KanbanCard';
 export { Project } from './heijunka/Project';
 export { Context } from './heijunka/Context';
 export { State } from './heijunka/State';
+export { Task } from './heijunka/Task';
 export { StateHistory } from './heijunka/StateHistory';
 export { StateModel } from './heijunka/StateModel';
 export { LinearizeStateModelService } from './heijunka/LinearizeStateModelService';
