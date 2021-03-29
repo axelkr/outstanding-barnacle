@@ -1,6 +1,6 @@
 import { StateHistory } from './StateHistory';
 import { StateTransition } from './StateTransition';
-import { ReadOnlyProperties } from '../../src/heijunka/ReadOnlyProperties';
+import { ReadOnlyProperties } from './ReadOnlyProperties';
 import { IdObject } from './IdObject';
 
 export class KanbanCard extends IdObject {
