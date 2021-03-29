@@ -18,6 +18,7 @@ export { UUIDGenerator } from './heijunka/UUIDGenerator';
 
 export { ContextEventFactory } from './objectEvents/contextEventFactory';
 export { StateModelEventFactory } from './objectEvents/stateModelEventFactory';
+export { TaskEventFactory } from './objectEvents/taskEventFactory';
 export { ProjectEventFactory, ProjectProperties } from './objectEvents/projectEventFactory';
 export { KanbanCardEventFactory, KanbanCardProperties } from './objectEvents/kanbanCardEventFactory';
 export { ObjectEventCommandProcessor } from './objectEvents/objectEventCommandProcessor';

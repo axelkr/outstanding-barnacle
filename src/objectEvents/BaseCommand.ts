@@ -4,7 +4,8 @@ export enum ObjectType {
   project = 'Project',
   kanbanCard = 'KanbanCard',
   stateModel = 'StateModel',
-  context = 'Context'
+  context = 'Context',
+  task = 'Task'
 }
 
 export class BaseCommand {

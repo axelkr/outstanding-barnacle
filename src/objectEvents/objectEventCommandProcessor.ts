@@ -6,6 +6,7 @@ import { IProcessObjectEventCommand } from './IProcessObjectEventCommand';
 import { IEventFactory } from './IEventFactory';
 import { ContextEventFactory } from './contextEventFactory';
 import { StateModelEventFactory } from './stateModelEventFactory';
+import { TaskEventFactory } from './taskEventFactory';
 import { ProjectEventFactory } from './projectEventFactory';
 import { KanbanCardEventFactory } from './kanbanCardEventFactory';
 
@@ -17,7 +18,8 @@ export class ObjectEventCommandProcessor {
   constructor() {
     this.currentEntity = HeijunkaBoard.createEmptyHeijunkaBoard();
 
-    const factories: IEventFactory[] = [new ContextEventFactory(), new ProjectEventFactory(), new KanbanCardEventFactory(), new StateModelEventFactory()];
+    const factories: IEventFactory[] = [new ContextEventFactory(), new ProjectEventFactory(), new KanbanCardEventFactory(),
+       new StateModelEventFactory(), new TaskEventFactory()];
     factories.forEach(aFactory => {
       const usedCommands = aFactory.usedCommands();
       usedCommands.forEach(aCommand => this.commands.set(aCommand.objectEventTypeProcessing, aCommand));
