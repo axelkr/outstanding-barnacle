@@ -7,6 +7,7 @@ import { Task } from '../heijunka/Task';
 export class CreateTaskCommand extends BaseCommand implements IProcessObjectEventCommand {
   private readonly parentIdKey = 'parentId';
   private readonly descriptionKey = 'description';
+  private readonly childOfKanbanCard = 'childOfKanbanCard';
 
   constructor() {
     super(ObjectType.task, 'Create');
@@ -25,8 +26,10 @@ export class CreateTaskCommand extends BaseCommand implements IProcessObjectEven
     return root.updateTasks(root.tasks.add(newTask));
   }
 
-  createEvent(topic: Topic, newUUID: string, parentId: string, description: string): ObjectEvent {
-    const payload = new Map([[this.parentIdKey, parentId],[this.descriptionKey, description]]);
+  createEvent(topic: Topic, newUUID: string, parentId: string, description: string, childOfKanbanCard: boolean): ObjectEvent {
+    const payload = new Map([[this.parentIdKey, parentId],
+      [this.descriptionKey, description],
+      [this.childOfKanbanCard, childOfKanbanCard? 'true':'false']]);
     return this.createObjectEvent(topic, newUUID, payload);
   }
 }

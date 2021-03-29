@@ -20,7 +20,8 @@ export class TaskEventFactory implements IEventFactory {
   }
 
   public create(topic: Topic, parent: Task | KanbanCard, description:string ): ObjectEvent {
-    return new CreateTaskCommand().createEvent(topic, UUIDGenerator.createUUID(),parent.id, description);
+    const isChildOfKanbanCard = parent instanceof KanbanCard;
+    return new CreateTaskCommand().createEvent(topic, UUIDGenerator.createUUID(),parent.id, description,isChildOfKanbanCard);
   }
 
   public updateDescription(topic: Topic, task: Task, updatedDescription:string ): ObjectEvent {
