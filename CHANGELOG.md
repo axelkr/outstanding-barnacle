@@ -1,3 +1,6 @@
+# v6.3.1 
+- fix: provide insight into whether task has been done
+
 # v6.3.0
 - setup new domain object: task
 
