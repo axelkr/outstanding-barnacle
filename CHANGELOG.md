@@ -1,3 +1,6 @@
+# v6.3.0
+- setup new domain object: task
+
 # v6.2.2
 - fix: kanban cards are automatically active if no context has been defined so far.
 - fix: an implicitly active context renders the kanban card implicitly active as well.
