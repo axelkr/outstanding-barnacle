@@ -9,20 +9,18 @@ export enum TaskProperties {
 export class Task extends IdObject {
     private readonly parentId: string;
     private readonly properties: ReadOnlyProperties;
-    readonly createdAt: Date;
 
-    private constructor(id: string, parentId:string, createdAt: Date, properties: ReadOnlyProperties) {
+    private constructor(id: string, parentId:string, properties: ReadOnlyProperties) {
         super(id);
         this.parentId = parentId;
         this.properties = properties;
-        this.createdAt = createdAt;
     }
 
-    public static create(id: string, parentId: string, createdAt :Date, description:string ): Task {
+    public static create(id: string, parentId: string, createdAt: Date, description:string ): Task {
         const properties = new ReadOnlyProperties()
             .initialize(TaskProperties.DESCRIPTION,description,createdAt)
             .initialize(TaskProperties.DONE,'',createdAt);
-        return new Task(id,parentId,createdAt,properties);
+        return new Task(id,parentId,properties);
     }
 
     public description(): string {
@@ -46,6 +44,6 @@ export class Task extends IdObject {
         if (updatedProperties.valueOf(propertyName) === this.properties.valueOf(propertyName)) {
             return this;
         }
-        return new Task(this.id, this.parentId, this.createdAt, updatedProperties);
+        return new Task(this.id, this.parentId, updatedProperties);
     }
 }
