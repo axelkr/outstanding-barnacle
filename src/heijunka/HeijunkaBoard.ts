@@ -2,23 +2,28 @@ import { ContextCollection } from './ContextCollection';
 import { StateModelCollection } from './StateModelCollection';
 import { ProjectCollection } from './ProjectCollection';
 import { KanbanCardCollection } from './KanbanCardCollection';
+import { TaskCollection } from './TaskCollection';
 
 export class HeijunkaBoard {
     readonly kanbanCards: KanbanCardCollection;
     readonly projects: ProjectCollection;
     readonly contexts: ContextCollection;
     readonly stateModels: StateModelCollection;
+    readonly tasks: TaskCollection;
 
-    private constructor(kanbanCards: KanbanCardCollection, contexts: ContextCollection, stateModels: StateModelCollection, projects: ProjectCollection) {
+    private constructor(kanbanCards: KanbanCardCollection, contexts: ContextCollection, stateModels: StateModelCollection, 
+        projects: ProjectCollection, tasks:TaskCollection) {
         this.kanbanCards = kanbanCards;
         this.contexts = contexts;
         this.stateModels = stateModels;
         this.projects = projects;
+        this.tasks = tasks;
     }
 
     public static createEmptyHeijunkaBoard(): HeijunkaBoard {
         return new HeijunkaBoard(KanbanCardCollection.createEmptyCollection(), ContextCollection.createEmptyCollection(),
-            StateModelCollection.createEmptyCollection(), ProjectCollection.createEmptyCollection());
+            StateModelCollection.createEmptyCollection(), ProjectCollection.createEmptyCollection(),
+            TaskCollection.createEmptyCollection());
     }
 
     public updateKanbanCards(kanbanCards: KanbanCardCollection): HeijunkaBoard {
@@ -26,7 +31,7 @@ export class HeijunkaBoard {
         if (noChange) {
             return this;
         }
-        return new HeijunkaBoard(kanbanCards, this.contexts, this.stateModels, this.projects);
+        return new HeijunkaBoard(kanbanCards, this.contexts, this.stateModels, this.projects, this.tasks);
     }
 
     public updateContexts(contexts: ContextCollection): HeijunkaBoard {
@@ -34,7 +39,7 @@ export class HeijunkaBoard {
         if (noChange) {
             return;
         }
-        return new HeijunkaBoard(this.kanbanCards, contexts, this.stateModels, this.projects);
+        return new HeijunkaBoard(this.kanbanCards, contexts, this.stateModels, this.projects, this.tasks);
     }
 
     public updateStateModels(stateModels: StateModelCollection): HeijunkaBoard {
@@ -42,7 +47,7 @@ export class HeijunkaBoard {
         if (noChange) {
             return;
         }
-        return new HeijunkaBoard(this.kanbanCards, this.contexts, stateModels, this.projects);
+        return new HeijunkaBoard(this.kanbanCards, this.contexts, stateModels, this.projects, this.tasks);
     }
 
     public updateProjects(projects: ProjectCollection): HeijunkaBoard {
@@ -50,6 +55,14 @@ export class HeijunkaBoard {
         if (noChange) {
             return;
         }
-        return new HeijunkaBoard(this.kanbanCards, this.contexts, this.stateModels, projects);
+        return new HeijunkaBoard(this.kanbanCards, this.contexts, this.stateModels, projects, this.tasks);
+    }
+
+    public updateTasks(tasks: TaskCollection): HeijunkaBoard {
+        const noChange = (tasks === this.tasks);
+        if (noChange) {
+            return;
+        }
+        return new HeijunkaBoard(this.kanbanCards, this.contexts, this.stateModels, this.projects, tasks);
     }
 }

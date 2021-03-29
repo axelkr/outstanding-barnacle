@@ -37,8 +37,8 @@ export class Task extends IdObject {
         return this.updateProperty(TaskProperties.DESCRIPTION,newDescription,updatedAt);
     }
     
-    public markAsDone(doneAt: Date,updatedAt: Date): Task {
-        return this.updateProperty(TaskProperties.DONE,doneAt.toUTCString(),updatedAt);
+    public markAsDone(doneAt: Date): Task {
+        return this.updateProperty(TaskProperties.DONE,doneAt.toUTCString(),doneAt);
     }
 
     private updateProperty(propertyName:string, newValue:string, updatedAt: Date): Task {

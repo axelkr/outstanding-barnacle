@@ -3,6 +3,7 @@ export { ContextCollection } from './heijunka/ContextCollection';
 export { StateModelCollection } from './heijunka/StateModelCollection';
 export { ProjectCollection } from './heijunka/ProjectCollection';
 export { KanbanCardCollection } from './heijunka/KanbanCardCollection';
+export { TaskCollection } from './heijunka/TaskCollection';
 
 export { KanbanCard } from './heijunka/KanbanCard';
 export { Project } from './heijunka/Project';
