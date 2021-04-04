@@ -1,3 +1,6 @@
+# v6.4.1
+- find states in state model
+
 # v6.4.0
 - kanban card creation returns now created kanban card id as well. Factory methods also accept the id instead of the actual object.
 
