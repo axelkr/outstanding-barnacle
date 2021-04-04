@@ -1,3 +1,6 @@
+# v6.4.0
+- kanban card creation returns now created kanban card id as well. Factory methods also accept the id instead of the actual object.
+
 # v6.3.1 
 - fix: provide insight into whether task has been done
 
