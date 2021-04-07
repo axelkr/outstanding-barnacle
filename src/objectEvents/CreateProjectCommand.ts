@@ -4,7 +4,6 @@ import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { ObjectEvent, Topic } from 'choicest-barnacle';
 import { IProcessObjectEventCommand } from './IProcessObjectEventCommand';
 import { BaseCommand, ObjectType } from './BaseCommand';
-import { ReadOnlyProperties } from '../heijunka/ReadOnlyProperties';
 
 export class CreateProjectCommand extends BaseCommand implements IProcessObjectEventCommand {
   private readonly stateModelIdKey = 'stateModelId';
@@ -18,7 +17,7 @@ export class CreateProjectCommand extends BaseCommand implements IProcessObjectE
   }
 
   process(objectEvent: ObjectEvent, root: HeijunkaBoard): HeijunkaBoard {
-    const newProject = new Project(objectEvent.object, objectEvent.payload.get(this.stateModelIdKey), new ReadOnlyProperties());
+    const newProject = Project.create(objectEvent.object, objectEvent.payload.get(this.stateModelIdKey));
     if (root.projects.has(newProject.id)) {
       return root;
     }
