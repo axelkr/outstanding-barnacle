@@ -15,6 +15,9 @@ export class ReadOnlyProperties {
     }
 
     update(propertyName: string, newPropertyValue: string, updatedAt: Date): ReadOnlyProperties {
+        if (!this.has(propertyName)) {
+            throw new Error('no property available with name ' + propertyName);
+        }
         const updatedProperty = this.properties.get(propertyName).update(newPropertyValue, updatedAt);
         if (updatedProperty.value === this.properties.get(propertyName).value) {
             return this;
@@ -27,5 +30,9 @@ export class ReadOnlyProperties {
 
     valueOf(propertyName: string): string {
         return this.properties.get(propertyName).value;
+    }
+
+    has(propertyName: string): boolean {
+        return this.properties.has(propertyName);
     }
 }
