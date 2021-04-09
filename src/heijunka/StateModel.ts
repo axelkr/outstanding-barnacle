@@ -152,6 +152,19 @@ export class StateModel extends IdObject {
         return result;
     }
 
+    public find(options?: { name?: string }): State[] {
+        let states: State[] = [...this.states];
+
+        if (typeof options !== 'undefined') {
+            if (typeof options.name !== 'undefined') {
+                states = states.filter(aState => aState.name === options.name)
+            }
+        }
+
+        return states;
+    }
+
+
     private hasState(state: State): boolean {
         if (typeof state === "undefined") {
             throw new Error('state cannot be undefined');

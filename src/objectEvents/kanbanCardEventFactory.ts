@@ -32,25 +32,25 @@ export class KanbanCardEventFactory implements IEventFactory {
     return result;
   }
 
-  public create(topic: Topic, name: string, project: Project, stateModel: StateModel): ObjectEvent[] {
+  public create(topic: Topic, name: string, project: Project, stateModel: StateModel): { events: ObjectEvent[], kanbanCardId: string } {
     const events: ObjectEvent[] = [];
-    const newKanbanCardId = UUIDGenerator.createUUID();
-    events.push(new CreateKanbanCardCommand().createEvent(topic, project.id, newKanbanCardId));
-    events.push(new InitializePropertyKanbanCardCommand().createEvent(topic, newKanbanCardId, KanbanCardProperties.NAME, name));
-    events.push(new MoveKanbanCardInProgressCommand().createEvent(topic, newKanbanCardId, stateModel.initialState().id));
-    return events;
+    const kanbanCardId = UUIDGenerator.createUUID();
+    events.push(new CreateKanbanCardCommand().createEvent(topic, project.id, kanbanCardId));
+    events.push(new InitializePropertyKanbanCardCommand().createEvent(topic, kanbanCardId, KanbanCardProperties.NAME, name));
+    events.push(new MoveKanbanCardInProgressCommand().createEvent(topic, kanbanCardId, stateModel.initialState().id));
+    return { events, kanbanCardId };
   }
 
-  public initializeProperty(topic: Topic, kanbanCard: KanbanCard, propertyName: string, newValue: string): ObjectEvent {
-    return new InitializePropertyKanbanCardCommand().createEvent(topic, kanbanCard.id, propertyName, newValue);
+  public initializeProperty(topic: Topic, kanbanCard: KanbanCard | string, propertyName: string, newValue: string): ObjectEvent {
+    return new InitializePropertyKanbanCardCommand().createEvent(topic, this.toKanbanCardId(kanbanCard), propertyName, newValue);
   }
 
   public updateProperty(topic: Topic, kanbanCard: KanbanCard, propertyName: string, newValue: string): ObjectEvent {
     return new UpdatePropertyKanbanCardCommand().createEvent(topic, kanbanCard, propertyName, newValue);
   }
 
-  public moveToInProgress(topic: Topic, kanbanCard: KanbanCard, state: State): ObjectEvent {
-    return new MoveKanbanCardInProgressCommand().createEvent(topic, kanbanCard.id, state.id);
+  public moveToInProgress(topic: Topic, kanbanCard: KanbanCard | string, state: State): ObjectEvent {
+    return new MoveKanbanCardInProgressCommand().createEvent(topic, this.toKanbanCardId(kanbanCard), state.id);
   }
 
   public moveToComplete(topic: Topic, kanbanCard: KanbanCard, state: State): ObjectEvent {
@@ -59,5 +59,13 @@ export class KanbanCardEventFactory implements IEventFactory {
 
   public moveToTrash(topic: Topic, kanbanCard: KanbanCard): ObjectEvent {
     return new MoveKanbanCardToTrashCommand().createEvent(topic, kanbanCard);
+  }
+
+  private toKanbanCardId(kanbanCard: KanbanCard | string): string {
+    if (kanbanCard instanceof KanbanCard) {
+      return kanbanCard.id;
+    } else {
+      return kanbanCard;
+    }
   }
 }
