@@ -1,3 +1,6 @@
+# 6.5.0
+- adding/removing a Kanban Card to a context accepts also directly the id of the Kanban Card
+
 # 6.4.2
 - projects can now be instantiated by users of this library.
 
