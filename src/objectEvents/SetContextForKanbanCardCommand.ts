@@ -1,7 +1,6 @@
 import { HeijunkaBoard } from '../heijunka/HeijunkaBoard';
 import { ObjectEvent, Topic } from 'choicest-barnacle';
 import { IProcessObjectEventCommand } from './IProcessObjectEventCommand';
-import { KanbanCard } from '../heijunka/KanbanCard';
 import { Context } from '../heijunka/Context';
 import { BaseCommand, ObjectType } from './BaseCommand';
 
@@ -19,8 +18,8 @@ export class SetContextForKanbanCardCommand extends BaseCommand implements IProc
     return root.updateContexts(root.contexts.setContext(context, objectEvent.payload.get('kanbanCard')));
   }
 
-  createEvent(topic: Topic, context: Context, kanbanCard: KanbanCard): ObjectEvent {
-    const payload = new Map([['kanbanCard', kanbanCard.id]]);
+  createEvent(topic: Topic, context: Context, kanbanCardId: string): ObjectEvent {
+    const payload = new Map([['kanbanCard', kanbanCardId]]);
     return this.createObjectEvent(topic, context.id, payload);
   }
 }

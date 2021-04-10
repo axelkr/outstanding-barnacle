@@ -27,12 +27,12 @@ export class ContextEventFactory implements IEventFactory {
     return new CreateContextCommand().createEvent(topic, name, UUIDGenerator.createUUID());
   }
 
-  public setContext(topic: Topic, context: Context, kanbanCard: KanbanCard): ObjectEvent {
-    return new SetContextForKanbanCardCommand().createEvent(topic, context, kanbanCard);
+  public setContext(topic: Topic, context: Context, kanbanCard: KanbanCard | string): ObjectEvent {
+    return new SetContextForKanbanCardCommand().createEvent(topic, context, this.toKanbanCardId(kanbanCard));
   }
 
-  public unsetContext(topic: Topic, context: Context, kanbanCard: KanbanCard): ObjectEvent {
-    return new UnsetContextForKanbanCardCommand().createEvent(topic, context, kanbanCard);
+  public unsetContext(topic: Topic, context: Context, kanbanCard: KanbanCard | string): ObjectEvent {
+    return new UnsetContextForKanbanCardCommand().createEvent(topic, context, this.toKanbanCardId(kanbanCard));
   }
 
   public activate(topic: Topic, context: Context): ObjectEvent {
@@ -41,5 +41,13 @@ export class ContextEventFactory implements IEventFactory {
 
   public deactivate(topic: Topic, context: Context): ObjectEvent {
     return new DeactivateContextCommand().createEvent(topic, context);
+  }
+
+  private toKanbanCardId(kanbanCard: KanbanCard | string): string {
+    if (kanbanCard instanceof KanbanCard) {
+      return kanbanCard.id;
+    } else {
+      return kanbanCard;
+    }
   }
 }
