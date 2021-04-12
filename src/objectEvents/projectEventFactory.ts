@@ -24,10 +24,10 @@ export class ProjectEventFactory implements IEventFactory {
     return result;
   }
 
-  public create(topic: Topic, name: string, stateModel: StateModel): ObjectEvent[] {
+  public create(topic: Topic, name: string, stateModel: StateModel, isReadOnly = false): ObjectEvent[] {
     const events: ObjectEvent[] = [];
     const newProjectID = UUIDGenerator.createUUID();
-    events.push(new CreateProjectCommand().createEvent(topic, stateModel, newProjectID));
+    events.push(new CreateProjectCommand().createEvent(topic, stateModel, newProjectID, isReadOnly));
     events.push(new InitializePropertyProjectCommand().createEvent(topic, newProjectID, ProjectProperties.NAME, name));
     return events;
   }
