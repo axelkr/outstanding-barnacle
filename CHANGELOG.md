@@ -1,3 +1,6 @@
+# 6.6.0
+- projects can now be defined as readonly. Projects are the atomic entities being imported from other systems and there it might be beneficial to declare it as immutable within this setup.
+
 # 6.5.0
 - adding/removing a Kanban Card to a context accepts also directly the id of the Kanban Card
 
