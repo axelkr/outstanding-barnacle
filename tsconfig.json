@@ -7,17 +7,24 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
-    "lib":["ESNext"],
+    "lib": [
+      "ESNext"
+    ],
     "declaration": true,
     "baseUrl": ".",
     "paths": {
-        "*": [
-            "node_modules/*",
-            "src/types/*"
-        ]
-    },
-    "typeRoots": [ "node_modules/@types", "types" ],
+      "*": [
+        "node_modules/*",
+        "src/types/*"
+      ]
+    }
   },
-  "include": ["src"],
-  "exclude": [ "node_modules", "test","types", "dist" ]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "test",
+    "dist"
+  ]
 }
