@@ -40,6 +40,9 @@ export class Project extends IdObject {
     }
 
     valueOfProperty(propertyName: string): string {
-        return this.properties.valueOf(propertyName);
+        if (this.properties.has(propertyName)) {
+            return this.properties.valueOf(propertyName);
+        }
+        return undefined;
     }
 }

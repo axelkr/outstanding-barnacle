@@ -1,3 +1,6 @@
+# 6.6.1
+- getProperty now returns undefined for an unknown property. User cannot determine for a given object whether it has that property or not.
+
 # 6.6.0
 - projects can now be defined as readonly. Projects are the atomic entities being imported from other systems and there it might be beneficial to declare it as immutable within this setup.
 
