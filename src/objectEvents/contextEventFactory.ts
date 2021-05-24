@@ -46,8 +46,7 @@ export class ContextEventFactory implements IEventFactory {
   private toKanbanCardId(kanbanCard: KanbanCard | string): string {
     if (kanbanCard instanceof KanbanCard) {
       return kanbanCard.id;
-    } else {
-      return kanbanCard;
     }
+    return kanbanCard;
   }
 }

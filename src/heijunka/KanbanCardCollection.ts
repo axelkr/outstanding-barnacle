@@ -71,9 +71,8 @@ export class KanbanCardCollection {
         })
         if (didModify) {
             return new KanbanCardCollection(new IdObjectCollection<KanbanCard>(newKanbanCards));
-        } else {
-            return this;
         }
+        return this;
     }
 
     public find(options?: { project?: Project, states?: State[], transitionType?: TransitionType }): KanbanCard[] {
