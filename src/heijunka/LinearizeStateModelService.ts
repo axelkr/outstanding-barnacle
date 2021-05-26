@@ -19,6 +19,17 @@ export class LinearizeStateModelService {
             })
 
         }
-        return linearizedStates;
+        const linearizedNonFinalStates: State[] = [];
+        const linearizedFinalStates: State[] = [];
+        linearizedStates.forEach(linearizedState => {
+            const isFinalState = aStateModel.finalStates().indexOf(linearizedState) > -1;
+            if (isFinalState) {
+                linearizedFinalStates.push(linearizedState);
+            } else {
+                linearizedNonFinalStates.push(linearizedState);
+            }
+
+        })
+        return linearizedNonFinalStates.concat(linearizedFinalStates);
     }
 }
