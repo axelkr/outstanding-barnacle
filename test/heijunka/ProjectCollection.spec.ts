@@ -1,12 +1,10 @@
-import { expect } from 'chai';
-
 import { Project } from '../../src/heijunka/Project';
 import { ProjectCollection } from '../../src/heijunka/ProjectCollection';
 
 
 describe('ProjectCollection', () => {
   it('add: throws exception if called with undefined as Project', () => {
-    expect(function () { ProjectCollection.createEmptyCollection().add(undefined) }).throws();
+    expect(function () { ProjectCollection.createEmptyCollection().add(undefined) }).toThrow();
   });
 
   it('add: adds new project', () => {
@@ -14,11 +12,11 @@ describe('ProjectCollection', () => {
     const aStateModelId = 'aStateModelId';
     const aProject = Project.create(aId, aStateModelId);
     const testObject = ProjectCollection.createEmptyCollection().add(aProject);
-    expect(testObject.getProjects().length).to.equal(1);
+    expect(testObject.getProjects().length).toEqual(1);
   });
 
   it('has: throws exception if called with undefined as id', () => {
-    expect(function () { ProjectCollection.createEmptyCollection().has(undefined) }).throws();
+    expect(function () { ProjectCollection.createEmptyCollection().has(undefined) }).toThrow();
   });
 
   it('has: true if project with id available', () => {
@@ -26,7 +24,7 @@ describe('ProjectCollection', () => {
     const aStateModelId = 'aStateModelId';
     const aProject = Project.create(aId, aStateModelId);
     const testObject = ProjectCollection.createEmptyCollection().add(aProject);
-    expect(testObject.has(aId)).to.be.true;
+    expect(testObject.has(aId)).toBeTruthy();
   });
 
   it('has: false if project with id is not available', () => {
@@ -35,7 +33,7 @@ describe('ProjectCollection', () => {
     const aStateModelId = 'aStateModelId';
     const aProject = Project.create(aId, aStateModelId);
     const testObject = ProjectCollection.createEmptyCollection().add(aProject);
-    expect(testObject.has(anotherId)).to.be.false;
+    expect(testObject.has(anotherId)).toBeFalsy();
   });
 
   it('updateProperty: throws exception if called with undefined as id', () => {
@@ -43,7 +41,7 @@ describe('ProjectCollection', () => {
     const aStateModelId = 'aStateModelId';
     const aProject = Project.create(aId, aStateModelId);
     const testObject = ProjectCollection.createEmptyCollection().add(aProject);
-    expect(function () { testObject.updateProperty(undefined, 'propertyName', new Date(), 'renameTo') }).throws();
+    expect(function () { testObject.updateProperty(undefined, 'propertyName', new Date(), 'renameTo') }).toThrow();
   });
 
   it('updateProperty: throws exception if called with undefined as date', () => {
@@ -51,7 +49,7 @@ describe('ProjectCollection', () => {
     const aStateModelId = 'aStateModelId';
     const aProject = Project.create(aId, aStateModelId);
     const testObject = ProjectCollection.createEmptyCollection().add(aProject);
-    expect(function () { testObject.updateProperty('aId', 'propertyName', undefined, 'renameTo') }).throws();
+    expect(function () { testObject.updateProperty('aId', 'propertyName', undefined, 'renameTo') }).toThrow();
   });
 
   it('updateProperty: throws exception if called with undefined as new name', () => {
@@ -59,7 +57,7 @@ describe('ProjectCollection', () => {
     const aStateModelId = 'aStateModelId';
     const aProject = Project.create(aId, aStateModelId);
     const testObject = ProjectCollection.createEmptyCollection().add(aProject);
-    expect(function () { testObject.updateProperty('aId', 'propertyName', new Date(), undefined) }).throws();
+    expect(function () { testObject.updateProperty('aId', 'propertyName', new Date(), undefined) }).toThrow();
   });
 
   it('updateProperty: throws exception if called with unknown id', () => {
@@ -69,7 +67,7 @@ describe('ProjectCollection', () => {
     const aProject = Project.create(aId, aStateModelId);
     const testObject = ProjectCollection.createEmptyCollection().add(aProject);
 
-    expect(function () { testObject.updateProperty(anotherId, 'propertyName', new Date(), undefined) }).throws();
+    expect(function () { testObject.updateProperty(anotherId, 'propertyName', new Date(), undefined) }).toThrow();
   });
 
   it('updateProperty: a more recent name leads to a change', () => {
@@ -83,6 +81,6 @@ describe('ProjectCollection', () => {
     const aProject = Project.create(aId, aStateModelId).initializeProperty(propertyName, initialName, initialDate);
     let testObject = ProjectCollection.createEmptyCollection().add(aProject);
     testObject = testObject.updateProperty(aId, propertyName, newDate, newName);
-    expect(testObject.getProjects()[0].valueOfProperty(propertyName)).to.equal(newName);
+    expect(testObject.getProjects()[0].valueOfProperty(propertyName)).toEqual(newName);
   });
 });

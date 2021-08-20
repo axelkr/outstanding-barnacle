@@ -1,7 +1,7 @@
 dist/
 
 #test results
-results.xml
+test-results.xml
 
 # Dependency directories
 node_modules/

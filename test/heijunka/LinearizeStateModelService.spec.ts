@@ -1,5 +1,3 @@
-import { expect } from 'chai';
-
 import { StateModel } from '../../src/heijunka/StateModel';
 import { LinearizeStateModelService } from '../../src/heijunka/LinearizeStateModelService';
 import { State } from '../../src/heijunka/State';
@@ -12,7 +10,7 @@ describe('LinearizeStateModelService', () => {
     const finalStates = [someStates[2], someStates[4], someStates[9]];
     const inputStateModel = new StateModel('id', 'name', someStates, initialState, finalStates, trashState);
     const testService = new LinearizeStateModelService();
-    expect(testService.linearize(inputStateModel)[0]).to.equal(initialState);
+    expect(testService.linearize(inputStateModel)[0]).toEqual(initialState);
   });
 
   it('linearizedStates: each state is returned exactly once', () => {
@@ -29,9 +27,9 @@ describe('LinearizeStateModelService', () => {
     }
 
     const testService = new LinearizeStateModelService();
-    expect(testService.linearize(inputStateModel)).to.have.lengthOf(someStates.length);
+    expect(testService.linearize(inputStateModel)).toHaveLength(someStates.length);
     someStates.forEach(aState => {
-      expect(testService.linearize(inputStateModel).indexOf(aState)).to.be.greaterThan(-1);
+      expect(testService.linearize(inputStateModel).indexOf(aState)).toBeGreaterThan(-1);
     });
   });
 
@@ -46,9 +44,9 @@ describe('LinearizeStateModelService', () => {
     inputStateModel.setSuccessorOf(someStates[0], someStates[1]);
     inputStateModel.setSuccessorOf(someStates[1], someStates[2]);
     const testService = new LinearizeStateModelService();
-    expect(testService.linearize(inputStateModel)).to.have.lengthOf(someStates.length);
+    expect(testService.linearize(inputStateModel)).toHaveLength(someStates.length);
     for (let i = 0; i < someStates.length; i = i + 1) {
-      expect(testService.linearize(inputStateModel)[i]).to.equal(someStates[i]);
+      expect(testService.linearize(inputStateModel)[i]).toEqual(someStates[i]);
     }
   });
 
@@ -68,7 +66,7 @@ describe('LinearizeStateModelService', () => {
     const testService = new LinearizeStateModelService();
     const firstIndexOfFinalStates = someStates.length - finalStates.length - 1;
     finalStates.forEach(aState => {
-      expect(testService.linearize(inputStateModel).indexOf(aState)).to.be.greaterThanOrEqual(firstIndexOfFinalStates);
+      expect(testService.linearize(inputStateModel).indexOf(aState)).toBeGreaterThanOrEqual(firstIndexOfFinalStates);
     });
   });
 

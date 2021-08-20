@@ -1,5 +1,3 @@
-import { expect } from 'chai';
-
 import { ReadOnlyProperties } from '../../src/heijunka/ReadOnlyProperties';
 
 describe('ReadOnlyProperties', () => {
@@ -11,7 +9,7 @@ describe('ReadOnlyProperties', () => {
     const beforeInitialDate = new Date(2019, 11, 23);
     const someProperties = new ReadOnlyProperties().initialize(propertyName, initialValue, initialDate);
     const updatedProperties = someProperties.update(propertyName, anotherValue, beforeInitialDate);
-    expect(updatedProperties.valueOf(propertyName)).to.equal(initialValue);
+    expect(updatedProperties.valueOf(propertyName)).toEqual(initialValue);
   });
 
   it('update keeps new value if update happened afterwards', () => {
@@ -22,6 +20,6 @@ describe('ReadOnlyProperties', () => {
     const afterInitialDate = new Date(2021, 12, 25);
     const someProperties = new ReadOnlyProperties().initialize(propertyName, initialValue, initialDate);
     const updatedProperties = someProperties.update(propertyName, anotherValue, afterInitialDate);
-    expect(updatedProperties.valueOf(propertyName)).to.equal(anotherValue);
+    expect(updatedProperties.valueOf(propertyName)).toEqual(anotherValue);
   });
 });

@@ -1,6 +1,4 @@
-import { expect } from 'chai';
 import { IdObject } from '../../src/heijunka/IdObject';
-
 import { IdObjectCollection } from '../../src/heijunka/IdObjectCollection';
 
 class MockIdObject implements IdObject {
@@ -18,7 +16,7 @@ describe('IdObjectCollection', () => {
     const anIdObject = new MockIdObject(anId);
     const anotherIdObject = new MockIdObject(anotherId);
     const testObject = new IdObjectCollection<MockIdObject>().add(anIdObject);
-    expect(testObject.replace(anId, anotherIdObject).has(anotherId)).to.be.true;
-    expect(testObject.replace(anId, anotherIdObject).has(anId)).to.be.false;
+    expect(testObject.replace(anId, anotherIdObject).has(anotherId)).toBeTruthy();
+    expect(testObject.replace(anId, anotherIdObject).has(anId)).toBeFalsy();
   })
 });
